@@ -18,7 +18,7 @@ export class HomeViewModel {
   private pageNum = 1
 
   getBanner = (): Promise<AxiosResponse<BaseResponse<Banner[]>>> => {
-    return  provider.get<BaseResponse<Banner[]>, AxiosResponse<BaseResponse<Banner[]>>>('banner/json')
+    return provider.get<BaseResponse<Banner[]>, AxiosResponse<BaseResponse<Banner[]>>>('banner/json')
   }
 
   getHotArticle = (): Promise<AxiosResponse<BaseResponse<Article[]>>> => {

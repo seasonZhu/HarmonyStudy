@@ -62,4 +62,8 @@ export class Provider extends BaseProvider {
 
 const provider = new Provider().instance
 
-export default provider
+const httpClient = new Provider()
+
+export default provider;
+
+export { httpClient };
