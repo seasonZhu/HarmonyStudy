@@ -1,3 +1,4 @@
+import { TabType, TabModel, TabTypeAllCases, getTabModel } from '../enum/TabType';
 import { Home } from './Home';
 import { My } from './My';
 
@@ -5,35 +6,36 @@ import { My } from './My';
 @Entry
 @Component
 struct Index {
-  @State curentIndex: number = 0;
-  private tabsController: TabsController = new TabsController();
+  @State curentIndex: number = 0
+
+  private tabsController = new TabsController();
   
   build() {
     Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
       TabContent() {
         Home()
       }
-      .tabBar(this.tabBarItem('首页', 0, $r('app.media.home_selected'), $r('app.media.home')))
+      .tabBar(this.tabBarItem(getTabModel(TabType.home)))
 
       TabContent() {
         My()
       }
-      .tabBar(this.tabBarItem('项目', 1, $r('app.media.project_selected'), $r('app.media.project')))
+      .tabBar(this.tabBarItem(getTabModel(TabType.project)))
 
       TabContent() {
         My()
       }
-      .tabBar(this.tabBarItem('公众号', 2, $r('app.media.publicNumber_selected'), $r('app.media.publicNumber')))
+      .tabBar(this.tabBarItem(getTabModel(TabType.publicNumber)))
 
       TabContent() {
         My()
       }
-      .tabBar(this.tabBarItem('体系', 3, $r('app.media.tree_selected'), $r('app.media.tree')))
+      .tabBar(this.tabBarItem(getTabModel(TabType.tree)))
 
       TabContent() {
         My()
       }
-      .tabBar(this.tabBarItem('我的', 4, $r('app.media.my_selected'), $r('app.media.my')))
+      .tabBar(this.tabBarItem(getTabModel(TabType.my)))
     }
     .vertical(false)
     .barWidth('100%')
@@ -45,17 +47,16 @@ struct Index {
   }
 
   @Builder
-  tabBarItem(title: string, index: number, selectedImg: Resource,
-             normalImg: Resource) {
+  tabBarItem(model: TabModel) {
     Column({space:4}) {
-      Image(this.curentIndex == index ? selectedImg : normalImg)
+      Image(this.curentIndex == model.index ? model.selectedImage : model.normalImage)
         .height(24)
         .objectFit(ImageFit.Contain)
-      Text(title).fontColor(this.curentIndex == index ? '#1698CE' : '#6B6B6B').fontSize(12)
+      Text(model.title).fontColor(this.curentIndex == model.index ? '#1698CE' : '#6B6B6B').fontSize(12)
     }
     .onClick(() => {
-      this.curentIndex = index;
-      this.tabsController.changeIndex(index);
+      this.curentIndex = model.index;
+      this.tabsController.changeIndex(model.index);
     })
   }
 }
