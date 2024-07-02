@@ -23,9 +23,9 @@ export struct BannerView {
   build() {
     Swiper(this.swiperControllers) {
       LazyForEach(this.data, (item: Banner) => {
-        ImageKnifeComponent({ imageKnifeOption: {loadSrc: item.imagePath} })
-        //Text(item.imagePath)
-        //Image(item.imagePath)
+        /// 这个库我之前用着很好，不知道为啥现在就显示不出来了
+        //ImageKnifeComponent({ imageKnifeOption: {loadSrc: item.imagePath, mainScaleType: ScaleType.AUTO_HEIGHT} })
+        Image(item.imagePath)
       })
     }
     .width('100%')
