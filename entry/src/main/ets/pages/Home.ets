@@ -112,13 +112,7 @@ export struct Home {
 
   @Builder
   getIcon() {
-    Image($r('app.media.pic_search_article'))
-      .width(60)
-      .height(60)
-      .padding(16)
-      .onClick(() => {
-        Router.push({url: PagesConstant.Hotkey, success: () => {}, fail: () => {}})
-      })
+    SearchIcon()
   }
 
   @Builder
@@ -133,7 +127,6 @@ export struct Home {
             article: item,
             onItemClick: (article: Article) => {
               console.log("点击了cell " + article.link)
-              Router.push({url: PagesConstant.NavigationBar})
             },
             onCollect: (isCollect: boolean, article: Article) => {
 
@@ -198,5 +191,18 @@ export struct Home {
 
       this.status = ViewStatus.success
     }
+  }
+}
+
+@Component
+struct SearchIcon {
+  build() {
+    Image($r('app.media.search'))
+      .width(60)
+      .height(60)
+      .padding(16)
+      .onClick(() => {
+        Router.push({url: PagesConstant.Hotkey, success: () => {}, fail: () => {}})
+      })
   }
 }

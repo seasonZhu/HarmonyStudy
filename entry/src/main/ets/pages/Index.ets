@@ -7,48 +7,45 @@ import { My } from './My';
 struct Index {
   @State curentIndex: number = 0;
   private tabsController: TabsController = new TabsController();
-
-
-
+  
   build() {
     Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
       TabContent() {
         Home()
       }
-      .tabBar(this.tabBuilder('首页', 0, $r('app.media.home_selected'), $r('app.media.home')))
+      .tabBar(this.tabBarItem('首页', 0, $r('app.media.home_selected'), $r('app.media.home')))
 
       TabContent() {
         My()
       }
-      .tabBar(this.tabBuilder('项目', 1, $r('app.media.project_selected'), $r('app.media.project')))
+      .tabBar(this.tabBarItem('项目', 1, $r('app.media.project_selected'), $r('app.media.project')))
 
       TabContent() {
         My()
       }
-      .tabBar(this.tabBuilder('公众号', 2, $r('app.media.publicNumber_selected'), $r('app.media.publicNumber')))
+      .tabBar(this.tabBarItem('公众号', 2, $r('app.media.publicNumber_selected'), $r('app.media.publicNumber')))
 
       TabContent() {
         My()
       }
-      .tabBar(this.tabBuilder('体系', 3, $r('app.media.tree_selected'), $r('app.media.tree')))
+      .tabBar(this.tabBarItem('体系', 3, $r('app.media.tree_selected'), $r('app.media.tree')))
 
       TabContent() {
         My()
       }
-      .tabBar(this.tabBuilder('我的', 4, $r('app.media.my_selected'), $r('app.media.my')))
+      .tabBar(this.tabBarItem('我的', 4, $r('app.media.my_selected'), $r('app.media.my')))
     }
     .vertical(false)
     .barWidth('100%')
     .barHeight(56)
     .barMode(BarMode.Fixed)
-    // .backgroundColor('#ffffff')
     .onChange((index: number) => {
       this.curentIndex = index;
     })
   }
 
   @Builder
-  tabBuilder(title: string, index: number, selectedImg: Resource,
+  tabBarItem(title: string, index: number, selectedImg: Resource,
              normalImg: Resource) {
     Column({space:4}) {
       Image(this.curentIndex == index ? selectedImg : normalImg)
