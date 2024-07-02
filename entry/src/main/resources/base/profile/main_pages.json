@@ -3,6 +3,7 @@
     "pages/Index",
     "pages/Home",
     "pages/My",
-    "pages/HotKey"
+    "pages/HotKey",
+    "pages/Tree"
   ]
 }

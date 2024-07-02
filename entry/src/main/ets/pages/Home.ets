@@ -152,7 +152,7 @@ export struct Home {
         this.status = ViewStatus.error
       });
 
-    this.viewModel.loginAction("13437156081", "z19871031")
+    //this.viewModel.loginAction("", "")
   }
 
   processResponseData(results: AxiosResponse[], type: ScrollActionType) {

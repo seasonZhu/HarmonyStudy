@@ -11,17 +11,17 @@ export enum TabType {
 
 export let TabTypeAllCases = [TabType.home, TabType.project, TabType.publicNumber, TabType.tree, TabType.my]
 
-export interface TabModel {
+export interface TabTypeModel {
   title: string
   index: number
   selectedImage: Resource
   normalImage: Resource
 }
 
-export function getTabModel(type: TabType): TabModel {
+export function getTabModel(type: TabType): TabTypeModel {
   switch (type) {
     case TabType.home:
-      let model0: TabModel = {
+      let model0: TabTypeModel = {
         title: "首页",
         index: type,
         selectedImage: $r('app.media.home_selected'),
@@ -29,7 +29,7 @@ export function getTabModel(type: TabType): TabModel {
       }
       return model0
     case TabType.project:
-      let model1: TabModel = {
+      let model1: TabTypeModel = {
         title: "项目",
         index: type,
         selectedImage: $r('app.media.project_selected'),
@@ -37,7 +37,7 @@ export function getTabModel(type: TabType): TabModel {
       }
       return model1
     case TabType.publicNumber:
-      let model2: TabModel = {
+      let model2: TabTypeModel = {
         title: "公众号",
         index: type,
         selectedImage: $r('app.media.publicNumber_selected'),
@@ -45,7 +45,7 @@ export function getTabModel(type: TabType): TabModel {
       }
       return model2
     case TabType.tree:
-      let model3: TabModel = {
+      let model3: TabTypeModel = {
         title: "体系",
         index: type,
         selectedImage: $r('app.media.tree_selected'),
@@ -53,7 +53,7 @@ export function getTabModel(type: TabType): TabModel {
       }
       return model3
     case TabType.my:
-      let model4: TabModel = {
+      let model4: TabTypeModel = {
         title: "我的",
         index: type,
         selectedImage: $r('app.media.my_selected'),

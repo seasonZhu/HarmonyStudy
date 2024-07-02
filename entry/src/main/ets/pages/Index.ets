@@ -1,6 +1,7 @@
-import { TabType, TabModel, TabTypeAllCases, getTabModel } from '../enum/TabType';
+import { TabType, TabTypeModel, TabTypeAllCases, getTabModel } from '../enum/TabType';
 import { Home } from './Home';
 import { My } from './My';
+import { Tree } from './Tree';
 
 @Preview
 @Entry
@@ -28,7 +29,7 @@ struct Index {
       .tabBar(this.tabBarItem(getTabModel(TabType.publicNumber)))
 
       TabContent() {
-        My()
+        Tree()
       }
       .tabBar(this.tabBarItem(getTabModel(TabType.tree)))
 
@@ -47,7 +48,7 @@ struct Index {
   }
 
   @Builder
-  tabBarItem(model: TabModel) {
+  tabBarItem(model: TabTypeModel) {
     Column({space:4}) {
       Image(this.curentIndex == model.index ? model.selectedImage : model.normalImage)
         .height(24)

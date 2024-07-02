@@ -5,6 +5,7 @@ import { ViewStatus } from '../Enum/ViewStatus';
 import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { HotKeyModel } from '../model/HotKeyModel';
+import { TabModel } from '../model/TabModel';
 
 @Entry
 @Component
@@ -63,7 +64,10 @@ struct HotKey {
   }
 
   async aboutToAppear(): Promise<void> {
-    let response: AxiosResponse<BaseResponse<HotKeyModel[]>>  = await this.viewModel.getHotKey()
+    let response: AxiosResponse<BaseResponse<HotKeyModel[]>> = await this.viewModel.getHotKey()
+
+    let response1: AxiosResponse<BaseResponse<TabModel[]>> = await this.viewModel.getTree()
+
     response.data.data.forEach((item) => {
       this.dataSource.addData(item)
     })
