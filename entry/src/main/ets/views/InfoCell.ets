@@ -1,6 +1,7 @@
 import { Article, ArticleTag } from '../model/Article'
 import { WebLink } from '../model/WebLink'
 import { Router } from '../router/Router'
+import { StringUtils } from '../utils/StringUtils'
 
 @Component
 export struct InfoCell {
@@ -58,9 +59,9 @@ export struct InfoCell {
       Text() {
         ForEach(this.title, (value: string, index: number) => {
           if (index === 1) {
-            Span(value).fontSize(18).fontColor($r('app.color.blue500'))
+            Span(StringUtils.replaceHtmlElement(value)).fontSize(18).fontColor($r('app.color.blue500'))
           } else {
-            Span(value)
+            Span(StringUtils.replaceHtmlElement(value))
           }
         })
       }
@@ -185,9 +186,9 @@ export struct InfoCell {
           Text() {
             ForEach(this.title, (value: string, index: number) => {
               if (index === 1) {
-                Span(value).fontSize(18).fontColor($r('app.color.blue500'))
+                Span(StringUtils.replaceHtmlElement(value)).fontSize(18).fontColor($r('app.color.blue500'))
               } else {
-                Span(value)
+                Span(StringUtils.replaceHtmlElement(value))
               }
             })
           }

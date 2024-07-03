@@ -8,7 +8,6 @@ import { PageModel } from '../model/PageModel';
 import { ScrollActionType } from '../enum/ScrollActionType';
 import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
-import { PagesConstant, Router } from '../router/Router';
 import { ViewStatus } from '../enum/ViewStatus';
 import { TabsDetailViewModel } from '../viewModel/TabsDetailViewModel';
 import { ContentType } from '../enum/ContentType';

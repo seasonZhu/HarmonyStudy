@@ -1,4 +1,5 @@
 export enum ContentType {
   project,
-  publicNumber
+  publicNumber,
+  tree
 }

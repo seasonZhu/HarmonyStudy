@@ -21,6 +21,9 @@ export class TabScaffoldViewModel {
       case ContentType.publicNumber:
         api = "wxarticle/chapters/json"
         break
+      case ContentType.tree:
+        api = "tree/json"
+        break
     }
 
     return httpClient.get<BaseResponse<TabModel[]>>(api)

@@ -6,7 +6,7 @@
     "pages/HotKey",
     "pages/Tree",
     "pages/TabScaffold",
-    "pages/TabsDetail",
-    "pages/WebPage"
+    "pages/WebPage",
+    "pages/TreeDetail"
   ]
 }

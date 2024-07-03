@@ -1,4 +1,6 @@
+import { ContentType } from '../enum/ContentType'
 import { TabModel } from '../model/TabModel'
+import { Router } from '../router/Router'
 
 @Component
 export struct TreeCell {
@@ -25,7 +27,7 @@ export struct TreeCell {
                 // 内间距
               .padding(8)
               .onClick(() => {
-                console.log(`点击了话题 id: ${item.id}`)
+                Router.toTreeDetail({tab: item, contentType: ContentType.tree})
               })
           })
         }

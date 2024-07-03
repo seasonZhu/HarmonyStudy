@@ -6,10 +6,11 @@ import provider from '../HttpRequest/Provider';
 import { ContentType } from '../enum/ContentType';
 import { ScrollActionType } from '../Enum/ScrollActionType';
 import { TabModel } from '../model/TabModel';
+import { ToastManager } from '../utils/ToastManager';
 
 export class TabsDetailViewModel {
 
-  private pageNum = 1
+  private pageNum = 0
 
   private contentType: ContentType
 
@@ -22,7 +23,12 @@ export class TabsDetailViewModel {
 
   getTabsDetailList = (type: ScrollActionType): Promise<AxiosResponse<BaseResponse<PageModel<Article>>>> => {
     if (type == ScrollActionType.refresh) {
-      this.pageNum = 1
+      if (this.contentType == ContentType.tree) {
+        /// 体系的接口pageNum是从0开始的
+        this.pageNum = 0
+      } else {
+        this.pageNum = 1
+      }
     } else {
       this.pageNum = this.pageNum + 1
     }
@@ -35,6 +41,9 @@ export class TabsDetailViewModel {
         break
       case ContentType.publicNumber:
         api = "wxarticle/list/" + this.tab.id?.toString() + "/" + pageString + "/json"
+        break
+      case ContentType.tree:
+        api = "article/list/" + pageString + "/json" + "?cid=" + this.tab.id?.toString()
         break
     }
     return provider.get<BaseResponse<PageModel<Article>>, AxiosResponse<BaseResponse<PageModel<Article>>>>(api)

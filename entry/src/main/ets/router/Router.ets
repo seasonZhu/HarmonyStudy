@@ -1,8 +1,9 @@
 import router from '@ohos.router'
 import AccountManager from '../accountManager/AccountManager'
+import { TreeDetailInfo } from '../model/TreeDetailInfo';
 import { WebLink } from '../model/WebLink';
 
-export class PagesConstant {
+export abstract class PagesConstant {
   public static Splash = "pages/Splash"
   public static Index = "pages/Index"
   public static Login = "pages/Login"
@@ -11,7 +12,8 @@ export class PagesConstant {
   public static Search = "pages/Search"
   public static Collect = "pages/Collect"
   public static Web = "pages/WebPage"
-  public static Hotkey = 'pages/HotKey'
+  public static Hotkey = "pages/HotKey"
+  public static TreeDetail = "pages/TreeDetail"
 }
 
 export interface RouterOptions {
@@ -27,6 +29,13 @@ export class Router {
     Router.push({
       url: PagesConstant.Web,
       params: webLink
+    })
+  }
+
+  public static toTreeDetail(treeDetailInfo: TreeDetailInfo) {
+    Router.push({
+      url: PagesConstant.TreeDetail,
+      params: treeDetailInfo
     })
   }
 

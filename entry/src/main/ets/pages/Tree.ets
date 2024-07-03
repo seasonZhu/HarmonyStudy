@@ -6,9 +6,10 @@ import { BaseListDataSource } from '../model/BaseListDataSource';
 import { ScrollActionType } from '../enum/ScrollActionType';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
-import { TreeViewModel } from '../viewModel/TreeViewModel';
 import { TabModel } from '../model/TabModel';
 import { TreeCell } from '../views/TreeCell';
+import { TabScaffoldViewModel } from '../viewModel/TabScaffoldViewModel';
+import { ContentType } from '../enum/ContentType';
 
 @Entry
 @Component
@@ -22,7 +23,7 @@ export struct Tree {
 
   private scroller = new Scroller()
 
-  viewModel = new TreeViewModel()
+  viewModel!: TabScaffoldViewModel
 
   build() {
     Navigation() {
@@ -33,7 +34,7 @@ export struct Tree {
           this.getRefreshView()
         },
         onRetry: async () => {
-          let result: AxiosResponse = await this.viewModel.getTree()
+          let result: AxiosResponse = await this.viewModel.getTabs()
           this.processResponseData(result, ScrollActionType.refresh)
         },
       })
@@ -60,7 +61,7 @@ export struct Tree {
       },
       // 可选项，下拉刷新回调
       onRefresh: async () => {
-        let result: AxiosResponse = await this.viewModel.getTree()
+        let result: AxiosResponse = await this.viewModel.getTabs()
         this.processResponseData(result, ScrollActionType.refresh)
         return '刷新成功'
       },
@@ -81,7 +82,8 @@ export struct Tree {
   }
 
   async aboutToAppear(): Promise<void> {
-    this.viewModel.getTree()
+    this.viewModel = new TabScaffoldViewModel(ContentType.tree)
+    this.viewModel.getTabs()
       .then((result: AxiosResponse) => {
         this.processResponseData(result, ScrollActionType.refresh)
       })
