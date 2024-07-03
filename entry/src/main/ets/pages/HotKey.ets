@@ -5,7 +5,7 @@ import { ViewStatus } from '../Enum/ViewStatus';
 import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { HotKeyModel } from '../model/HotKeyModel';
-import { ToastUtil } from '@pura/harmony-utils';
+import { KeyboardUtil, ToastUtil } from '@pura/harmony-utils';
 import { Router } from '../router/Router';
 import { KeywordInfo } from '../entity/KeywordInfo';
 
@@ -17,6 +17,8 @@ struct HotKey {
   @State status: ViewStatus = ViewStatus.loading
 
   viewModel = new HotKeyViewModel()
+
+  inputController = new TextInputController()
 
   build() {
     Navigation() {
@@ -30,7 +32,7 @@ struct HotKey {
         },
       })
     }
-    .title("热门搜索")
+    .title(this.getTextInput())
     .mode(NavigationMode.Auto)
     .titleMode(NavigationTitleMode.Mini)
     .height('100%')
@@ -66,6 +68,25 @@ struct HotKey {
       .width('100%')
     }
     .height('100%')
+    .padding({ top: 8 })
+  }
+
+  @Builder
+  getTextInput() {
+    TextInput({placeholder: "搜索关键词", controller: this.inputController})
+      .enterKeyType(EnterKeyType.Search)
+      .margin({ right: 16 })
+      .onSubmit((enterKey: EnterKeyType, event: SubmitEvent) => {
+        let keyword = event.text
+        if (keyword.length != 0) {
+          let keywordInfo: KeywordInfo = {
+            k: keyword
+          }
+          Router.toSearchResult(keywordInfo)
+        } else {
+          ToastUtil.showToast("搜索词不能为空")
+        }
+      })
   }
 
   async aboutToAppear(): Promise<void> {
@@ -84,5 +105,9 @@ struct HotKey {
     } else {
       this.status = ViewStatus.error
     }
+  }
+
+  aboutToDisappear(): void {
+    this.inputController.stopEditing()
   }
 }

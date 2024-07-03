@@ -100,4 +100,8 @@ struct WebPage {
     .height('100%')
     .width('100%')
   }
+
+  aboutToDisappear(): void {
+    this.loadingDialogController.close()
+  }
 }
