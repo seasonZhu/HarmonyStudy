@@ -5,6 +5,8 @@ import { ViewStatus } from '../Enum/ViewStatus';
 import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { HotKeyModel } from '../model/HotKeyModel';
+import { ToastUtil } from '@pura/harmony-utils';
+import { Router } from '../router/Router';
 
 @Entry
 @Component
@@ -51,7 +53,7 @@ struct HotKey {
                 // 内间距
               .padding(8)
               .onClick(() => {
-                console.log(`点击了话题 id: ${item.id}`)
+                ToastUtil.showToast(`点击了话题 id: ${item.id}`)
               })
           })
         }
