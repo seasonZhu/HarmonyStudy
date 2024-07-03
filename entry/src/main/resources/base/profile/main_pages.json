@@ -4,6 +4,8 @@
     "pages/Home",
     "pages/My",
     "pages/HotKey",
-    "pages/Tree"
+    "pages/Tree",
+    "pages/TabScaffold",
+    "pages/TabsDetail"
   ]
 }

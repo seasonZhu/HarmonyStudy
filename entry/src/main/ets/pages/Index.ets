@@ -1,7 +1,9 @@
-import { TabType, TabTypeModel, TabTypeAllCases, getTabModel } from '../enum/TabType';
+import { TabType, TabTypeModel, TabTypeAllCases, getTabModel, } from '../enum/TabType';
 import { Home } from './Home';
 import { My } from './My';
+import { TabScaffold } from './TabScaffold';
 import { Tree } from './Tree';
+import { ContentType } from '../enum/ContentType';
 
 @Preview
 @Entry
@@ -13,31 +15,11 @@ struct Index {
   
   build() {
     Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
-      TabContent() {
-        Home()
-      }
-      .tabBar(this.tabBarItem(getTabModel(TabType.home)))
-
-      TabContent() {
-        My()
-      }
-      .tabBar(this.tabBarItem(getTabModel(TabType.project)))
-
-      TabContent() {
-        My()
-      }
-      .tabBar(this.tabBarItem(getTabModel(TabType.publicNumber)))
-
-      TabContent() {
-        Tree()
-      }
-      .tabBar(this.tabBarItem(getTabModel(TabType.tree)))
-
-      TabContent() {
-        My()
-      }
-      .tabBar(this.tabBarItem(getTabModel(TabType.my)))
+      ForEach(TabTypeAllCases, (type: TabType) => {
+        this.getPage(type)
+      })
     }
+    .scrollable(false)
     .vertical(false)
     .barWidth('100%')
     .barHeight(56)
@@ -59,5 +41,35 @@ struct Index {
       this.curentIndex = model.index;
       this.tabsController.changeIndex(model.index);
     })
+  }
+
+  @Builder
+  getPage(type: TabType) {
+    if (type == TabType.home) {
+      TabContent() {
+        Home()
+      }
+      .tabBar(this.tabBarItem(getTabModel(type)))
+    } else if (type == TabType.project) {
+      TabContent() {
+        TabScaffold({contentType: ContentType.project})
+      }
+      .tabBar(this.tabBarItem(getTabModel(type)))
+    } else if (type == TabType.publicNumber) {
+      TabContent() {
+        TabScaffold({contentType: ContentType.publicNumber})
+      }
+      .tabBar(this.tabBarItem(getTabModel(type)))
+    } else if (type == TabType.tree) {
+      TabContent() {
+        Tree()
+      }
+      .tabBar(this.tabBarItem(getTabModel(type)))
+    } else {
+      TabContent() {
+        My()
+      }
+      .tabBar(this.tabBarItem(getTabModel(type)))
+    }
   }
 }
