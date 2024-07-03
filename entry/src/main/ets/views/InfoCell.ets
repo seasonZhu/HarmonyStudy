@@ -1,4 +1,6 @@
 import { Article, ArticleTag } from '../model/Article'
+import { WebLink } from '../model/WebLink'
+import { Router } from '../router/Router'
 
 @Component
 export struct InfoCell {
@@ -80,7 +82,7 @@ export struct InfoCell {
         if (this.onItemClick) {
           this.onItemClick(this.article)
         }
-        //RouterDelegate.toWebPage(this.article.link)
+        Router.toWebPage((this.article as WebLink))
       })
 
       //底部TAG以及like
@@ -135,7 +137,7 @@ export struct InfoCell {
       if (this.onItemClick) {
         this.onItemClick(this.article)
       }
-      //RouterDelegate.toWebPage(this.article.link)
+      Router.toWebPage((this.article as WebLink))
     })
     .gesture(
       LongPressGesture({ repeat: false })
@@ -201,7 +203,7 @@ export struct InfoCell {
             if (this.onItemClick) {
               this.onItemClick(this.article)
             }
-            //RouterDelegate.toWebPage(this.article.link)
+            Router.toWebPage((this.article as WebLink))
           })
 
 
@@ -279,7 +281,7 @@ export struct InfoCell {
       if (this.onItemClick) {
         this.onItemClick(this.article)
       }
-      //RouterDelegate.toWebPage(this.article.link)
+      Router.toWebPage((this.article as WebLink))
     })
     .gesture(
       LongPressGesture({ repeat: false })

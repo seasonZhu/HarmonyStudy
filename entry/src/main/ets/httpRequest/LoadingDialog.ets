@@ -11,6 +11,9 @@ export struct LoadingDialog {
         .color('#FFFFFF')
         .width(60)
         .height(60)
+        .margin({
+          top: 10,
+        })
 
       if (this.text) {
         Text(this.text)

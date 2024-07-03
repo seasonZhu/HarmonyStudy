@@ -1,5 +1,6 @@
 import router from '@ohos.router'
 import AccountManager from '../accountManager/AccountManager'
+import { WebLink } from '../model/WebLink';
 
 export class PagesConstant {
   public static Splash = "pages/Splash"
@@ -13,28 +14,16 @@ export class PagesConstant {
   public static Hotkey = 'pages/HotKey'
 }
 
-export interface WebLink {
-  link: string | null
-  id: number | null
-  title: string | null
-}
-
 export interface RouterOptions {
   url: string
   params?: object
   success?: (() => void)
   error?: ((error: Error) => void)
+  finally?: (() => void)
 }
 
 export class Router {
-  public static toWebPage(link: string) {
-
-    const webLink: WebLink = {
-      link: link,
-      id: null,
-      title: null
-    };
-
+  public static toWebPage(webLink: WebLink) {
     Router.push({
       url: PagesConstant.Web,
       params: webLink
@@ -101,6 +90,11 @@ export class Router {
           options.error(error)
         }
         console.log("路由失败了")
+      })
+      .finally(() => {
+        if(options.finally) {
+          options.finally()
+        }
       })
   }
 
