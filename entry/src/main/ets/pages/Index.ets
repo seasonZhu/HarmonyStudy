@@ -9,7 +9,7 @@ import { ContentType } from '../enum/ContentType';
 @Entry
 @Component
 struct Index {
-  @State curentIndex: number = 0
+  @State currentIndex: number = 0
 
   private tabsController = new TabsController();
   
@@ -25,20 +25,22 @@ struct Index {
     .barHeight(56)
     .barMode(BarMode.Fixed)
     .onChange((index: number) => {
-      this.curentIndex = index;
+      this.currentIndex = index;
     })
   }
 
   @Builder
   tabBarItem(model: TabTypeModel) {
     Column({space:4}) {
-      Image(this.curentIndex == model.index ? model.selectedImage : model.normalImage)
+      Image(this.currentIndex == model.index ? model.selectedImage : model.normalImage)
         .height(24)
         .objectFit(ImageFit.Contain)
-      Text(model.title).fontColor(this.curentIndex == model.index ? '#1698CE' : '#6B6B6B').fontSize(12)
+      Text(model.title)
+        .fontColor(this.currentIndex == model.index ? '#1698CE' : '#6B6B6B')
+        .fontSize(12)
     }
     .onClick(() => {
-      this.curentIndex = model.index;
+      this.currentIndex = model.index;
       this.tabsController.changeIndex(model.index);
     })
   }

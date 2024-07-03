@@ -23,7 +23,7 @@ export interface RouterOptions {
   url: string
   params?: object
   success?: (() => void)
-  fail?: ((error: Error) => void)
+  error?: ((error: Error) => void)
 }
 
 export class Router {
@@ -81,7 +81,7 @@ export class Router {
       { url: options.url, params: options.params },
       router.RouterMode.Standard)
       .then(options.success)
-      .catch(options.fail)
+      .catch(options.error)
   }
 
   public static push(
@@ -97,8 +97,8 @@ export class Router {
         console.log("路由成功了")
       })
       .catch((error: Error) => {
-        if(options.fail) {
-          options.fail(error)
+        if(options.error) {
+          options.error(error)
         }
         console.log("路由失败了")
       })

@@ -5,7 +5,9 @@ export struct InfoCell {
   @Prop article: Article
 
   onCollect?: (isCollect: boolean, article: Article) => void
+
   onItemClick?: (article: Article) => void
+
   onItemLongClick?: (article: Article, event: GestureEvent) => void
 
   private subTagColors = [
@@ -13,8 +15,8 @@ export struct InfoCell {
     $r('app.color.green500'),
     $r('app.color.orange500'),
     $r('app.color.yellow500'),
-
   ]
+
   private title: string[] = []
 
   aboutToAppear() {
@@ -29,7 +31,7 @@ export struct InfoCell {
     }
   }
 
-  //文章 UI
+  /// 用于首页与公众号
   @Builder
   private articleItemLayout() {
     Column() {
@@ -148,7 +150,7 @@ export struct InfoCell {
     )
   }
 
-  //项目 UI
+  /// 用于项目
   @Builder
   private projectItemLayout() {
     Column() {
@@ -173,10 +175,10 @@ export struct InfoCell {
       Flex({ direction: FlexDirection.Row }) {
         Image(this.article.envelopePic)// 直接加载网络地址，请填写一个具体的网络图片地址
           .alt($r('app.media.pic_image_placeholder'))// 使用alt，在网络图片加载成功前使用占位图
-          .objectFit(ImageFit.Fill)
+          .objectFit(ImageFit.Cover)
           .width(120)
           .height(120)
-          .border({ radius: 24 })
+          .border({ radius: 4 })
         Flex({ direction: FlexDirection.Column }) {
           Text() {
             ForEach(this.title, (value: string, index: number) => {

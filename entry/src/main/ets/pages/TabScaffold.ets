@@ -20,13 +20,13 @@ export struct TabScaffold {
 
   viewModel!: TabScaffoldViewModel
 
-  @State curentIndex: number = 0
+  @State currentIndex: number = 0
 
   private tabsController = new TabsController()
 
   build() {
 
-    Tabs({ barPosition: BarPosition.Start, controller: this.tabsController }) {
+    Tabs({ barPosition: BarPosition.Start, index: this.currentIndex, controller: this.tabsController }) {
       ForEach(this.datas, (item: TabModel) => {
         this.getPage(item)
       })
@@ -37,11 +37,11 @@ export struct TabScaffold {
     .barHeight(44)
     .barMode(BarMode.Scrollable)
     .onChange((index: number) => {
-      this.curentIndex = index
+      this.currentIndex = index
       this.tabsController.changeIndex(index)
     })
     .onGestureSwipe((index, event) => {
-      this.curentIndex = index
+      this.currentIndex = index
       this.tabsController.changeIndex(index)
     })
   }
@@ -51,6 +51,12 @@ export struct TabScaffold {
     TabContent() {
       TabsDetail({contentType: this.contentType, tab: model})
     }.tabBar(StringUtils.replaceHtmlElement(model.name?.toString() ?? ""))
+  }
+
+  @Builder
+  getTabBarText(model: TabModel) {
+    Text(StringUtils.replaceHtmlElement(model.name?.toString() ?? ""))
+      .fontColor("#2096F3")
   }
 
   async aboutToAppear(): Promise<void> {

@@ -202,7 +202,7 @@ struct SearchIcon {
       .height(60)
       .padding(16)
       .onClick(() => {
-        Router.push({url: PagesConstant.Hotkey, success: () => {}, fail: () => {}})
+        Router.push({url: PagesConstant.Hotkey, success: () => {}, error: () => {}})
       })
   }
 }
