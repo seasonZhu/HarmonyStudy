@@ -1,4 +1,4 @@
-import { TreeDetailInfo } from '../model/TreeDetailInfo';
+import { TreeDetailInfo } from '../entity/TreeDetailInfo';
 import { Router } from '../router/Router';
 import { TabsDetail } from './TabsDetail';
 

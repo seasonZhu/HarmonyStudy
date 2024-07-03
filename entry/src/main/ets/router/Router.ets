@@ -1,7 +1,8 @@
 import router from '@ohos.router'
 import AccountManager from '../accountManager/AccountManager'
-import { TreeDetailInfo } from '../model/TreeDetailInfo';
-import { WebLink } from '../model/WebLink';
+import { KeywordInfo } from '../entity/KeywordInfo';
+import { TreeDetailInfo } from '../entity/TreeDetailInfo';
+import { WebLink } from '../entity/WebLink';
 
 export abstract class PagesConstant {
   public static Splash = "pages/Splash"
@@ -9,7 +10,7 @@ export abstract class PagesConstant {
   public static Login = "pages/Login"
   public static Coin = "pages/Coin"
   public static Rank = "pages/Rank"
-  public static Search = "pages/Search"
+  public static SearchResult = "pages/SearchResult"
   public static Collect = "pages/Collect"
   public static Web = "pages/WebPage"
   public static Hotkey = "pages/HotKey"
@@ -39,12 +40,15 @@ export class Router {
     })
   }
 
-  public static toCollectPage() {
-    Router.pushWithLogin(PagesConstant.Collect)
+  public static toSearchResult(keywordInfo: KeywordInfo) {
+    Router.push({
+      url: PagesConstant.SearchResult,
+      params: keywordInfo
+    })
   }
 
-  public static toSearchPage() {
-    Router.push({url: PagesConstant.Search })
+  public static toCollectPage() {
+    Router.pushWithLogin(PagesConstant.Collect)
   }
 
   public static toRankPage() {

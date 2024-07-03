@@ -151,7 +151,6 @@ export struct Home {
         console.log("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
-
     //this.viewModel.loginAction("", "")
   }
 

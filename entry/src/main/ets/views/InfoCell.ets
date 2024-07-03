@@ -1,5 +1,5 @@
 import { Article, ArticleTag } from '../model/Article'
-import { WebLink } from '../model/WebLink'
+import { WebLink } from '../entity/WebLink'
 import { Router } from '../router/Router'
 import { StringUtils } from '../utils/StringUtils'
 

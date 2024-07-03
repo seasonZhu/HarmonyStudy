@@ -1,7 +1,7 @@
 import webview from '@ohos.web.webview'
 import { PagesConstant, Router } from '../router/Router';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
-import { WebLink } from '../model/WebLink';
+import { WebLink } from '../entity/WebLink';
 
 @Entry
 @Component

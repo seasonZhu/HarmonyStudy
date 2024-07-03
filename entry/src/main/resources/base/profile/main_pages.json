@@ -7,6 +7,7 @@
     "pages/Tree",
     "pages/TabScaffold",
     "pages/WebPage",
-    "pages/TreeDetail"
+    "pages/TreeDetail",
+    "pages/SearchResult"
   ]
 }

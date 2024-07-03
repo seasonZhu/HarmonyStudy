@@ -7,6 +7,7 @@ import { BaseResponse } from '../model/BaseResponse';
 import { HotKeyModel } from '../model/HotKeyModel';
 import { ToastUtil } from '@pura/harmony-utils';
 import { Router } from '../router/Router';
+import { KeywordInfo } from '../entity/KeywordInfo';
 
 @Entry
 @Component
@@ -53,7 +54,10 @@ struct HotKey {
                 // 内间距
               .padding(8)
               .onClick(() => {
-                ToastUtil.showToast(`点击了话题 id: ${item.id}`)
+                let keywordInfo: KeywordInfo = {
+                  k: item.name
+                }
+                Router.toSearchResult(keywordInfo)
               })
           })
         }

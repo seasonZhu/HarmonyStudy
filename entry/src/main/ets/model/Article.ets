@@ -1,4 +1,4 @@
-import { WebLink } from '../model/WebLink';
+import { WebLink } from '../entity/WebLink';
 
 export interface Article extends WebLink {
   adminAdd: boolean

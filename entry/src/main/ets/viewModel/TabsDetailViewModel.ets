@@ -6,7 +6,6 @@ import provider from '../HttpRequest/Provider';
 import { ContentType } from '../enum/ContentType';
 import { ScrollActionType } from '../Enum/ScrollActionType';
 import { TabModel } from '../model/TabModel';
-import { ToastManager } from '../utils/ToastManager';
 
 export class TabsDetailViewModel {
 
