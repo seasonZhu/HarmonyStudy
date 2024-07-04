@@ -57,7 +57,7 @@ export struct My {
         Routes.toRank()
         break
       case MyType.myCoin:
-        Routes.toCoin()
+        Routes.toMyCoin()
         break
       case MyType.myCollect:
         Routes.toCollect()

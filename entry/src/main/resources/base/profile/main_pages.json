@@ -10,6 +10,7 @@
     "pages/TreeDetail",
     "pages/SearchResult",
     "pages/Login",
-    "pages/Rank"
+    "pages/Rank",
+    "pages/MyCoin"
   ]
 }

@@ -8,7 +8,7 @@ export abstract class PagesConstant {
   public static Splash = "pages/Splash"
   public static Index = "pages/Index"
   public static Login = "pages/Login"
-  public static Coin = "pages/Coin"
+  public static MyCoin = "pages/MyCoin"
   public static Rank = "pages/Rank"
   public static SearchResult = "pages/SearchResult"
   public static Collect = "pages/Collect"
@@ -56,8 +56,8 @@ export abstract class Routes {
     Routes.pushWithLogin(PagesConstant.Collect)
   }
 
-  public static toCoin() {
-    Routes.pushWithLogin(PagesConstant.Coin)
+  public static toMyCoin() {
+    Routes.pushWithLogin(PagesConstant.MyCoin)
   }
 
   public static toSetting() {

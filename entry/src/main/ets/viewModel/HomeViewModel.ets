@@ -31,10 +31,6 @@ export class HomeViewModel {
     return provider.get<BaseResponse<PageModel<Article>>, AxiosResponse<BaseResponse<PageModel<Article>>>>(api)
   }
 
-  getHotKey = (): Promise<AxiosResponse<BaseResponse<HotKeyModel[]>>> => {
-    return provider.get<BaseResponse<HotKeyModel[]>, AxiosResponse<BaseResponse<HotKeyModel[]>>>('hotkey/json')
-  }
-
   getMyCoinList = (page: number): Promise<AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>> => {
     let pageString = page.toString()
     let api = `lg/coin/list/${pageString}/json`
@@ -61,8 +57,6 @@ export class HomeViewModel {
         console.info("loginModel" + response.data.data)
         response.data.data.password = password
         AccountManager.shared().loginModel = response.data.data
-        this.getMyCoinList(1)
-        this.getHotKey()
       })
       .catch((error: AxiosError)=> {
         // 处理错误情况

@@ -3,25 +3,28 @@ import { AxiosError } from '@ohos/axios';
 import { PullToRefresh } from '@ohos/pulltorefresh'
 import { BaseResponse } from '../model/BaseResponse';
 import { BaseListDataSource } from '../model/BaseListDataSource';
-import { RankModel } from '../model/RankModel';
+import { MyCoinModel } from '../model/MyCoinModel';
 import { PageModel } from '../model/PageModel';
 import { ScrollActionType } from '../enum/ScrollActionType';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { RankViewModel } from '../viewModel/RankViewModel';
+import { Routes } from '../routes/Routes';
+import { KeywordInfo } from '../entity/KeywordInfo';
+import { MyCoinViewModel } from '../viewModel/MyCoinViewModel';
 
 @Entry
 @Component
-struct Rank {
-  @State listDataSource: BaseListDataSource<RankModel> = new BaseListDataSource<RankModel>()
+struct MyCoin {
+  @State listDataSource: BaseListDataSource<MyCoinModel> = new BaseListDataSource<MyCoinModel>()
 
-  @State listData: RankModel[] = this.listDataSource.originData
+  @State listData: MyCoinModel[] = this.listDataSource.originData
 
   @State status: ViewStatus = ViewStatus.loading
 
   private scroller = new Scroller()
 
-  private viewModel = new RankViewModel()
+  private viewModel = new MyCoinViewModel()
 
   build() {
     Navigation() {
@@ -57,15 +60,15 @@ struct Rank {
       },
       // 可选项，下拉刷新回调
       onRefresh: async () => {
-        let result: AxiosResponse<BaseResponse<PageModel<RankModel>>> = await this.viewModel.getRankList(ScrollActionType.refresh)
+        let result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>> = await this.viewModel.getMyCoinList(ScrollActionType.refresh)
         this.processResponseData(result, ScrollActionType.refresh)
         return '刷新成功'
       },
       // 可选项，上拉加载更多回调
       onLoadMore: () => {
         return new Promise<string>((resolve, reject) => {
-          this.viewModel.getRankList(ScrollActionType.loadMore)
-            .then((result: AxiosResponse<BaseResponse<PageModel<RankModel>>>) => {
+          this.viewModel.getMyCoinList(ScrollActionType.loadMore)
+            .then((result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>) => {
               this.processResponseData(result, ScrollActionType.loadMore)
               resolve('上拉完成');
             })
@@ -80,13 +83,13 @@ struct Rank {
   @Builder
   private getListView() {
     List({ space: 20, scroller: this.scroller }) {
-      LazyForEach(this.listDataSource, (item: RankModel) => {
+      LazyForEach(this.listDataSource, (item: MyCoinModel) => {
         ListItem() {
           Column() {
-            Text(item.username)
+            Text(item.desc)
               .padding({top: 8, left: 16})
 
-            Text(`排名：${item.rank} 等级：${item.level} 积分：${item.coinCount}`)
+            Text(`获取积分原因：${item.reason}`)
               .padding({top: 8, left: 16})
           }
           .alignItems(HorizontalAlign.Start)
@@ -103,8 +106,8 @@ struct Rank {
   async aboutToAppear(): Promise<void> {
     console.log("重写该方法，改为异步，还是会走这里")
 
-    this.viewModel.getRankList(ScrollActionType.refresh)
-      .then((result: AxiosResponse<BaseResponse<PageModel<RankModel>>>) => {
+    this.viewModel.getMyCoinList(ScrollActionType.refresh)
+      .then((result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>) => {
         this.processResponseData(result, ScrollActionType.refresh)
       })
       .catch((error: AxiosError) => {
@@ -114,9 +117,9 @@ struct Rank {
 
   }
 
-  processResponseData(result: AxiosResponse<BaseResponse<PageModel<RankModel>>>, type: ScrollActionType) {
+  processResponseData(result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>, type: ScrollActionType) {
 
-    let response = result.data as BaseResponse<PageModel<RankModel>>
+    let response = result.data as BaseResponse<PageModel<MyCoinModel>>
 
     if (type == ScrollActionType.refresh) {
       this.listDataSource.removeAll()
