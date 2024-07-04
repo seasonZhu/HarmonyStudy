@@ -15,6 +15,7 @@ export abstract class PagesConstant {
   public static Web = "pages/WebPage"
   public static Hotkey = "pages/HotKey"
   public static TreeDetail = "pages/TreeDetail"
+  public static Setting = "pages/Setting"
 }
 
 export interface RouterOptions {
@@ -59,6 +60,9 @@ export abstract class Routes {
     Routes.pushWithLogin(PagesConstant.Coin)
   }
 
+  public static toSetting() {
+    Routes.pushWithLogin(PagesConstant.Setting)
+  }
 
   public static toLogin(showTips: boolean = true) {
     Routes.push({url: PagesConstant.Login,

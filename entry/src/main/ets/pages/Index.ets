@@ -1,4 +1,4 @@
-import { TabType, TabTypeModel, TabTypeAllCases, getTabModel, } from '../enum/TabType';
+import { TabType, TabTypeModel, allTabTypeCases, getTabModel, } from '../enum/TabType';
 import { Home } from './Home';
 import { My } from './My';
 import { TabScaffold } from './TabScaffold';
@@ -15,7 +15,7 @@ struct Index {
   
   build() {
     Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
-      ForEach(TabTypeAllCases, (type: TabType) => {
+      ForEach(allTabTypeCases, (type: TabType) => {
         this.getPage(type)
       })
     }

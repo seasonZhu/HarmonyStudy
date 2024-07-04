@@ -9,7 +9,7 @@ export enum TabType {
   my,
 }
 
-export let TabTypeAllCases = [TabType.home, TabType.project, TabType.publicNumber, TabType.tree, TabType.my]
+export let allTabTypeCases = [TabType.home, TabType.project, TabType.publicNumber, TabType.tree, TabType.my]
 
 export interface TabTypeModel {
   title: string

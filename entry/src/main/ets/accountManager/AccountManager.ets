@@ -16,5 +16,7 @@ export default class AccountManager {
     return AccountManager.instance
   }
 
-
+  isLogin(): boolean {
+    return AccountManager.shared().loginModel != null
+  }
 }

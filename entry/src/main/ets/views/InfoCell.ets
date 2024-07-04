@@ -210,7 +210,7 @@ export struct InfoCell {
             .constraintSize({
               maxWidth: '100%'
             })
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .textOverflow({ overflow: TextOverflow.Clip })
         }
         .layoutWeight(1)
         .height(120)

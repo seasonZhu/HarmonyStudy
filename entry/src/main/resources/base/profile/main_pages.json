@@ -8,6 +8,8 @@
     "pages/TabScaffold",
     "pages/WebPage",
     "pages/TreeDetail",
-    "pages/SearchResult"
+    "pages/SearchResult",
+    "pages/Login",
+    "pages/Rank"
   ]
 }
