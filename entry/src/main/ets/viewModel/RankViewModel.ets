@@ -4,7 +4,6 @@ import httpClient from '../HttpRequest/Provider';
 import { ScrollActionType } from '../Enum/ScrollActionType';
 import { RankModel } from '../model/RankModel';
 import { PageModel } from '../model/PageModel';
-import { KeywordInfo } from '../entity/KeywordInfo';
 
 export class RankViewModel {
   private pageNum = 1

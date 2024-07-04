@@ -12,6 +12,7 @@
     "pages/Login",
     "pages/Rank",
     "pages/MyCoin",
-    "pages/MyCollect"
+    "pages/MyCollect",
+    "pages/Setting"
   ]
 }

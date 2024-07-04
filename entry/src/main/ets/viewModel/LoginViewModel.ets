@@ -1,0 +1,33 @@
+import { AxiosResponse } from '@ohos/axios';
+import { AxiosError } from '@ohos/axios';
+import { BaseResponse } from '../model/BaseResponse';
+import { LoginModel } from '../model/LoginModel';
+import AccountManager from '../AccountManager/AccountManager';
+import provider from '../HttpRequest/Provider';
+import { LoginOrRegisterInfo } from '../entity/LoginOrRegisterInfo';
+
+export class LoginViewModel {
+  public login(info: LoginOrRegisterInfo): Promise<boolean> {
+    let api = 'user/login?username=' + info.username + '&password=' + info.password
+    return new Promise<boolean>((resolve, reject) => {
+      provider.post<BaseResponse<LoginModel>, AxiosResponse<BaseResponse<LoginModel>>>(api)
+        .then((response: AxiosResponse<BaseResponse<LoginModel>>)=> {
+          // 处理成功情况
+          if (response.data.errorCode == 0) {
+            /// errorCode为0，业务上的登录成功
+            console.info("loginModel" + response.data.data)
+            response.data.data.password = info.password
+            AccountManager.shared().loginModel = response.data.data
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        })
+        .catch((error: AxiosError)=> {
+          // 处理错误情况
+          console.info(JSON.stringify(error))
+          resolve(false)
+        })
+    });
+  }
+}

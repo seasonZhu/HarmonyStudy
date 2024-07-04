@@ -4,6 +4,10 @@ import { My } from './My';
 import { TabScaffold } from './TabScaffold';
 import { Tree } from './Tree';
 import { ContentType } from '../enum/ContentType';
+import { IndexViewModel } from '../viewModel/IndexViewModel';
+import { UserInfoModel } from '../model/UserInfoModel';
+import { BaseResponse } from '../model/BaseResponse';
+import { AxiosResponse } from '@ohos/axios';
 
 @Preview
 @Entry
@@ -11,7 +15,11 @@ import { ContentType } from '../enum/ContentType';
 struct Index {
   @State currentIndex: number = 0
 
+  @Provide userInfo: UserInfoModel = { }
+
   private tabsController = new TabsController();
+
+  private viewModel = new IndexViewModel()
   
   build() {
     Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
@@ -72,6 +80,14 @@ struct Index {
         My()
       }
       .tabBar(this.tabBarItem(getTabModel(type)))
+    }
+  }
+
+  async aboutToAppear(): Promise<void> {
+    let result = await this.viewModel.login({username: "13437156081", password: "z19871031"})
+    if (result) {
+      let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
+      this.userInfo = response.data.data
     }
   }
 }

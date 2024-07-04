@@ -2,6 +2,9 @@ import AccountManager from '../accountManager/AccountManager';
 
 @Component
 export struct MyHeader {
+
+  @Prop format: string
+
   build() {
     Row() {
       Column() {
@@ -12,7 +15,7 @@ export struct MyHeader {
           .borderColor(Color.Grey)
           .borderRadius(30)
 
-        Text("等级 --  排名 --  积分 --")
+        Text(this.format)
           .fontSize(17)
           .textAlign(TextAlign.Center)
           .padding({ top: 16 })

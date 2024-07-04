@@ -1,5 +1,3 @@
-import { BaseViewModel } from './BaseViewModel';
-import { BaseListDataSource } from '../model/BaseListDataSource';
 import { AxiosResponse } from '@ohos/axios';
 import { AxiosError } from '@ohos/axios';
 import { Banner } from '../model/Banner'
@@ -10,8 +8,6 @@ import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
 import { ScrollActionType } from '../Enum/ScrollActionType';
 import provider from '../HttpRequest/Provider';
-import { MyCoinModel } from '../model/MyCoinModel';
-import { HotKeyModel } from '../model/HotKeyModel';
 
 export class HomeViewModel {
 
@@ -29,12 +25,6 @@ export class HomeViewModel {
     let pageString = page.toString()
     let api = 'article/list/' + pageString + '/json'
     return provider.get<BaseResponse<PageModel<Article>>, AxiosResponse<BaseResponse<PageModel<Article>>>>(api)
-  }
-
-  getMyCoinList = (page: number): Promise<AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>> => {
-    let pageString = page.toString()
-    let api = `lg/coin/list/${pageString}/json`
-    return provider.get<BaseResponse<PageModel<MyCoinModel>>, AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>>(api)
   }
 
   /// 这个地方的返回值写了很久，另外大写的Object与object是两个东西
