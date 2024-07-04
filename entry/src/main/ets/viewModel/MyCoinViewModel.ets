@@ -4,7 +4,6 @@ import httpClient from '../HttpRequest/Provider';
 import { ScrollActionType } from '../Enum/ScrollActionType';
 import { MyCoinModel } from '../model/MyCoinModel';
 import { PageModel } from '../model/PageModel';
-import { KeywordInfo } from '../entity/KeywordInfo';
 
 export class MyCoinViewModel {
   private pageNum = 1

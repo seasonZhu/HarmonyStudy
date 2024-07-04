@@ -112,6 +112,7 @@ export struct InfoCell {
                   this.onCollect(false, this.article)
                 }
               })
+              .visibility(Visibility.Hidden)
           } else {
             Image($r('app.media.ic_uncollect'))
               .width(26)
@@ -125,6 +126,7 @@ export struct InfoCell {
                   this.onCollect(true, this.article)
                 }
               })
+              .visibility(Visibility.Hidden)
           }
         }
       }
@@ -250,6 +252,7 @@ export struct InfoCell {
                   this.onCollect(false, this.article)
                 }
               })
+              .visibility(Visibility.Hidden)
           } else {
             Image($r('app.media.ic_uncollect'))
               .width(26)
@@ -263,6 +266,7 @@ export struct InfoCell {
                   this.onCollect(true, this.article)
                 }
               })
+              .visibility(Visibility.Hidden)
           }
         }
       }

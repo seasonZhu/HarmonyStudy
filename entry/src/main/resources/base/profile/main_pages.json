@@ -11,6 +11,7 @@
     "pages/SearchResult",
     "pages/Login",
     "pages/Rank",
-    "pages/MyCoin"
+    "pages/MyCoin",
+    "pages/MyCollect"
   ]
 }

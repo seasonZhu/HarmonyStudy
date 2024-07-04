@@ -28,7 +28,7 @@ export class BaseListDataSource<T> implements IDataSource {
     }
     let oldIndex = this.originData.length - 1
     data.forEach((item) => {
-      data.push(item)
+      this.originData.push(item)
     })
 
     if (withNotify) {

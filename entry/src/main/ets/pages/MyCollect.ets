@@ -3,25 +3,27 @@ import { AxiosError } from '@ohos/axios';
 import { PullToRefresh } from '@ohos/pulltorefresh'
 import { BaseResponse } from '../model/BaseResponse';
 import { BaseListDataSource } from '../model/BaseListDataSource';
-import { MyCoinModel } from '../model/MyCoinModel';
+import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
 import { ScrollActionType } from '../enum/ScrollActionType';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
-import { MyCoinViewModel } from '../viewModel/MyCoinViewModel';
+import { MyCollectViewModel } from '../viewModel/MyCollectViewModel';
+import { InfoCell } from '../views/InfoCell';
+import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil';
 
 @Entry
 @Component
-struct MyCoin {
-  @State listDataSource: BaseListDataSource<MyCoinModel> = new BaseListDataSource<MyCoinModel>()
+struct MyCollect {
+  @State listDataSource: BaseListDataSource<Article> = new BaseListDataSource<Article>()
 
-  @State listData: MyCoinModel[] = this.listDataSource.originData
+  @State listData: Article[] = this.listDataSource.originData
 
   @State status: ViewStatus = ViewStatus.loading
 
   private scroller = new Scroller()
 
-  private viewModel = new MyCoinViewModel()
+  private viewModel = new MyCollectViewModel()
 
   build() {
     Navigation() {
@@ -36,7 +38,7 @@ struct MyCoin {
         },
       })
     }
-    .title("我的积分")
+    .title("我的收藏")
     .mode(NavigationMode.Auto)
     .titleMode(NavigationTitleMode.Mini)
     .height('100%')
@@ -57,15 +59,15 @@ struct MyCoin {
       },
       // 可选项，下拉刷新回调
       onRefresh: async () => {
-        let result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>> = await this.viewModel.getMyCoinList(ScrollActionType.refresh)
+        let result: AxiosResponse<BaseResponse<PageModel<Article>>> = await this.viewModel.getMyCollectList(ScrollActionType.refresh)
         this.processResponseData(result, ScrollActionType.refresh)
         return '刷新成功'
       },
       // 可选项，上拉加载更多回调
       onLoadMore: () => {
         return new Promise<string>((resolve, reject) => {
-          this.viewModel.getMyCoinList(ScrollActionType.loadMore)
-            .then((result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>) => {
+          this.viewModel.getMyCollectList(ScrollActionType.loadMore)
+            .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
               this.processResponseData(result, ScrollActionType.loadMore)
               resolve('上拉完成');
             })
@@ -80,19 +82,39 @@ struct MyCoin {
   @Builder
   private getListView() {
     List({ space: 20, scroller: this.scroller }) {
-      LazyForEach(this.listDataSource, (item: MyCoinModel) => {
+      LazyForEach(this.listDataSource, (item: Article) => {
         ListItem() {
-          Column() {
-            Text(item.desc)
-              .padding({top: 8, left: 16})
+          InfoCell({
+            article: item,
+            onItemClick: (article: Article) => {
+              console.log("点击了cell " + article.link)
+            },
+            onCollect: (isCollect: boolean, article: Article) => {
 
-            Text(`获取积分原因：${item.reason}`)
-              .padding({top: 8, left: 16})
-          }
-          .alignItems(HorizontalAlign.Start)
+            }
+          })
         }
-        .height(66)
-      })
+        .transition({ type: TransitionType.Delete, opacity: 0 })
+        .swipeAction({
+          end: {
+            builder: () => { this.itemEnd() },
+            onAction: () => {
+              animateTo({ duration: 1000 }, () => {
+                /// 这里做网络请求，然后再进行数组的删除
+                let index = this.listDataSource.originData.indexOf(item)
+                this.listDataSource.remove(index)
+              })
+            },
+            actionAreaDistance: 66,
+            onEnterActionArea: () => {
+
+            },
+            onExitActionArea: () => {
+
+            }
+          }
+        })
+      }, (item: Article, index) => item.id.toString())
     }
     .width("100%")
     .backgroundColor('#FFFFFF')
@@ -100,30 +122,42 @@ struct MyCoin {
     .edgeEffect(EdgeEffect.None) // 必须设置列表为滑动到边缘无效果
   }
 
+  @Builder
+  itemEnd() {
+    Row() {
+      Button("取消收藏")
+        .margin("4vp")
+        .backgroundColor(Color.Red)
+        .onClick(() => {
+          ToastUtil.showToast("点击了取消收藏")
+        })
+    }
+    .padding("4vp")
+    .justifyContent(FlexAlign.SpaceEvenly)
+  }
+
   async aboutToAppear(): Promise<void> {
     console.log("重写该方法，改为异步，还是会走这里")
 
-    this.viewModel.getMyCoinList(ScrollActionType.refresh)
-      .then((result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>) => {
+    this.viewModel.getMyCollectList(ScrollActionType.refresh)
+      .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
         this.processResponseData(result, ScrollActionType.refresh)
       })
       .catch((error: AxiosError) => {
         console.log("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
-
   }
 
-  processResponseData(result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>, type: ScrollActionType) {
+  processResponseData(result: AxiosResponse<BaseResponse<PageModel<Article>>>, type: ScrollActionType) {
 
-    let response = result.data as BaseResponse<PageModel<MyCoinModel>>
+    let response = result.data as BaseResponse<PageModel<Article>>
 
     if (type == ScrollActionType.refresh) {
+
       this.listDataSource.removeAll()
 
-      response.data.datas.forEach((item) => {
-        this.listDataSource.addData(item)
-      })
+      this.listDataSource.addListData(response.data.datas)
 
       if (this.listDataSource.originData.length == 0) {
         this.status = ViewStatus.empty
@@ -132,11 +166,9 @@ struct MyCoin {
       }
 
     } else {
-      response.data.datas.forEach((item) => {
-        this.listDataSource.addData(item)
-      })
-
       this.status = ViewStatus.success
+
+      this.listDataSource.addListData(response.data.datas)
     }
   }
 }

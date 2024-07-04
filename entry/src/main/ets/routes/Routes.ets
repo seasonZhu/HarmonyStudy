@@ -11,7 +11,7 @@ export abstract class PagesConstant {
   public static MyCoin = "pages/MyCoin"
   public static Rank = "pages/Rank"
   public static SearchResult = "pages/SearchResult"
-  public static Collect = "pages/Collect"
+  public static MyCollect = "pages/MyCollect"
   public static Web = "pages/WebPage"
   public static Hotkey = "pages/HotKey"
   public static TreeDetail = "pages/TreeDetail"
@@ -53,7 +53,7 @@ export abstract class Routes {
   }
 
   public static toCollect() {
-    Routes.pushWithLogin(PagesConstant.Collect)
+    Routes.pushWithLogin(PagesConstant.MyCollect)
   }
 
   public static toMyCoin() {

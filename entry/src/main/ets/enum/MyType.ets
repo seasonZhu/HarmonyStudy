@@ -19,7 +19,7 @@ export function getPathByMyType(type: MyType): PagesConstant {
     case MyType.myCoin:
       return PagesConstant.MyCoin
     case MyType.myCollect:
-      return PagesConstant.Collect
+      return PagesConstant.MyCollect
     case MyType.setting:
       return PagesConstant.Setting
   }
