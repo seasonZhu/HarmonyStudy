@@ -2,8 +2,6 @@ import AccountManager from '../accountManager/AccountManager';
 
 @Component
 export struct MyHeader {
-  @State message: string = 'Hello World';
-
   build() {
     Row() {
       Column() {

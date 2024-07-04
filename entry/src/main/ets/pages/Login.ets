@@ -1,7 +1,7 @@
 @Entry
 @Component
 struct Login {
-  @State message: string = 'Hello World';
+  @State message: string = '登录页面';
 
   build() {
     Row() {

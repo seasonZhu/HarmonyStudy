@@ -1,7 +1,7 @@
 @Entry
 @Component
 struct Rank {
-  @State message: string = 'Hello World';
+  @State message: string = '积分排名页面';
 
   build() {
     Row() {

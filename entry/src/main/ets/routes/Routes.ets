@@ -75,10 +75,10 @@ export abstract class Routes {
   }
 
   private static pushWithLogin(url: string, params?: object, showTips: boolean = true,) {
-    if (AccountManager.shared().loginModel == null) {
-      Routes.toLogin(showTips)
-    } else {
+    if (AccountManager.shared().isLogin()) {
       Routes.push({url: url, params: params})
+    } else {
+      Routes.toLogin(showTips)
     }
   }
 

@@ -101,7 +101,7 @@ struct SearchResult {
     }
     .width("100%")
     .backgroundColor('#FFFFFF')
-    .divider({ strokeWidth: 0.5, color: "#2F2F2F" })
+    .divider({ strokeWidth: 0.25, color: "#2F2F2F" })
     .edgeEffect(EdgeEffect.None) // 必须设置列表为滑动到边缘无效果
   }
 
