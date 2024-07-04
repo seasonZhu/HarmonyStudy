@@ -13,7 +13,7 @@ import provider from '../httpRequest/Provider';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
-import { PagesConstant, Router } from '../router/Router';
+import { PagesConstant, Routes } from '../routes/Routes';
 import { ViewStatus } from '../enum/ViewStatus';
 
 @Entry
@@ -201,7 +201,7 @@ struct SearchIcon {
       .height(60)
       .padding(16)
       .onClick(() => {
-        Router.push({url: PagesConstant.Hotkey, success: () => {}, error: () => {}})
+        Routes.push({url: PagesConstant.Hotkey, success: () => {}, error: () => {}})
       })
   }
 }

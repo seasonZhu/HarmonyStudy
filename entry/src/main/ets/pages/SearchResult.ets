@@ -10,7 +10,7 @@ import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { SearchResultViewModel } from '../viewModel/SearchResultViewModel';
-import { Router } from '../router/Router';
+import { Routes } from '../routes/Routes';
 import { KeywordInfo } from '../entity/KeywordInfo';
 
 @Entry
@@ -26,7 +26,7 @@ struct SearchResult {
 
   private viewModel = new SearchResultViewModel()
 
-  private keywordInfo = (Router.getParams() as KeywordInfo)
+  private keywordInfo = (Routes.getParams() as KeywordInfo)
 
   build() {
       Navigation() {

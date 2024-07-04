@@ -1,6 +1,6 @@
 import { ContentType } from '../enum/ContentType'
 import { TabModel } from '../model/TabModel'
-import { Router } from '../router/Router'
+import { Routes } from '../routes/Routes'
 
 @Component
 export struct TreeCell {
@@ -27,7 +27,7 @@ export struct TreeCell {
                 // 内间距
               .padding(8)
               .onClick(() => {
-                Router.toTreeDetail({tab: item, contentType: ContentType.tree})
+                Routes.toTreeDetail({tab: item, contentType: ContentType.tree})
               })
           })
         }

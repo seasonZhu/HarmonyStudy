@@ -25,43 +25,43 @@ export interface RouterOptions {
   finally?: (() => void)
 }
 
-export class Router {
+export abstract class Routes {
   public static toWebPage(webLink: WebLink) {
-    Router.push({
+    Routes.push({
       url: PagesConstant.Web,
       params: webLink
     })
   }
 
   public static toTreeDetail(treeDetailInfo: TreeDetailInfo) {
-    Router.push({
+    Routes.push({
       url: PagesConstant.TreeDetail,
       params: treeDetailInfo
     })
   }
 
   public static toSearchResult(keywordInfo: KeywordInfo) {
-    Router.push({
+    Routes.push({
       url: PagesConstant.SearchResult,
       params: keywordInfo
     })
   }
 
-  public static toCollectPage() {
-    Router.pushWithLogin(PagesConstant.Collect)
+  public static toRank() {
+    Routes.push({ url: PagesConstant.Rank })
   }
 
-  public static toRankPage() {
-    Router.pushWithLogin(PagesConstant.Rank)
+  public static toCollect() {
+    Routes.pushWithLogin(PagesConstant.Collect)
   }
 
-  public static toCoinPage() {
-    Router.pushWithLogin(PagesConstant.Coin)
+  public static toCoin() {
+    Routes.pushWithLogin(PagesConstant.Coin)
   }
 
 
-  public static toLoginPage(showTips: boolean = true) {
-    Router.push({url: PagesConstant.Login,
+  public static toLogin(showTips: boolean = true) {
+    Routes.push({url: PagesConstant.Login,
       success: () => {
         if (showTips) {
 
@@ -72,9 +72,9 @@ export class Router {
 
   private static pushWithLogin(url: string, params?: object, showTips: boolean = true,) {
     if (AccountManager.shared().loginModel == null) {
-      Router.toLoginPage(showTips)
+      Routes.toLogin(showTips)
     } else {
-      Router.push({url: url, params: params})
+      Routes.push({url: url, params: params})
     }
   }
 
@@ -111,11 +111,11 @@ export class Router {
       })
   }
 
-  public static back(url?: string, params?: object) {
-    router.back({ url: url, params: params })
+  public static back(options?: RouterOptions) {
+    router.back({ url: options?.url, params: options?.params })
   }
 
-  public static getParams(): object | null {
+  public static getParams(): Object {
     return router.getParams()
   }
 }

@@ -1,6 +1,6 @@
 import { Article, ArticleTag } from '../model/Article'
 import { WebLink } from '../entity/WebLink'
-import { Router } from '../router/Router'
+import { Routes } from '../routes/Routes'
 import { StringUtils } from '../utils/StringUtils'
 
 @Component
@@ -22,21 +22,25 @@ export struct InfoCell {
 
   private title: string[] = []
 
+  private isProject(): boolean {
+    return this.article.envelopePic !== ""
+  }
+
   aboutToAppear() {
     this.title = this.splitHighlightedText(this.article.title)
   }
 
   build() {
     if (this.isProject()) {
-      this.projectItemLayout()
+      this.projectCell()
     } else {
-      this.articleItemLayout()
+      this.articleCell()
     }
   }
 
   /// 用于首页与公众号
   @Builder
-  private articleItemLayout() {
+  private articleCell() {
     Column() {
       //作者和TAG、时间
       Row() {
@@ -78,12 +82,6 @@ export struct InfoCell {
       .margin({
         top: 12,
         bottom: 12,
-      })
-      .onClick(() => {
-        if (this.onItemClick) {
-          this.onItemClick(this.article)
-        }
-        Router.toWebPage((this.article as WebLink))
       })
 
       //底部TAG以及like
@@ -138,7 +136,7 @@ export struct InfoCell {
       if (this.onItemClick) {
         this.onItemClick(this.article)
       }
-      Router.toWebPage((this.article as WebLink))
+      Routes.toWebPage((this.article as WebLink))
     })
     .gesture(
       LongPressGesture({ repeat: false })
@@ -155,7 +153,7 @@ export struct InfoCell {
 
   /// 用于项目
   @Builder
-  private projectItemLayout() {
+  private projectCell() {
     Column() {
       //作者和TAG、时间
       Row() {
@@ -179,9 +177,10 @@ export struct InfoCell {
         Image(this.article.envelopePic)// 直接加载网络地址，请填写一个具体的网络图片地址
           .alt($r('app.media.pic_image_placeholder'))// 使用alt，在网络图片加载成功前使用占位图
           .objectFit(ImageFit.Cover)
-          .width(120)
+          .width("20%")
           .height(120)
           .border({ radius: 4 })
+
         Flex({ direction: FlexDirection.Column }) {
           Text() {
             ForEach(this.title, (value: string, index: number) => {
@@ -200,13 +199,6 @@ export struct InfoCell {
           .width('100%')
           .fontSize(18)
           .textAlign(TextAlign.Start)
-          .onClick(() => {
-            if (this.onItemClick) {
-              this.onItemClick(this.article)
-            }
-            Router.toWebPage((this.article as WebLink))
-          })
-
 
           Text(this.article.desc)
             .width('100%')
@@ -219,7 +211,6 @@ export struct InfoCell {
               maxWidth: '100%'
             })
             .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .maxLines(6)
         }
         .layoutWeight(1)
         .height(120)
@@ -282,7 +273,7 @@ export struct InfoCell {
       if (this.onItemClick) {
         this.onItemClick(this.article)
       }
-      Router.toWebPage((this.article as WebLink))
+      Routes.toWebPage((this.article as WebLink))
     })
     .gesture(
       LongPressGesture({ repeat: false })
@@ -305,11 +296,6 @@ export struct InfoCell {
     } else {
       return "佚名"
     }
-  }
-
-  //判断数据会否是项目（根据是否有图片判断）
-  private isProject(): boolean {
-    return this.article.envelopePic !== ""
   }
 
   @Builder

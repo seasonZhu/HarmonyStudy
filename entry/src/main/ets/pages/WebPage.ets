@@ -1,5 +1,5 @@
 import webview from '@ohos.web.webview'
-import { PagesConstant, Router } from '../router/Router';
+import { PagesConstant, Routes } from '../routes/Routes';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { WebLink } from '../entity/WebLink';
 
@@ -14,7 +14,7 @@ struct WebPage {
 
   @State private title: string = '加载中...'
 
-  private webLink = Router.getParams() as WebLink
+  private webLink = Routes.getParams() as WebLink
 
   private loadingDialogController: CustomDialogController = new CustomDialogController({
     builder: LoadingDialog({text: "加载中..."}),
@@ -94,11 +94,24 @@ struct WebPage {
       .layoutWeight(1)
       .alignContent(Alignment.Top)
     }
-    .title(this.title)
+    .title(this.getTitle())
     .mode(NavigationMode.Auto)
     .titleMode(NavigationTitleMode.Mini)
     .height('100%')
     .width('100%')
+  }
+
+  @Builder
+  getTitle() {
+    Row() {
+      Column() {
+        Text(this.title)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.MARQUEE })
+      }
+      .width('100%')
+    }
+    .height('100%')
   }
 
   aboutToDisappear(): void {
