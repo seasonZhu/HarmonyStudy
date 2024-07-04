@@ -9,9 +9,8 @@ export interface UserInfoModel {
 
 export function proccessUserInfo(model: UserInfoModel): string {
   if (model.rank && model.level && model.coinCount) {
-    return `排名：${model.rank} 等级：${model.level} 积分：${model.coinCount}`
+    return model.username + `\n` + "排名：" + model.rank + "   " + "等级：" + model.level + "   " + "积分：" + model.coinCount
   } else {
-    return `排名：--  等级：--  积分：--`
+    return "排名：--  等级：--  积分：--"
   }
-
 }

@@ -5,7 +5,7 @@ import { TabScaffold } from './TabScaffold';
 import { Tree } from './Tree';
 import { ContentType } from '../enum/ContentType';
 import { IndexViewModel } from '../viewModel/IndexViewModel';
-import { UserInfoModel } from '../model/UserInfoModel';
+import { proccessUserInfo, UserInfoModel } from '../model/UserInfoModel';
 import { BaseResponse } from '../model/BaseResponse';
 import { AxiosResponse } from '@ohos/axios';
 
@@ -15,7 +15,7 @@ import { AxiosResponse } from '@ohos/axios';
 struct Index {
   @State currentIndex: number = 0
 
-  @Provide userInfo: UserInfoModel = { }
+  @State userInfoFormat: string = "排名：-- 等级：-- 积分：--"
 
   private tabsController = new TabsController();
 
@@ -77,7 +77,7 @@ struct Index {
       .tabBar(this.tabBarItem(getTabModel(type)))
     } else {
       TabContent() {
-        My()
+        My({userInfoFormat: this.userInfoFormat })
       }
       .tabBar(this.tabBarItem(getTabModel(type)))
     }
@@ -87,7 +87,7 @@ struct Index {
     let result = await this.viewModel.login({username: "13437156081", password: "z19871031"})
     if (result) {
       let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-      this.userInfo = response.data.data
+      this.userInfoFormat = proccessUserInfo(response.data.data)
     }
   }
 }

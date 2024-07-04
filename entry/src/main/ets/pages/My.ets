@@ -9,12 +9,7 @@ import { MyHeader } from '../views/MyHeader'
 @Component
 export struct My {
 
-  @Consume
-  @Watch("update")
-  userInfo: UserInfoModel
-
-  @State format: string = `排名：-- 等级：-- 积分：--`
-
+  @Prop userInfoFormat: string
 
   build() {
     Navigation() {
@@ -22,7 +17,7 @@ export struct My {
         ForEach(allTabTypeCases, (type: MyType) => {
           ListItem() {
             if (type == MyType.header) {
-              MyHeader({format: this.format})
+              MyHeader({userInfoFormat: this.userInfoFormat})
                 .height(150)
                 .width('100%')
             } else {
@@ -76,15 +71,5 @@ export struct My {
         Routes.toSetting()
         break
     }
-  }
-
-  update() {
-    let message = proccessUserInfo(this.userInfo)
-    ToastUtil.showToast(message)
-    this.format = message
-
-    setTimeout(() => {
-      this.format = "1323y47834yr783y4"
-    }, 10000)
   }
 }

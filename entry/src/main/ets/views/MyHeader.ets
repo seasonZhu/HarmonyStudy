@@ -3,7 +3,7 @@ import AccountManager from '../accountManager/AccountManager';
 @Component
 export struct MyHeader {
 
-  @Prop format: string
+  @Prop userInfoFormat: string
 
   build() {
     Row() {
@@ -15,7 +15,7 @@ export struct MyHeader {
           .borderColor(Color.Grey)
           .borderRadius(30)
 
-        Text(this.format)
+        Text(this.userInfoFormat)
           .fontSize(17)
           .textAlign(TextAlign.Center)
           .padding({ top: 16 })
