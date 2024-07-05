@@ -5,6 +5,7 @@ import { LoginModel } from '../model/LoginModel';
 import AccountManager from '../AccountManager/AccountManager';
 import provider from '../HttpRequest/Provider';
 import { LoginOrRegisterInfo } from '../entity/LoginOrRegisterInfo';
+import { PreferencesUtil } from '@pura/harmony-utils';
 
 export class LoginViewModel {
   public login(info: LoginOrRegisterInfo): Promise<boolean> {
@@ -18,6 +19,7 @@ export class LoginViewModel {
             console.info("loginModel" + response.data.data)
             response.data.data.password = info.password
             AccountManager.shared().loginModel = response.data.data
+            this.saveLoginOrRegisterInfo(info)
             resolve(true)
           } else {
             resolve(false)
@@ -41,6 +43,7 @@ export class LoginViewModel {
             console.info("loginModel" + response.data.data)
             response.data.data.password = info.password
             AccountManager.shared().loginModel = response.data.data
+            this.saveLoginOrRegisterInfo(info)
             resolve(true)
           } else {
             resolve(false)
@@ -72,5 +75,10 @@ export class LoginViewModel {
           resolve(false)
         })
     });
+  }
+
+  async saveLoginOrRegisterInfo(info: LoginOrRegisterInfo) {
+    PreferencesUtil.put("username", info.username)
+    PreferencesUtil.put("password", info.password)
   }
 }

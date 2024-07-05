@@ -8,8 +8,7 @@ import { IndexViewModel } from '../viewModel/IndexViewModel';
 import { UserInfoModel } from '../model/UserInfoModel';
 import { BaseResponse } from '../model/BaseResponse';
 import { AxiosResponse } from '@ohos/axios';
-import { RandomUtil, ToastUtil } from '@pura/harmony-utils'
-import { KeywordInfo } from '../entity/KeywordInfo'
+import { PreferencesUtil, ToastUtil } from '@pura/harmony-utils'
 import { Routes } from '../routes/Routes'
 
 @Preview
@@ -89,11 +88,17 @@ struct Index {
   }
 
   async aboutToAppear(): Promise<void> {
-    // let result = await this.viewModel.login({username: "13437156081", password: "z19871031"})
-    // if (result) {
-    //   let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-    //   this.userInfo = response.data.data
-    // }
+    let username = await PreferencesUtil.get("username", "") as string
+    let password = await PreferencesUtil.get("password", "") as string
+
+    if (username.length != 0 && password.length != 0) {
+      ToastUtil.showToast("进行自动登录")
+      let result = await this.viewModel.login({username: username, password: password})
+      if (result) {
+        let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
+        this.userInfo = response.data.data
+      }
+    }
   }
 
   onPageShow(): void {
