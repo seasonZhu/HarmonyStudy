@@ -9,7 +9,7 @@ import { MyHeader } from '../views/MyHeader'
 @Component
 export struct My {
 
-  @Prop userInfoFormat: string
+  @Prop userInfo: UserInfoModel
 
   build() {
     Navigation() {
@@ -17,7 +17,7 @@ export struct My {
         ForEach(allTabTypeCases, (type: MyType) => {
           ListItem() {
             if (type == MyType.header) {
-              MyHeader({userInfoFormat: this.userInfoFormat})
+              MyHeader({userInfo: this.userInfo})
                 .height(150)
                 .width('100%')
             } else {
@@ -52,6 +52,10 @@ export struct My {
     .height('100%')
     .width('100%')
     .hideBackButton(true)
+  }
+
+  aboutToAppear(): void {
+
   }
 
   routesAction(type: MyType) {

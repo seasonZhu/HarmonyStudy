@@ -15,7 +15,7 @@ import { AxiosResponse } from '@ohos/axios';
 struct Index {
   @State currentIndex: number = 0
 
-  @State userInfoFormat: string = "排名：-- 等级：-- 积分：--"
+  @State userInfo: UserInfoModel = {}
 
   private tabsController = new TabsController();
 
@@ -77,7 +77,7 @@ struct Index {
       .tabBar(this.tabBarItem(getTabModel(type)))
     } else {
       TabContent() {
-        My({userInfoFormat: this.userInfoFormat })
+        My({userInfo: this.userInfo })
       }
       .tabBar(this.tabBarItem(getTabModel(type)))
     }
@@ -87,7 +87,7 @@ struct Index {
     let result = await this.viewModel.login({username: "13437156081", password: "z19871031"})
     if (result) {
       let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-      this.userInfoFormat = proccessUserInfo(response.data.data)
+      this.userInfo = response.data.data
     }
   }
 }
