@@ -20,7 +20,7 @@ struct Index {
 
   @State userInfo: UserInfoModel = {}
 
-  @Provide message: string = ""
+  @Provide loginSuccessUserInfo: UserInfoModel = {}
 
   private tabsController = new TabsController()
 
@@ -97,11 +97,9 @@ struct Index {
   }
 
   onPageShow(): void {
-    let keywordInfo = Routes.getParams() as KeywordInfo
-    if (keywordInfo) {
-      /// message是一个字符串，每次回调的字符串是一样的话，只走一次之后就不会重新渲染了
-      /// 如果想要每次都渲染就需要每次的值不同，可以考虑添加随机数进行处理，或者包装成为对象，new一个新的对象来解决
-      this.message = `哈哈${RandomUtil.generateRandomUUID()}`
+    let userInfo = Routes.getParams() as UserInfoModel
+    if (userInfo) {
+      this.loginSuccessUserInfo = userInfo
     }
   }
 }

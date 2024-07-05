@@ -1,26 +1,33 @@
-import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil';
-import { KeywordInfo } from '../entity/KeywordInfo';
+import { ToastUtil } from '@pura/harmony-utils';
+import { UserInfoModel } from '../model/UserInfoModel';
 import { Routes } from '../routes/Routes';
+import { LoginViewModel } from '../viewModel/LoginViewModel';
 
 @Entry
 @Component
 struct Setting {
   @State message: string = 'Hello World';
 
+  viewModel = new LoginViewModel()
+
   build() {
-    Row() {
+    Navigation() {
       Column() {
         Text(this.message)
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
-          .onClick(() => {
-            let info: KeywordInfo = { k: "我回去了啦" }
-            Routes.back({params: info, url: ""})
+          .onClick( () => {
+            this.logout()
           })
       }
       .width('100%')
+      .height('100%')
     }
+    .title("关于")
+    .mode(NavigationMode.Auto)
+    .titleMode(NavigationTitleMode.Mini)
     .height('100%')
+    .width('100%')
   }
 
   aboutToAppear(): void {
@@ -29,5 +36,16 @@ struct Setting {
 
   aboutToDisappear(): void {
 
+  }
+
+  async logout() {
+    let result = await this.viewModel.logout()
+    if (result) {
+      ToastUtil.showToast("退出登录成功")
+      let userInfo: UserInfoModel = {}
+      Routes.back({ url:"", params: userInfo })
+    } else {
+      ToastUtil.showToast("退出登录失败")
+    }
   }
 }

@@ -30,4 +30,24 @@ export class LoginViewModel {
         })
     });
   }
+
+  public logout(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      provider.get<BaseResponse<string>, AxiosResponse<BaseResponse<string>>>("user/logout/json")
+        .then((response: AxiosResponse<BaseResponse<string>>)=> {
+          // 处理成功情况
+          if (response.data.errorCode == 0) {
+            AccountManager.shared().toDestroy()
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        })
+        .catch((error: AxiosError)=> {
+          // 处理错误情况
+          console.info(JSON.stringify(error))
+          resolve(false)
+        })
+    });
+  }
 }

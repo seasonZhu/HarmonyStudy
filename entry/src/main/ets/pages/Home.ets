@@ -151,7 +151,6 @@ export struct Home {
         console.log("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
-    //this.viewModel.loginAction("13437156081", "z19871031")
   }
 
   processResponseData(results: AxiosResponse[], type: ScrollActionType) {

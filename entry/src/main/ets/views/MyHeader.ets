@@ -9,7 +9,7 @@ export struct MyHeader {
   build() {
     Row() {
       Column() {
-        Image($r("app.media.icon_76"))
+        Image(this.userInfo.username != null ? $r("app.media.icon_76") : $r("app.media.user"))
           .width(60)
           .width(60)
           .borderWidth(0.5)

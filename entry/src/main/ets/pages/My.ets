@@ -14,7 +14,7 @@ export struct My {
 
   @Consume
   @Watch("update")
-  message: string
+  loginSuccessUserInfo: UserInfoModel
 
 
   build() {
@@ -84,6 +84,6 @@ export struct My {
   }
 
   update() {
-    ToastUtil.showToast("我在My页面 收到从setting  " + this.message)
+    this.userInfo = this.loginSuccessUserInfo
   }
 }

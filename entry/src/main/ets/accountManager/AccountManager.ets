@@ -5,9 +5,7 @@ export default class AccountManager {
 
   loginModel?: LoginModel | null
 
-  private constructor() {
-
-  }
+  private constructor() {}
 
   static shared(): AccountManager {
     if (!AccountManager.instance) {
@@ -16,7 +14,11 @@ export default class AccountManager {
     return AccountManager.instance
   }
 
-  isLogin(): boolean {
+  public isLogin(): boolean {
     return AccountManager.shared().loginModel != null
+  }
+
+  public toDestroy(): void {
+    AccountManager.shared().loginModel = null
   }
 }

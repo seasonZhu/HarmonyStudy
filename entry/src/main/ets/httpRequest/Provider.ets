@@ -12,7 +12,7 @@ import { print } from '@kit.BasicServicesKit';
 
 export class Provider extends BaseProvider {
   static readonly baseUrl = "https://www.wanandroid.com/"
-  static readonly timeout = 5000
+  static readonly timeout = 30000
 
   private loadingDialogController: CustomDialogController = new CustomDialogController({
     builder: LoadingDialog(),

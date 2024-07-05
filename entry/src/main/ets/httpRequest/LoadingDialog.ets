@@ -25,6 +25,7 @@ export struct LoadingDialog {
           })
       }
     }
+    .justifyContent(FlexAlign.Center)
     .align(Alignment.Center)
     .width('100%')
     .backgroundColor('#2F2F2F')
