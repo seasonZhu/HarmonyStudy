@@ -31,6 +31,29 @@ export class LoginViewModel {
     });
   }
 
+  public register(info: LoginOrRegisterInfo): Promise<boolean> {
+    let api = 'user/register?username=' + info.username + '&password=' + info.password+ '&repassword=' + info.repassword
+    return new Promise<boolean>((resolve, reject) => {
+      provider.post<BaseResponse<LoginModel>, AxiosResponse<BaseResponse<LoginModel>>>(api)
+        .then((response: AxiosResponse<BaseResponse<LoginModel>>)=> {
+          // 处理成功情况
+          if (response.data.errorCode == 0) {
+            console.info("loginModel" + response.data.data)
+            response.data.data.password = info.password
+            AccountManager.shared().loginModel = response.data.data
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        })
+        .catch((error: AxiosError)=> {
+          // 处理错误情况
+          console.info(JSON.stringify(error))
+          resolve(false)
+        })
+    });
+  }
+
   public logout(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       provider.get<BaseResponse<string>, AxiosResponse<BaseResponse<string>>>("user/logout/json")

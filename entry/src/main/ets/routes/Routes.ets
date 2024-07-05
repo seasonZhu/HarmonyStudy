@@ -8,6 +8,7 @@ export abstract class PagesConstant {
   public static Splash = "pages/Splash"
   public static Index = "pages/Index"
   public static Login = "pages/Login"
+  public static Register = "pages/Register"
   public static MyCoin = "pages/MyCoin"
   public static Rank = "pages/Rank"
   public static SearchResult = "pages/SearchResult"
@@ -50,6 +51,10 @@ export abstract class Routes {
 
   public static toRank() {
     Routes.push({ url: PagesConstant.Rank })
+  }
+
+  public static toRegister() {
+    Routes.push({ url: PagesConstant.Register })
   }
 
   public static toCollect() {

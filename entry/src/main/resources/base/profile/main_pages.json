@@ -13,6 +13,7 @@
     "pages/Rank",
     "pages/MyCoin",
     "pages/MyCollect",
-    "pages/Setting"
+    "pages/Setting",
+    "pages/Register"
   ]
 }

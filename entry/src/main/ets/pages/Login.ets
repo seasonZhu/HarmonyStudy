@@ -35,7 +35,7 @@ struct Login {
     Navigation() {
         Column() {
           TextInput({ text: this.username, placeholder: '请输入手机号' })
-            .type(InputType.Number)
+            .type(InputType.PhoneNumber)
             .placeholderColor(Color.Grey)
             .placeholderFont({ size: 14, weight: 400 })
             .caretColor(Color.Blue)
@@ -68,28 +68,47 @@ struct Login {
               this.password = value
             })
 
+          Row() {
+            Blank()
+              .layoutWeight(1)
+
+            Text("还没有账号？进行注册")
+              .decoration({
+                type: TextDecorationType.Underline,
+                color: "#3079FF"
+              })
+              .fontColor("#3079FF")
+              .fontSize(15)
+              .maxLines(1)
+              .onClick(() => {
+                Routes.toRegister()
+              })
+              .margin({ right: 20 })
+          }
+
           Button("登 录", { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor(0x317aff)
             .width("95%")
-            .margin(20)
+            .margin({ top: 40, left: 20, right: 20, bottom: 20 })
             .height(40)
             .fontSize(17)
+            .onClick(async () => {
+              this.loadingDialogController.open()
+              let result = await this.viewModel.login({ username: "13437156081", password: "z19871031" })
+              this.loadingDialogController.close()
+              if (result) {
+                let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
+                let userInfo = response.data.data
+                Routes.back({ params: userInfo, url: "" })
+              } else {
+                ToastUtil.showToast("登录失败")
+              }
+            })
         }
         .width('100%')
         .justifyContent(FlexAlign.Start)
         .height('100%')
-        .onClick( async () => {
-          this.loadingDialogController.open()
-          let result = await this.viewModel.login({username: "13437156081", password: "z19871031"})
-          this.loadingDialogController.close()
-          if (result) {
-            let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-            let userInfo = response.data.data
-            Routes.back({params: userInfo, url: ""})
-          } else {
-            ToastUtil.showToast("登录失败")
-          }
-        })
+
     }
     .title("登录")
     .mode(NavigationMode.Auto)
@@ -101,4 +120,12 @@ struct Login {
   aboutToDisappear(): void {
     this.loadingDialogController.close()
   }
+
+  onPageShow(): void {
+    let userInfo = Routes.getParams() as UserInfoModel
+    if (userInfo) {
+      Routes.back({url: "", params: userInfo})
+    }
+  }
+
 }
