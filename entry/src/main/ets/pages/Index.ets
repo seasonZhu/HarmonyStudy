@@ -5,9 +5,12 @@ import { TabScaffold } from './TabScaffold';
 import { Tree } from './Tree';
 import { ContentType } from '../enum/ContentType';
 import { IndexViewModel } from '../viewModel/IndexViewModel';
-import { proccessUserInfo, UserInfoModel } from '../model/UserInfoModel';
+import { UserInfoModel } from '../model/UserInfoModel';
 import { BaseResponse } from '../model/BaseResponse';
 import { AxiosResponse } from '@ohos/axios';
+import { RandomUtil, ToastUtil } from '@pura/harmony-utils'
+import { KeywordInfo } from '../entity/KeywordInfo'
+import { Routes } from '../routes/Routes'
 
 @Preview
 @Entry
@@ -17,7 +20,9 @@ struct Index {
 
   @State userInfo: UserInfoModel = {}
 
-  private tabsController = new TabsController();
+  @Provide message: string = ""
+
+  private tabsController = new TabsController()
 
   private viewModel = new IndexViewModel()
   
@@ -84,10 +89,19 @@ struct Index {
   }
 
   async aboutToAppear(): Promise<void> {
-    let result = await this.viewModel.login({username: "13437156081", password: "z19871031"})
-    if (result) {
-      let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-      this.userInfo = response.data.data
+    // let result = await this.viewModel.login({username: "13437156081", password: "z19871031"})
+    // if (result) {
+    //   let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
+    //   this.userInfo = response.data.data
+    // }
+  }
+
+  onPageShow(): void {
+    let keywordInfo = Routes.getParams() as KeywordInfo
+    if (keywordInfo) {
+      /// message是一个字符串，每次回调的字符串是一样的话，只走一次之后就不会重新渲染了
+      /// 如果想要每次都渲染就需要每次的值不同，可以考虑添加随机数进行处理，或者包装成为对象，new一个新的对象来解决
+      this.message = `哈哈${RandomUtil.generateRandomUUID()}`
     }
   }
 }

@@ -1,7 +1,8 @@
 import { ToastUtil } from '@pura/harmony-utils'
+import { KeywordInfo } from '../entity/KeywordInfo'
 import { getTitleByMyType, MyType } from '../enum/MyType'
 import { allTabTypeCases } from '../enum/TabType'
-import { proccessUserInfo, UserInfoModel } from '../model/UserInfoModel'
+import { UserInfoModel } from '../model/UserInfoModel'
 import { Routes } from '../routes/Routes'
 import { MyHeader } from '../views/MyHeader'
 
@@ -10,6 +11,11 @@ import { MyHeader } from '../views/MyHeader'
 export struct My {
 
   @Prop userInfo: UserInfoModel
+
+  @Consume
+  @Watch("update")
+  message: string
+
 
   build() {
     Navigation() {
@@ -54,10 +60,6 @@ export struct My {
     .hideBackButton(true)
   }
 
-  aboutToAppear(): void {
-
-  }
-
   routesAction(type: MyType) {
     switch (type) {
       case MyType.header:
@@ -75,5 +77,13 @@ export struct My {
         Routes.toSetting()
         break
     }
+  }
+
+  aboutToAppear(): void {
+
+  }
+
+  update() {
+    ToastUtil.showToast("我在My页面 收到从setting  " + this.message)
   }
 }
