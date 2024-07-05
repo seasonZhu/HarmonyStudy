@@ -1,7 +1,9 @@
 import webview from '@ohos.web.webview'
-import { PagesConstant, Routes } from '../routes/Routes';
+import { Routes } from '../routes/Routes';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { WebLink } from '../entity/WebLink';
+import AccountManager from '../accountManager/AccountManager';
+import { ToastUtil } from '@pura/harmony-utils';
 
 @Entry
 @Component
@@ -99,6 +101,32 @@ struct WebPage {
     .titleMode(NavigationTitleMode.Mini)
     .height('100%')
     .width('100%')
+    .menus(this.getRightItems())
+  }
+
+  @Builder
+  getRightItems() {
+    Row() {
+      Image($r('app.media.ic_share'))
+        .width(60)
+        .height(60)
+        .padding({ top: 16, bottom: 16 })
+        .objectFit(ImageFit.Contain)
+        .onClick(() => {
+          ToastUtil.showToast("点击了分享按钮")
+        })
+
+      Image(this.isCollected())
+        .width(60)
+        .height(60)
+        .padding({ top: 16, bottom: 16 })
+        .objectFit(ImageFit.Contain)
+        .visibility(AccountManager.shared().isLogin()? Visibility.Visible : Visibility.None)
+        .onClick(() => {
+          ToastUtil.showToast("点击了收藏按钮")
+        })
+    }
+    .justifyContent(FlexAlign.Center)
   }
 
   @Builder
@@ -116,5 +144,20 @@ struct WebPage {
 
   aboutToDisappear(): void {
     this.loadingDialogController.close()
+  }
+
+  aboutToAppear(): void {
+
+  }
+
+  isCollected(): Resource {
+    let collectIds = AccountManager.shared().loginModel?.collectIds
+    let originId = this.webLink.originId
+
+    if (originId && collectIds?.includes(originId)) {
+      return $r('app.media.collect_selected')
+    } else {
+      return $r('app.media.collect')
+    }
   }
 }

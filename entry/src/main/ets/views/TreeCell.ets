@@ -1,3 +1,4 @@
+import { RandomUtil } from '@pura/harmony-utils/src/main/ets/utils/RandomUtil'
 import { ContentType } from '../enum/ContentType'
 import { TabModel } from '../model/TabModel'
 import { Routes } from '../routes/Routes'
@@ -33,6 +34,15 @@ export struct TreeCell {
         }
       }
       .alignItems(HorizontalAlign.Start)
+    }
+  }
+
+  getRandomString() {
+    let string = RandomUtil.randomColor()
+    if (string === "#FFFFFF") {
+      return "#2C86EF"
+    } else {
+      return string
     }
   }
 }
