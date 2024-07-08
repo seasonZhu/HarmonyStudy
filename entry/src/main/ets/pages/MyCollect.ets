@@ -11,6 +11,7 @@ import { ViewStatus } from '../enum/ViewStatus';
 import { MyCollectViewModel } from '../viewModel/MyCollectViewModel';
 import { InfoCell } from '../views/InfoCell';
 import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil';
+import { CollectActionType } from '../enum/CollectActionType';
 
 @Entry
 @Component
@@ -97,12 +98,17 @@ struct MyCollect {
         .transition({ type: TransitionType.Delete, opacity: 0 })
         .swipeAction({
           end: {
-            builder: () => { this.itemEnd() },
+            builder: () => { this.itemEnd(item) },
             onAction: () => {
-              animateTo({ duration: 1000 }, () => {
+              animateTo({ duration: 1000 }, async  () => {
                 /// 这里做网络请求，然后再进行数组的删除
-                let index = this.listDataSource.originData.indexOf(item)
-                this.listDataSource.remove(index)
+                // let index = this.listDataSource.originData.indexOf(item)
+                // this.listDataSource.remove(index)
+                let result = await this.viewModel.collectAction(item.originId, CollectActionType.cancel)
+                if (result) {
+                  let index = this.listDataSource.originData.indexOf(item)
+                  this.listDataSource.remove(index)
+                }
               })
             },
             actionAreaDistance: 66,
@@ -123,13 +129,17 @@ struct MyCollect {
   }
 
   @Builder
-  itemEnd() {
+  itemEnd(item: Article) {
     Row() {
       Button("取消收藏")
         .margin("4vp")
         .backgroundColor(Color.Red)
-        .onClick(() => {
-          ToastUtil.showToast("点击了取消收藏")
+        .onClick( async  () => {
+          let result = await this.viewModel.collectAction(item.originId, CollectActionType.cancel)
+          if (result) {
+            let index = this.listDataSource.originData.indexOf(item)
+            this.listDataSource.remove(index)
+          }
         })
     }
     .padding("4vp")

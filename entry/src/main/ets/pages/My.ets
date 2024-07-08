@@ -1,5 +1,3 @@
-import { ToastUtil } from '@pura/harmony-utils'
-import { KeywordInfo } from '../entity/KeywordInfo'
 import { getTitleByMyType, MyType } from '../enum/MyType'
 import { allTabTypeCases } from '../enum/TabType'
 import { UserInfoModel } from '../model/UserInfoModel'

@@ -4,6 +4,8 @@ import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { WebLink } from '../entity/WebLink';
 import AccountManager from '../accountManager/AccountManager';
 import { ToastUtil } from '@pura/harmony-utils';
+import { CollectActionType } from '../enum/CollectActionType';
+import { MyCollectViewModel } from '../viewModel/MyCollectViewModel';
 
 @Entry
 @Component
@@ -16,7 +18,11 @@ struct WebPage {
 
   @State private title: string = '加载中...'
 
+  @State private collectIds: number[] = AccountManager.shared().loginModel?.collectIds ?? []
+
   private webLink = Routes.getParams() as WebLink
+
+  private viewModel = new MyCollectViewModel()
 
   private loadingDialogController: CustomDialogController = new CustomDialogController({
     builder: LoadingDialog({text: "加载中..."}),
@@ -87,7 +93,7 @@ struct WebPage {
 
         if (this.showLoadingProgress) {
           Progress({ value: 0, total: 100, type: ProgressType.Linear })
-            .color(Color.Blue)
+            .color("#2096F3")
             .value(this.loadingProgress)
             .width('100%')
         }
@@ -116,14 +122,19 @@ struct WebPage {
           ToastUtil.showToast("点击了分享按钮")
         })
 
-      Image(this.isCollected())
+      Image(this.collectIcon())
         .width(60)
         .height(60)
         .padding({ top: 16, bottom: 16 })
         .objectFit(ImageFit.Contain)
         .visibility(AccountManager.shared().isLogin()? Visibility.Visible : Visibility.None)
-        .onClick(() => {
-          ToastUtil.showToast("点击了收藏按钮")
+        .onClick( async () => {
+          ToastUtil.showToast("点击了收藏按钮" + this.getRealCollectId())
+          let type = this.isCollected() ? CollectActionType.cancel : CollectActionType.collect
+          let result = await this.viewModel.collectAction(this.getRealCollectId(), type)
+          if (result) {
+            this.collectIds = AccountManager.shared().loginModel?.collectIds!
+          }
         })
     }
     .justifyContent(FlexAlign.Center)
@@ -150,14 +161,33 @@ struct WebPage {
 
   }
 
-  isCollected(): Resource {
-    let collectIds = AccountManager.shared().loginModel?.collectIds
-    let originId = this.webLink.originId
+  isCollected(): boolean {
+    this.collectIds = AccountManager.shared().loginModel?.collectIds ?? []
+    let originId = this.getRealCollectId()
 
-    if (originId && collectIds?.includes(originId)) {
+    if (originId && this.collectIds.includes(originId)) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  collectIcon(): Resource {
+    if (this.isCollected()) {
       return $r('app.media.collect_selected')
     } else {
       return $r('app.media.collect')
+    }
+  }
+
+  getRealCollectId(): number {
+    let id = this.webLink.id
+    let collectId = this.webLink.originId
+
+    if (collectId == null && id != null) {
+      return id
+    } else {
+      return collectId!
     }
   }
 }

@@ -1035,6 +1035,10 @@
     {
       "name": "bluegrey900",
       "value": "#263238"
+    },
+    {
+      "name": "mainBlue",
+      "value": "#2096F3"
     }
   ]
 }
