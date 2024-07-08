@@ -50,13 +50,15 @@ export struct TabScaffold {
   getPage(model: TabModel) {
     TabContent() {
       TabsDetail({contentType: this.contentType, tab: model})
-    }.tabBar(StringUtils.replaceHtmlElement(model.name?.toString() ?? ""))
+    }
+    //.tabBar(new SubTabBarStyle(StringUtils.replaceHtmlElement(model.name?.toString() ?? "")))
+    .tabBar(StringUtils.replaceHtmlElement(model.name?.toString() ?? ""))
   }
 
   @Builder
   getTabBarText(model: TabModel) {
     Text(StringUtils.replaceHtmlElement(model.name?.toString() ?? ""))
-      .fontColor("#2096F3")
+      .fontColor($r("app.color.mainBlue"))
   }
 
   async aboutToAppear(): Promise<void> {

@@ -1,4 +1,4 @@
-import { ToastUtil } from '@pura/harmony-utils';
+import { DialogUtil, ToastUtil } from '@pura/harmony-utils';
 import { UserInfoModel } from '../model/UserInfoModel';
 import { Routes } from '../routes/Routes';
 import { LoginViewModel } from '../viewModel/LoginViewModel';
@@ -42,8 +42,8 @@ struct Setting {
           .margin({ top: 40, left: 20, right: 20, bottom: 20 })
           .height(40)
           .fontSize(17)
-          .onClick(async () => {
-            this.logout()
+          .onClick(() => {
+            this.alertShow()
           })
       }
       .width('100%')
@@ -62,6 +62,25 @@ struct Setting {
 
   aboutToDisappear(): void {
 
+  }
+
+  alertShow() {
+    DialogUtil.showPrimaryDialog({
+      title: "温馨提示",
+      message: "是否退出登录？",
+      primaryButton: {
+        value: "取消",
+        action: () => {
+
+        }
+      },
+      secondaryButton: {
+        value: "确定",
+        action: () => {
+          this.logout()
+        }
+      }
+    })
   }
 
   async logout() {

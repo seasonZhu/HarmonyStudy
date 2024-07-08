@@ -44,7 +44,7 @@ export struct BannerView {
         .selectedItemWidth(8)
         .selectedItemHeight(8)
         .color('rgba(255,255,255,.3)')
-        .selectedColor(Color.Blue))
+        .selectedColor($r('app.color.mainBlue'),))
     .curve(Curve.Linear)
     .onChange((index: number) => {
       console.info(index.toString())
