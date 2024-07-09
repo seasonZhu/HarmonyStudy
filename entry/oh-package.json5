@@ -5,6 +5,9 @@
   "main": "",
   "author": "",
   "license": "",
-  "dependencies": {}
+  "dependencies": {
+    /// SDK包进行引入
+    "librarySDK": "file:../librarySDK"
+  }
 }
 

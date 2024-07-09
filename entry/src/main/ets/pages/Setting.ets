@@ -3,6 +3,8 @@ import { UserInfoModel } from '../model/UserInfoModel';
 import { Routes } from '../routes/Routes';
 import { LoginViewModel } from '../viewModel/LoginViewModel';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
+import { MainPage } from 'librarySDK/src/main/ets/components/MainPage';
+import { SDKTools } from 'librarySDK/src/main/ets/components/SDKTools';
 
 @Entry
 @Component
@@ -36,7 +38,7 @@ struct Setting {
           .width("100")
           .height(100)
 
-        Button("登 出", { type: ButtonType.Capsule, stateEffect: true })
+        Button(SDKTools.printMessage(), { type: ButtonType.Capsule, stateEffect: true })
           .backgroundColor(0x317aff)
           .width("95%")
           .margin({ top: 40, left: 20, right: 20, bottom: 20 })
@@ -45,13 +47,17 @@ struct Setting {
           .onClick(() => {
             this.alertShow()
           })
+
+        MainPage()
+          .width(100)
+          .height(100)
       }
       .width('100%')
       .height('100%')
     }
     .title("设置")
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
+    .mode(NavigationMode.Stack)
+    .titleMode(NavigationTitleMode.Free)
     .height('100%')
     .width('100%')
   }
