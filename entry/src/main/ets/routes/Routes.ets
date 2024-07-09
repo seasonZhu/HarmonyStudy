@@ -121,7 +121,8 @@ export abstract class Routes {
   }
 
   public static back(options?: RouterOptions) {
-    router.back({ url: options?.url, params: options?.params })
+    let url = options?.url ?? ""
+    router.back({url: url, params: options?.params })
   }
 
   public static getParams(): Object {
