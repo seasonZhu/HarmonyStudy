@@ -38,7 +38,7 @@ struct Setting {
           .width("100")
           .height(100)
 
-        Button(SDKTools.printMessage(), { type: ButtonType.Capsule, stateEffect: true })
+        Button("登 出", { type: ButtonType.Capsule, stateEffect: true })
           .backgroundColor(0x317aff)
           .width("95%")
           .margin({ top: 40, left: 20, right: 20, bottom: 20 })
@@ -47,17 +47,13 @@ struct Setting {
           .onClick(() => {
             this.alertShow()
           })
-
-        MainPage()
-          .width(100)
-          .height(100)
       }
       .width('100%')
       .height('100%')
     }
     .title("设置")
-    .mode(NavigationMode.Stack)
-    .titleMode(NavigationTitleMode.Free)
+    .mode(NavigationMode.Auto)
+    .titleMode(NavigationTitleMode.Mini)
     .height('100%')
     .width('100%')
   }
