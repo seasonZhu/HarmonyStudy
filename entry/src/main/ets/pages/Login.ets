@@ -25,9 +25,9 @@ struct Login {
     customStyle: false
   })
 
-  @State username: string = "13437156081"
+  @State username: string = ""
 
-  @State password: string = "z19871031"
+  @State password: string = ""
 
   viewModel = new IndexViewModel()
 

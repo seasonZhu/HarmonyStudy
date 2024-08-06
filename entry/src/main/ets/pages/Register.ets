@@ -93,20 +93,24 @@ struct Register {
           .height(40)
           .fontSize(17)
           .onClick(async () => {
-            this.loadingDialogController.open()
-            let result = await this.viewModel.register({ username: this.username, password: this.password, repassword: this.repassword })
-            this.loadingDialogController.close()
-            if (result) {
-              let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-              let userInfo = response.data.data
-              if (response.data.errorCode == 0) {
-                Routes.back({ params: userInfo, url: "" })
+              if (this.password === this.repassword) {
+                this.loadingDialogController.open()
+                let result = await this.viewModel.register({ username: this.username, password: this.password, repassword: this.repassword })
+                this.loadingDialogController.close()
+                if (result) {
+                  let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
+                  let userInfo = response.data.data
+                  if (response.data.errorCode == 0) {
+                    Routes.back({ params: userInfo, url: "" })
+                  } else {
+                    ToastUtil.showToast("获取用户信息失败")
+                  }
+                } else {
+                  ToastUtil.showToast("注册失败")
+                }
               } else {
-                ToastUtil.showToast("获取用户信息失败")
+                ToastUtil.showToast("两次密码输入不一致")
               }
-            } else {
-              ToastUtil.showToast("注册失败")
-            }
           })
       }
       .width('100%')
