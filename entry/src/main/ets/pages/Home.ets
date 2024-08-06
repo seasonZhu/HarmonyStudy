@@ -9,7 +9,6 @@ import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
 import { HomeViewModel } from '../viewModel/HomeViewModel';
 import { ScrollActionType } from '../enum/ScrollActionType';
-import provider from '../httpRequest/Provider';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';

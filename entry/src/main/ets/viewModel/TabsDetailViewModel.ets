@@ -2,7 +2,7 @@ import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
-import provider from '../HttpRequest/Provider';
+import httpClient from '../HttpRequest/Provider';
 import { ContentType } from '../enum/ContentType';
 import { ScrollActionType } from '../Enum/ScrollActionType';
 import { TabModel } from '../model/TabModel';
@@ -45,6 +45,6 @@ export class TabsDetailViewModel {
         api = "article/list/" + pageString + "/json" + "?cid=" + this.tab.id?.toString()
         break
     }
-    return provider.get<BaseResponse<PageModel<Article>>, AxiosResponse<BaseResponse<PageModel<Article>>>>(api)
+    return httpClient.get(api)
   }
 }

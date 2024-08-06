@@ -16,6 +16,6 @@ export class RankViewModel {
     }
 
     let api = "coin/rank/" + this.pageNum.toString() + "/json"
-    return httpClient.get<BaseResponse<PageModel<RankModel>>>(api)
+    return httpClient.get(api)
   }
 }

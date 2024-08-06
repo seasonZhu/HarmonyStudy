@@ -26,6 +26,6 @@ export class TabScaffoldViewModel {
         break
     }
 
-    return httpClient.get<BaseResponse<TabModel[]>>(api)
+    return httpClient.get(api)
   }
 }

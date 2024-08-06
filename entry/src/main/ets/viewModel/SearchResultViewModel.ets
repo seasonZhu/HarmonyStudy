@@ -19,6 +19,6 @@ export class SearchResultViewModel {
     let api = "article/query/" + this.pageNum.toString() + "/json"
     /// 奇葩的post入参
     let params = `k=${keywordInfo.k}`
-    return httpClient.post<BaseResponse<PageModel<Article>>>(api, params)
+    return httpClient.post(api, params)
   }
 }

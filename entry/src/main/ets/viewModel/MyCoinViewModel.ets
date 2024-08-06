@@ -16,6 +16,6 @@ export class MyCoinViewModel {
     }
 
     let api = "lg/coin/list/" + this.pageNum.toString() + "/json"
-    return httpClient.get<BaseResponse<PageModel<MyCoinModel>>>(api)
+    return httpClient.get(api)
   }
 }

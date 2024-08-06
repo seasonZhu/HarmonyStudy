@@ -20,11 +20,11 @@ export class MyCollectViewModel {
     }
 
     let api = "lg/collect/list/" + this.pageNum.toString() + "/json"
-    return httpClient.get<BaseResponse<PageModel<Article>>>(api)
+    return httpClient.get(api)
   }
 
   getUserInfo = (): Promise<AxiosResponse<BaseResponse<UserInfoModel>>> => {
-    return httpClient.get<BaseResponse<UserInfoModel>>("lg/coin/userinfo/json")
+    return httpClient.get("lg/coin/userinfo/json")
   }
 
   async collectAction(id: number, type: CollectActionType): Promise<boolean> {
@@ -32,7 +32,7 @@ export class MyCollectViewModel {
     switch(type) {
       case CollectActionType.collect:
         api = "lg/collect/" + id + "/json"
-        let collectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post<BaseResponse<string>>(api)
+        let collectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post(api)
         if (collectResponse.data.errorCode == 0) {
           ToastUtil.showToast("收藏成功")
           if (AccountManager.shared().loginModel && AccountManager.shared().loginModel?.collectIds) {
@@ -50,7 +50,7 @@ export class MyCollectViewModel {
         break
       case CollectActionType.cancel:
         api = "lg/uncollect_originId/" + id + "/json"
-        let cancelCollectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post<BaseResponse<string>>(api)
+        let cancelCollectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post(api)
         if (cancelCollectResponse.data.errorCode == 0) {
           ToastUtil.showToast("取消收藏成功")
           if (AccountManager.shared().loginModel && AccountManager.shared().loginModel?.collectIds) {

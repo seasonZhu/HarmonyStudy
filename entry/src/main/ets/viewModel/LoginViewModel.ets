@@ -3,7 +3,7 @@ import { AxiosError } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { LoginModel } from '../model/LoginModel';
 import AccountManager from '../AccountManager/AccountManager';
-import provider from '../HttpRequest/Provider';
+import httpClient from '../HttpRequest/Provider';
 import { LoginOrRegisterInfo } from '../entity/LoginOrRegisterInfo';
 import { PreferencesUtil } from '@pura/harmony-utils';
 
@@ -11,7 +11,7 @@ export class LoginViewModel {
   public login(info: LoginOrRegisterInfo): Promise<boolean> {
     let api = 'user/login?username=' + info.username + '&password=' + info.password
     return new Promise<boolean>((resolve, reject) => {
-      provider.post<BaseResponse<LoginModel>, AxiosResponse<BaseResponse<LoginModel>>>(api)
+      httpClient.post(api)
         .then((response: AxiosResponse<BaseResponse<LoginModel>>)=> {
           // 处理成功情况
           if (response.data.errorCode == 0) {
@@ -36,7 +36,7 @@ export class LoginViewModel {
   public register(info: LoginOrRegisterInfo): Promise<boolean> {
     let api = 'user/register?username=' + info.username + '&password=' + info.password+ '&repassword=' + info.repassword
     return new Promise<boolean>((resolve, reject) => {
-      provider.post<BaseResponse<LoginModel>, AxiosResponse<BaseResponse<LoginModel>>>(api)
+      httpClient.post(api)
         .then((response: AxiosResponse<BaseResponse<LoginModel>>)=> {
           // 处理成功情况
           if (response.data.errorCode == 0) {
@@ -59,7 +59,7 @@ export class LoginViewModel {
 
   public logout(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      provider.get<BaseResponse<string>, AxiosResponse<BaseResponse<string>>>("user/logout/json")
+      httpClient.get("user/logout/json")
         .then((response: AxiosResponse<BaseResponse<string>>)=> {
           // 处理成功情况
           if (response.data.errorCode == 0) {
