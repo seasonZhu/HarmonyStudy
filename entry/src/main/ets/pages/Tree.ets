@@ -1,6 +1,6 @@
 import { AxiosResponse } from '@ohos/axios';
 import { AxiosError } from '@ohos/axios';
-import { PullToRefresh } from '@ohos/pulltorefresh'
+import { PullToRefresh, PullToRefreshConfigurator } from '@ohos/pulltorefresh';
 import { BaseResponse } from '../model/BaseResponse';
 import { BaseListDataSource } from '../model/BaseListDataSource';
 import { ScrollActionType } from '../enum/ScrollActionType';
@@ -59,6 +59,7 @@ export struct Tree {
         // 一个用@Builder修饰过的UI方法
         this.getListView()
       },
+      refreshConfigurator: this.setNoLoadMoreRefreshConfig(),
       // 可选项，下拉刷新回调
       onRefresh: async () => {
         let result: AxiosResponse = await this.viewModel.getTabs()
@@ -91,6 +92,12 @@ export struct Tree {
         console.log("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
+  }
+
+  setNoLoadMoreRefreshConfig(): PullToRefreshConfigurator {
+    let config = new PullToRefreshConfigurator()
+    config.setHasLoadMore(false)
+    return config
   }
 
   processResponseData(result: AxiosResponse<BaseResponse<TabModel[]>>, type: ScrollActionType) {
