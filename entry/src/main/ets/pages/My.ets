@@ -1,5 +1,5 @@
 import { getTitleByMyType, MyType } from '../enum/MyType'
-import { allTabTypeCases } from '../enum/TabType'
+import { allMyTypeCases } from '../enum/MyType'
 import { UserInfoModel } from '../model/UserInfoModel'
 import { Routes } from '../routes/Routes'
 import { MyHeader } from '../views/MyHeader'
@@ -18,7 +18,7 @@ export struct My {
   build() {
     Navigation() {
       List() {
-        ForEach(allTabTypeCases, (type: MyType) => {
+        ForEach(allMyTypeCases, (type: MyType) => {
           ListItem() {
             if (type == MyType.header) {
               MyHeader({userInfo: this.userInfo})
@@ -70,6 +70,9 @@ export struct My {
         break
       case MyType.myCollect:
         Routes.toCollect()
+        break
+      case MyType.webExample:
+        Routes.toWebExample()
         break
       case MyType.setting:
         Routes.toSetting()
