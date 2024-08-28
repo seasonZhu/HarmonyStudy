@@ -1,10 +1,12 @@
 import { webview } from '@kit.ArkWeb';
+import { JSONUtil } from '@pura/harmony-utils';
+import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil';
 
-class testClass {
-  constructor() {
-  }
+class JavaScriptInterface {
+  constructor() {}
 
-  test(): string {
+  showToast(): string {
+    ToastUtil.showToast("ArkTS Hello World!")
     return 'ArkTS Hello World!';
   }
 }
@@ -20,18 +22,21 @@ class testClass {
 export struct WebExample {
   webviewController: webview.WebviewController = new webview.WebviewController();
   // 声明需要注册的对象
-  @State testObj: testClass = new testClass();
+  @State javaScriptObject: JavaScriptInterface = new JavaScriptInterface();
 
   build() {
     Navigation() {
       Column() {
         // Web组件加载本地index.html页面
         Web({ src: $rawfile('index.html'), controller: this.webviewController})
-          // 将对象注入到web端
+          // 将对象注入到web端，javaScriptProxy可以不停的链式调用
           .javaScriptProxy({
-            object: this.testObj,
-            name: "testObjName",
-            methodList: ["test"],
+            /// 原生侧传入的对象
+            object: this.javaScriptObject,
+            /// 在js侧对象的名称
+            name: "javaScriptObject",
+            /// 方法名
+            methodList: ["showToast"],
             controller: this.webviewController
           })
       }
@@ -41,5 +46,25 @@ export struct WebExample {
     .titleMode(NavigationTitleMode.Mini)
     .height('100%')
     .width('100%')
+    .menus(this.getButton())
+  }
+
+  @Builder
+  getButton() {
+    Button('runJavaScript')
+      .onClick(async  () => {
+        let map: Record<string, string> = {
+          "type": "commit",
+          "message": "this is a message from Flutter"
+        };
+
+        let jsonString = JSONUtil.beanToJsonStr(map)
+        /// 这种交互，不支持原生向JS传递参数
+        //let javaScriptCallbackResult = this.webviewController.runJavaScript(`sendMessageToDiscussList(${jsonString})`);
+
+        // 前端页面函数无参时，将param删除。
+        let javaScriptCallbackResult = await this.webviewController.runJavaScript(`harmonyOSCallJS()`)
+        ToastUtil.showToast(javaScriptCallbackResult)
+      })
   }
 }
