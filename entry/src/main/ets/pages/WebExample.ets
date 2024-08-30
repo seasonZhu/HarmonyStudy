@@ -1,6 +1,10 @@
 import { webview } from '@kit.ArkWeb';
-import { JSONUtil } from '@pura/harmony-utils';
-import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil';
+import { JSONUtil, DateUtil, FileUtil,ImageUtil,LogUtil,PickerUtil,ToastUtil} from '@pura/harmony-utils';
+import { BusinessError } from '@kit.BasicServicesKit';
+import { image } from '@kit.ImageKit';
+import axios from '@ohos/axios'
+import { AxiosResponse } from '@ohos/axios';
+import { AxiosError } from '@ohos/axios';
 
 class JavaScriptInterface {
   constructor() {}
@@ -8,6 +12,39 @@ class JavaScriptInterface {
   showToast(): string {
     ToastUtil.showToast("ArkTS Hello World!")
     return 'ArkTS Hello World!';
+  }
+
+  showMessage(message: string) {
+    ToastUtil.showToast("ArkTS Hello World!" + message)
+    return 'ArkTS Hello World!';
+  }
+
+  /// 'https://evfile.dna-nev.com.cn/dna-app/preprod/20231129/da637ae245fa49ecb8f10c78dbdf8c88.jpg?x-oss-process=image/quality,q_80'
+  /// 前端下载图片事件
+  downloadImage(url: string) {
+    LogUtil.info("test ", "触发了js的保存图片")
+    axios({
+      url: url,
+      method: 'get',
+    }).then( async (res: AxiosResponse)=>{
+      LogUtil.info("test ", JSON.stringify(res.data))
+      let imageData = res.data as ArrayBuffer
+      let imageSource: image.ImageSource = image.createImageSource(imageData)
+      let pixelMap = await imageSource.createPixelMap()
+      let filePath = await ImageUtil.savePixelMap(pixelMap, FileUtil.getFilesDirPath(""), "download.png")
+      let imgName = `download_${DateUtil.getTodayTime()}.png`;
+      PickerUtil.savePhoto([imgName]).then(async (uris) => {
+        let uri = uris[0];
+        let file = FileUtil.openSync(uri);
+        FileUtil.copyFile(filePath, file.fd).then(() => {
+          ToastUtil.showToast("图片保存成功");
+        })
+      }).catch((err: BusinessError) => {
+        LogUtil.info("test ", `调用保存图片，异常：\n${JSON.stringify(err)}`)
+      })
+    }).catch((error: AxiosError)=>{
+      LogUtil.info("error:" + JSON.stringify(error));
+    })
   }
 }
 
@@ -36,7 +73,7 @@ export struct WebExample {
             /// 在js侧对象的名称
             name: "javaScriptObject",
             /// 方法名
-            methodList: ["showToast"],
+            methodList: ["showMessage", "downloadImage"],
             controller: this.webviewController
           })
       }

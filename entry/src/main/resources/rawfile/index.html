@@ -64,7 +64,8 @@
                 window.handleMessageFromJS.postMessage(jsonString);
             }
 
-            let str = javaScriptObject.showToast();
+<!--            let str = javaScriptObject.showToast();-->
+            let str = javaScriptObject.showMessage("我是从Web传递过来的参数");
             document.getElementById("demo").innerHTML = str;
             console.info('ArkTS Hello World! :' + str);
         }
@@ -79,6 +80,10 @@
             document.getElementById("result").innerText = "harmonyOSCallJS success";
             return "Hello,Native!";
         }
+
+        function jsCallDownload() {
+            javaScriptObject.downloadImage("https://evfile.dna-nev.com.cn/dna-app/preprod/20231129/da637ae245fa49ecb8f10c78dbdf8c88.jpg?x-oss-process=image/quality,q_80");
+        }
     </script>
 </head>
 
@@ -86,6 +91,7 @@
 Hello,Web Example!<br />
 <span id="result"></span><br />
 <button onclick="jsCallNative()">JS call Native</button><br />
+<button onclick="jsCallDownload()">JS call Download</button><br />
 <p id="demo"></p>
 </body>
 </html>
