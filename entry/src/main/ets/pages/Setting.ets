@@ -1,10 +1,12 @@
-import { DialogUtil, ToastUtil } from '@pura/harmony-utils';
+import { DialogUtil, LogUtil, ToastUtil } from '@pura/harmony-utils';
 import { UserInfoModel } from '../model/UserInfoModel';
 import { Routes } from '../routes/Routes';
 import { LoginViewModel } from '../viewModel/LoginViewModel';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { MainPage } from 'librarySDK/src/main/ets/components/MainPage';
 import { SDKTools } from 'librarySDK/src/main/ets/components/SDKTools';
+import { router } from '@kit.ArkUI';
+import { RouteConstant } from 'librarySDK';
 
 @Entry
 @Component
@@ -33,6 +35,10 @@ struct Setting {
           .objectFit(ImageFit.Auto)
           .width("100%")
           .backgroundColor(Color.Black)
+          .onClick(() => {
+            LogUtil.debug("跳转到SDK页面")
+            router.pushNamedRoute({ name: RouteConstant.mainPage})
+          })
 
         Blank()
           .width("100")

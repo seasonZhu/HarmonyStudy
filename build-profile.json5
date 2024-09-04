@@ -46,10 +46,6 @@
       ]
     },
     {
-      "name": "core",
-      "srcPath": "./core"
-    },
-    {
       "name": "librarySDK",
       "srcPath": "./librarySDK",
     }

@@ -1,10 +1,10 @@
 import { router } from '@kit.ArkUI';
 import { RouteConstant } from './RouteConstant';
 
-@Entry({routeName: RouteConstant.mainPage})
+@Entry({routeName: RouteConstant.secondPage})
 @Component
-export struct MainPage {
-  @State message: string = 'This is librarySDK Main Page';
+export struct SecondPage {
+  @State message: string = 'This is librarySDK Second Page';
 
   build() {
     Row() {
@@ -16,7 +16,7 @@ export struct MainPage {
     }
     .height('100%')
     .onClick(() => {
-      router.pushNamedRoute({ name: "librarySDK_SecondPage" })
+      router.back({url: "pages/Index"})
     })
   }
 }
