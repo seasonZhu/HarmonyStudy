@@ -7,13 +7,13 @@ import display from '@ohos.display';
 export struct BannerView {
   private swiperControllers = new SwiperController()
 
-  private swiperHeigth = 200
+  private swiperHeight = 200
 
   aboutToAppear(): void {
     try {
       let swiperWidth = display.getDefaultDisplaySync().width
       let densityPixels = display.getDefaultDisplaySync().densityPixels
-      this.swiperHeigth = (swiperWidth / densityPixels) * 0.5625
+      this.swiperHeight = (swiperWidth / densityPixels) * 0.5625
     } catch (exception) {
       console.error('Failed to obtain the default display object. Code: ' + JSON.stringify(exception));
     }
@@ -29,7 +29,7 @@ export struct BannerView {
       })
     }
     .width('100%')
-    .height(this.swiperHeigth)
+    .height(this.swiperHeight)
     .cachedCount(2)
     .index(1)
     .autoPlay(true)

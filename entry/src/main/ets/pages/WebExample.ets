@@ -5,7 +5,10 @@ import { image } from '@kit.ImageKit';
 import axios from '@ohos/axios'
 import { AxiosResponse } from '@ohos/axios';
 import { AxiosError } from '@ohos/axios';
-
+/*
+ * https://ohpm.openharmony.cn/#/cn/detail/@hzw%2Fohos-dsbridge
+ * 鸿蒙版本的DSBridge，三端统一
+ * */
 class JavaScriptInterface {
   constructor() {}
 

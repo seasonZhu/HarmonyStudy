@@ -7,7 +7,7 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@ohos/axios": "2.2.0",
+    "@ohos/axios": "2.2.4",
     "@ohos/imageknife": "2.1.2",
     "@ohos/pulltorefresh": "2.0.5",
     "@pura/harmony-utils": "1.0.2",
