@@ -19,6 +19,7 @@ export abstract class PagesConstant {
   public static TreeDetail = "pages/TreeDetail"
   public static Setting = "pages/Setting"
   public static WebExample =  "pages/WebExample"
+  public static WebComponent =  "pages/WebComponent"
 }
 
 export interface RouterOptions {
@@ -73,6 +74,10 @@ export abstract class Routes {
 
   public static toWebExample() {
     Routes.pushWithLogin(PagesConstant.WebExample)
+  }
+
+  public static toWebComponent() {
+    Routes.pushWithLogin(PagesConstant.WebComponent)
   }
 
   public static toLogin(showTips: boolean = true) {

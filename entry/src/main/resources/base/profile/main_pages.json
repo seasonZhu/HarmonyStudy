@@ -15,6 +15,7 @@
     "pages/MyCollect",
     "pages/Setting",
     "pages/Register",
-    "pages/WebExample"
+    "pages/WebExample",
+    "pages/WebComponent"
   ]
 }

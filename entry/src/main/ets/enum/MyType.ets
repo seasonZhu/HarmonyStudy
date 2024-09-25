@@ -6,10 +6,11 @@ export enum MyType {
   myCoin,
   myCollect,
   webExample,
+  webComponent,
   setting,
 }
 
-export let allMyTypeCases = [MyType.header, MyType.ranking, MyType.myCoin, MyType.myCollect, MyType.webExample, MyType.setting]
+export let allMyTypeCases = [MyType.header, MyType.ranking, MyType.myCoin, MyType.myCollect, MyType.webExample, MyType.webComponent, MyType.setting]
 
 export function getPathByMyType(type: MyType): PagesConstant {
   switch (type) {
@@ -23,6 +24,8 @@ export function getPathByMyType(type: MyType): PagesConstant {
       return PagesConstant.MyCollect
     case MyType.webExample:
       return PagesConstant.WebExample
+    case MyType.webComponent:
+      return PagesConstant.WebComponent
     case MyType.setting:
       return PagesConstant.Setting
   }
@@ -40,6 +43,8 @@ export function getTitleByMyType(type: MyType): string {
       return "我的收藏"
     case MyType.webExample:
       return "Web与鸿蒙原生交互"
+    case MyType.webComponent:
+      return "Web与鸿蒙通过Port交互"
     case MyType.setting:
       return "设置"
   }

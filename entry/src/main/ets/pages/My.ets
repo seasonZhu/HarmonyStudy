@@ -74,6 +74,9 @@ export struct My {
       case MyType.webExample:
         Routes.toWebExample()
         break
+      case MyType.webComponent:
+        Routes.toWebComponent()
+        break
       case MyType.setting:
         Routes.toSetting()
         break
