@@ -3,7 +3,7 @@ import { RouterName, Routes } from '../routes/Routes';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { WebLink } from '../entity/WebLink';
 import AccountManager from '../accountManager/AccountManager';
-import { ToastUtil } from '@pura/harmony-utils';
+import { LogUtil, ToastUtil } from '@pura/harmony-utils';
 import { CollectActionType } from '../enum/CollectActionType';
 import { MyCollectViewModel } from '../viewModel/MyCollectViewModel';
 
@@ -119,7 +119,7 @@ struct WebPage {
         .padding({ top: 16, bottom: 16 })
         .objectFit(ImageFit.Contain)
         .onClick(() => {
-          ToastUtil.showToast("点击了分享按钮")
+          LogUtil.debug("点击了分享按钮")
         })
 
       Image(this.collectIcon())
@@ -129,7 +129,7 @@ struct WebPage {
         .objectFit(ImageFit.Contain)
         .visibility(AccountManager.shared().isLogin()? Visibility.Visible : Visibility.None)
         .onClick( async () => {
-          ToastUtil.showToast("点击了收藏按钮" + this.getRealCollectId())
+          LogUtil.debug("点击了收藏按钮" + this.getRealCollectId())
           let type = this.isCollected() ? CollectActionType.cancel : CollectActionType.collect
           let result = await this.viewModel.collectAction(this.getRealCollectId(), type)
           if (result) {
