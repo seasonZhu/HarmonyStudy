@@ -5,6 +5,8 @@ import { image } from '@kit.ImageKit';
 import axios from '@ohos/axios'
 import { AxiosResponse } from '@ohos/axios';
 import { AxiosError } from '@ohos/axios';
+import { RouterName } from '../routes/Routes';
+
 /*
  * https://ohpm.openharmony.cn/#/cn/detail/@hzw%2Fohos-dsbridge
  * 鸿蒙版本的DSBridge，三端统一
@@ -57,7 +59,7 @@ class JavaScriptInterface {
  * 前端页面调用应用侧函数
  * https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/web-in-page-app-function-invoking-V5
  * */
-@Entry
+@Entry({routeName: RouterName.WebExample})
 @Component
 export struct WebExample {
   webviewController: webview.WebviewController = new webview.WebviewController();

@@ -10,11 +10,11 @@ import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { SearchResultViewModel } from '../viewModel/SearchResultViewModel';
-import { Routes } from '../routes/Routes';
+import { RouterName, Routes } from '../routes/Routes';
 import { KeywordInfo } from '../entity/KeywordInfo';
 import { LogUtil } from '@pura/harmony-utils';
 
-@Entry
+@Entry({routeName: RouterName.SearchResult})
 @Component
 struct SearchResult {
   @State listDataSource: BaseListDataSource<Article> = new BaseListDataSource<Article>()

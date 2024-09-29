@@ -2,11 +2,11 @@ import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil'
 import { IndexViewModel } from '../viewModel/IndexViewModel'
 import { BaseResponse } from '../model/BaseResponse';
 import { AxiosResponse } from '@ohos/axios';
-import { Routes } from '../routes/Routes'
+import { RouterName, Routes } from '../routes/Routes'
 import { UserInfoModel } from '../model/UserInfoModel';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 
-@Entry
+@Entry({routeName: RouterName.Register})
 @Component
 struct Register {
 

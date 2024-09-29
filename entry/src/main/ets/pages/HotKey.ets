@@ -6,10 +6,10 @@ import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { HotKeyModel } from '../model/HotKeyModel';
 import { KeyboardUtil, ToastUtil, LogUtil } from '@pura/harmony-utils';
-import { Routes } from '../routes/Routes';
+import { RouterName, Routes } from '../routes/Routes';
 import { KeywordInfo } from '../entity/KeywordInfo';
 
-@Entry
+@Entry({routeName: RouterName.Hotkey})
 @Component
 struct HotKey {
   @State dataSource: BaseListDataSource<HotKeyModel> = new BaseListDataSource<HotKeyModel>()

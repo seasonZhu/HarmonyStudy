@@ -10,8 +10,9 @@ import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { RankViewModel } from '../viewModel/RankViewModel';
 import { LogUtil } from '@pura/harmony-utils';
+import { RouterName } from '../routes/Routes';
 
-@Entry
+@Entry({routeName: RouterName.Rank})
 @Component
 struct Rank {
   @State listDataSource: BaseListDataSource<RankModel> = new BaseListDataSource<RankModel>()

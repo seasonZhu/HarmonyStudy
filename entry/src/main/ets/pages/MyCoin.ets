@@ -10,8 +10,9 @@ import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { MyCoinViewModel } from '../viewModel/MyCoinViewModel';
 import { LogUtil } from '@ohos/imageknife';
+import { RouterName } from '../routes/Routes';
 
-@Entry
+@Entry({routeName: RouterName.MyCoin})
 @Component
 struct MyCoin {
   @State listDataSource: BaseListDataSource<MyCoinModel> = new BaseListDataSource<MyCoinModel>()

@@ -1,5 +1,5 @@
 import webview from '@ohos.web.webview'
-import { Routes } from '../routes/Routes';
+import { RouterName, Routes } from '../routes/Routes';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { WebLink } from '../entity/WebLink';
 import AccountManager from '../accountManager/AccountManager';
@@ -7,7 +7,7 @@ import { ToastUtil } from '@pura/harmony-utils';
 import { CollectActionType } from '../enum/CollectActionType';
 import { MyCollectViewModel } from '../viewModel/MyCollectViewModel';
 
-@Entry
+@Entry({routeName: RouterName.Web})
 @Component
 struct WebPage {
   private controller: WebviewController = new webview.WebviewController()

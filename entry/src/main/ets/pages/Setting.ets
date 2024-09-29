@@ -1,6 +1,6 @@
 import { DialogUtil, LogUtil, ToastUtil } from '@pura/harmony-utils';
 import { UserInfoModel } from '../model/UserInfoModel';
-import { Routes } from '../routes/Routes';
+import { RouterName, Routes } from '../routes/Routes';
 import { LoginViewModel } from '../viewModel/LoginViewModel';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { MainPage } from 'librarySDK/src/main/ets/components/MainPage';
@@ -8,7 +8,7 @@ import { SDKTools } from 'librarySDK/src/main/ets/components/SDKTools';
 import { router } from '@kit.ArkUI';
 import { RouteConstant } from 'librarySDK';
 
-@Entry
+@Entry({routeName: RouterName.Setting})
 @Component
 struct Setting {
   private loadingDialogController: CustomDialogController = new CustomDialogController({
