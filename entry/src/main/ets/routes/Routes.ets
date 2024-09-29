@@ -22,23 +22,6 @@ export abstract class PagesConstant {
   public static WebComponent =  "pages/WebComponent"
 }
 
-export enum RouterName {
-  Splash = "Splash",
-  Index = "Index",
-  Login = "Login",
-  Register = "Register",
-  MyCoin = "MyCoin",
-  Rank = "Rank",
-  SearchResult = "SearchResult",
-  MyCollect = "MyCollect",
-  Web = "WebPage",
-  Hotkey = "HotKey",
-  TreeDetail = "TreeDetail",
-  Setting = "Setting",
-  WebExample =  "WebExample",
-  WebComponent =  "WebComponent",
-}
-
 export interface RouterOptions {
   url: string
   params?: object

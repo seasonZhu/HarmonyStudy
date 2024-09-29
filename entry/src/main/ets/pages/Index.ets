@@ -9,7 +9,8 @@ import { UserInfoModel } from '../model/UserInfoModel';
 import { BaseResponse } from '../model/BaseResponse';
 import { AxiosResponse } from '@ohos/axios';
 import { PreferencesUtil, ToastUtil } from '@pura/harmony-utils'
-import { RouterName, Routes } from '../routes/Routes'
+import { Routes } from '../routes/Routes'
+import { RouterName } from '../routes/RouterName'
 import { importHeadFile } from 'librarySDK';
 
 @Preview

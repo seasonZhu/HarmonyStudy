@@ -5,7 +5,8 @@ import { image } from '@kit.ImageKit';
 import axios from '@ohos/axios'
 import { AxiosResponse } from '@ohos/axios';
 import { AxiosError } from '@ohos/axios';
-import { RouterName } from '../routes/Routes';
+import { Routes } from '../routes/Routes'
+import { RouterName } from '../routes/RouterName'
 
 /*
  * https://ohpm.openharmony.cn/#/cn/detail/@hzw%2Fohos-dsbridge

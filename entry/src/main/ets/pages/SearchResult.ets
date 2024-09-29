@@ -10,7 +10,8 @@ import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { SearchResultViewModel } from '../viewModel/SearchResultViewModel';
-import { RouterName, Routes } from '../routes/Routes';
+import { Routes } from '../routes/Routes'
+import { RouterName } from '../routes/RouterName'
 import { KeywordInfo } from '../entity/KeywordInfo';
 import { LogUtil } from '@pura/harmony-utils';
 

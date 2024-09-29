@@ -10,8 +10,12 @@ import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { MyCoinViewModel } from '../viewModel/MyCoinViewModel';
 import { LogUtil } from '@ohos/imageknife';
-import { RouterName } from '../routes/Routes';
+import { Routes } from '../routes/Routes'
+import { RouterName } from '../routes/RouterName'
 
+export let PageMyCoin = "PageMyCoin"
+
+// @Entry({routeName: PageMyCoin})
 @Entry({routeName: RouterName.MyCoin})
 @Component
 struct MyCoin {

@@ -1,5 +1,6 @@
 import webview from '@ohos.web.webview'
-import { RouterName, Routes } from '../routes/Routes';
+import { Routes } from '../routes/Routes'
+import { RouterName } from '../routes/RouterName'
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { WebLink } from '../entity/WebLink';
 import AccountManager from '../accountManager/AccountManager';

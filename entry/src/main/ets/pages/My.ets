@@ -3,6 +3,9 @@ import { allMyTypeCases } from '../enum/MyType'
 import { UserInfoModel } from '../model/UserInfoModel'
 import { Routes } from '../routes/Routes'
 import { MyHeader } from '../views/MyHeader'
+import { router } from '@kit.ArkUI'
+import { RouterName } from '../routes/RouterName'
+import { PageMyCoin } from './MyCoin'
 
 @Entry
 @Component
@@ -79,6 +82,8 @@ export struct My {
         break
       case MyType.setting:
         Routes.toSetting()
+        // router.pushNamedRoute({ name: PageMyCoin})
+        //router.pushNamedRoute({ name: RouterName.MyCoin})
         break
     }
   }

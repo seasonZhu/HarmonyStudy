@@ -1,6 +1,7 @@
 import { DialogUtil, LogUtil, ToastUtil } from '@pura/harmony-utils';
 import { UserInfoModel } from '../model/UserInfoModel';
-import { RouterName, Routes } from '../routes/Routes';
+import { Routes } from '../routes/Routes'
+import { RouterName } from '../routes/RouterName'
 import { LoginViewModel } from '../viewModel/LoginViewModel';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { MainPage } from 'librarySDK/src/main/ets/components/MainPage';

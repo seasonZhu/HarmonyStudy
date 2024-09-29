@@ -10,7 +10,8 @@ import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { RankViewModel } from '../viewModel/RankViewModel';
 import { LogUtil } from '@pura/harmony-utils';
-import { RouterName } from '../routes/Routes';
+import { Routes } from '../routes/Routes'
+import { RouterName } from '../routes/RouterName'
 
 @Entry({routeName: RouterName.Rank})
 @Component
