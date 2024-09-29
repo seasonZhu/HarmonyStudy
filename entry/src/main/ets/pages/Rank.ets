@@ -9,6 +9,7 @@ import { ScrollActionType } from '../enum/ScrollActionType';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { RankViewModel } from '../viewModel/RankViewModel';
+import { LogUtil } from '@pura/harmony-utils';
 
 @Entry
 @Component
@@ -32,7 +33,7 @@ struct Rank {
           this.getRefreshView()
         },
         onRetry: () => {
-          console.log("点击了重试按钮")
+          LogUtil.debug("点击了重试按钮")
         },
       })
     }
@@ -101,14 +102,14 @@ struct Rank {
   }
 
   async aboutToAppear(): Promise<void> {
-    console.log("重写该方法，改为异步，还是会走这里")
+    LogUtil.debug("重写该方法，改为异步，还是会走这里")
 
     this.viewModel.getRankList(ScrollActionType.refresh)
       .then((result: AxiosResponse<BaseResponse<PageModel<RankModel>>>) => {
         this.processResponseData(result, ScrollActionType.refresh)
       })
       .catch((error: AxiosError) => {
-        console.log("http error: " + JSON.stringify(error))
+        LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
 

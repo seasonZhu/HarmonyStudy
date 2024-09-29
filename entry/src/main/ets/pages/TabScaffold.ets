@@ -7,6 +7,7 @@ import { TabScaffoldViewModel } from '../viewModel/TabScaffoldViewModel';
 import { StringUtils } from '../utils/StringUtils';
 import { TabsDetail } from './TabsDetail';
 import { ContentType } from '../enum/ContentType';
+import { LogUtil } from '@pura/harmony-utils';
 
 @Entry
 @Component
@@ -66,7 +67,7 @@ export struct TabScaffold {
     let response: AxiosResponse<BaseResponse<TabModel[]>> = await this.viewModel.getTabs()
 
     this.datas = response.data.data
-    console.info(this.datas.length.toString())
+    LogUtil.debug(this.datas.length.toString())
 
     if (response.data.errorCode == 0) {
       this.status = ViewStatus.success

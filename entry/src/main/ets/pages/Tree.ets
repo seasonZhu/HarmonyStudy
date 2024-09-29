@@ -10,6 +10,7 @@ import { TabModel } from '../model/TabModel';
 import { TreeCell } from '../views/TreeCell';
 import { TabScaffoldViewModel } from '../viewModel/TabScaffoldViewModel';
 import { ContentType } from '../enum/ContentType';
+import { LogUtil } from '@pura/harmony-utils';
 
 @Entry
 @Component
@@ -89,7 +90,7 @@ export struct Tree {
         this.processResponseData(result, ScrollActionType.refresh)
       })
       .catch((error: AxiosError) => {
-        console.log("http error: " + JSON.stringify(error))
+        LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
   }

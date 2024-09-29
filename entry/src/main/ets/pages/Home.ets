@@ -14,6 +14,7 @@ import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
 import { PagesConstant, Routes } from '../routes/Routes';
 import { ViewStatus } from '../enum/ViewStatus';
+import { LogUtil } from '@pura/harmony-utils';
 
 @Entry
 @Component
@@ -60,7 +61,7 @@ export struct Home {
           this.getRefreshView()
         },
         onRetry: () => {
-          console.log("点击了重试按钮")
+          LogUtil.debug("点击了重试按钮")
         },
       })
     }
@@ -125,7 +126,7 @@ export struct Home {
           InfoCell({
             article: item,
             onItemClick: (article: Article) => {
-              console.log("点击了cell " + article.link)
+              LogUtil.debug("点击了cell " + article.link)
             },
             onCollect: (isCollect: boolean, article: Article) => {
 
@@ -141,13 +142,13 @@ export struct Home {
   }
 
   async aboutToAppear(): Promise<void> {
-    console.log("重写该方法，改为异步，还是会走这里")
+    LogUtil.debug("重写该方法，改为异步，还是会走这里")
     this.viewModel.networkRequest(ScrollActionType.refresh)
       .then((results: AxiosResponse[]) => {
         this.processResponseData(results, ScrollActionType.refresh)
       })
       .catch((error: AxiosError) => {
-        console.log("http error: " + JSON.stringify(error))
+        LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
   }

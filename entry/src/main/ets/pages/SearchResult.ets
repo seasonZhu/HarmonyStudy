@@ -12,6 +12,7 @@ import { ViewStatus } from '../enum/ViewStatus';
 import { SearchResultViewModel } from '../viewModel/SearchResultViewModel';
 import { Routes } from '../routes/Routes';
 import { KeywordInfo } from '../entity/KeywordInfo';
+import { LogUtil } from '@pura/harmony-utils';
 
 @Entry
 @Component
@@ -37,7 +38,7 @@ struct SearchResult {
             this.getRefreshView()
           },
           onRetry: () => {
-            console.log("点击了重试按钮")
+            LogUtil.debug("点击了重试按钮")
           },
         })
       }
@@ -90,7 +91,7 @@ struct SearchResult {
           InfoCell({
             article: item,
             onItemClick: (article: Article) => {
-              console.log("点击了cell " + article.link)
+              LogUtil.debug("点击了cell " + article.link)
             },
             onCollect: (isCollect: boolean, article: Article) => {
 
@@ -106,14 +107,14 @@ struct SearchResult {
   }
 
   async aboutToAppear(): Promise<void> {
-    console.log("重写该方法，改为异步，还是会走这里")
+    LogUtil.debug("重写该方法，改为异步，还是会走这里")
 
     this.viewModel.postSearchResultList(ScrollActionType.refresh, this.keywordInfo)
       .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
         this.processResponseData(result, ScrollActionType.refresh)
       })
       .catch((error: AxiosError) => {
-        console.log("http error: " + JSON.stringify(error))
+        LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
 

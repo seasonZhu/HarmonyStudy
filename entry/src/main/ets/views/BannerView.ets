@@ -2,6 +2,7 @@ import { Banner } from '../model/Banner';
 import { BaseListDataSource } from '../model/BaseListDataSource';
 import { ImageKnifeComponent, ScaleType } from '@ohos/imageknife'
 import display from '@ohos.display';
+import { LogUtil } from '@pura/harmony-utils';
 
 @Component
 export struct BannerView {
@@ -15,7 +16,7 @@ export struct BannerView {
       let densityPixels = display.getDefaultDisplaySync().densityPixels
       this.swiperHeight = (swiperWidth / densityPixels) * 0.5625
     } catch (exception) {
-      console.error('Failed to obtain the default display object. Code: ' + JSON.stringify(exception));
+      LogUtil.debug('Failed to obtain the default display object. Code: ' + JSON.stringify(exception));
     }
   }
 
@@ -47,22 +48,22 @@ export struct BannerView {
         .selectedColor($r('app.color.mainBlue'),))
     .curve(Curve.Linear)
     .onChange((index: number) => {
-      console.info(index.toString())
+      LogUtil.debug(index.toString())
     })
     .onGestureSwipe((index: number, extraInfo: SwiperAnimationEvent) => {
-      console.info("index: " + index)
-      console.info("current offset: " + extraInfo.currentOffset)
+      LogUtil.debug("index: " + index)
+      LogUtil.debug("current offset: " + extraInfo.currentOffset)
     })
     .onAnimationStart((index: number, targetIndex: number, extraInfo: SwiperAnimationEvent) => {
-      console.info("index: " + index)
-      console.info("targetIndex: " + targetIndex)
-      console.info("current offset: " + extraInfo.currentOffset)
-      console.info("target offset: " + extraInfo.targetOffset)
-      console.info("velocity: " + extraInfo.velocity)
+      LogUtil.debug("index: " + index)
+      LogUtil.debug("targetIndex: " + targetIndex)
+      LogUtil.debug("current offset: " + extraInfo.currentOffset)
+      LogUtil.debug("target offset: " + extraInfo.targetOffset)
+      LogUtil.debug("velocity: " + extraInfo.velocity)
     })
     .onAnimationEnd((index: number, extraInfo: SwiperAnimationEvent) => {
-      console.info("index: " + index)
-      console.info("current offset: " + extraInfo.currentOffset)
+      LogUtil.debug("index: " + index)
+      LogUtil.debug("current offset: " + extraInfo.currentOffset)
     })
   }
 }

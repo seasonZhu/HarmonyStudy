@@ -12,6 +12,7 @@ import { ViewStatus } from '../enum/ViewStatus';
 import { TabsDetailViewModel } from '../viewModel/TabsDetailViewModel';
 import { ContentType } from '../enum/ContentType';
 import { TabModel } from '../model/TabModel';
+import { LogUtil } from '@pura/harmony-utils';
 
 @Entry
 @Component
@@ -40,7 +41,7 @@ export struct TabsDetail {
           this.getRefreshView()
         },
         onRetry: () => {
-          console.log("点击了重试按钮")
+          LogUtil.debug("点击了重试按钮")
         },
       })
     }
@@ -88,7 +89,7 @@ export struct TabsDetail {
           InfoCell({
             article: item,
             onItemClick: (article: Article) => {
-              console.log("点击了cell " + article.link)
+              LogUtil.debug("点击了cell " + article.link)
             },
             onCollect: (isCollect: boolean, article: Article) => {
 
@@ -104,7 +105,7 @@ export struct TabsDetail {
   }
 
   async aboutToAppear(): Promise<void> {
-    console.log("重写该方法，改为异步，还是会走这里")
+    LogUtil.debug("重写该方法，改为异步，还是会走这里")
 
     this.viewModel = new TabsDetailViewModel(this.contentType, this.tab)
 
@@ -113,7 +114,7 @@ export struct TabsDetail {
         this.processResponseData(result, ScrollActionType.refresh)
       })
       .catch((error: AxiosError) => {
-        console.log("http error: " + JSON.stringify(error))
+        LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
 

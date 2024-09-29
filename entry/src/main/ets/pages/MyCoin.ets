@@ -9,6 +9,7 @@ import { ScrollActionType } from '../enum/ScrollActionType';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { MyCoinViewModel } from '../viewModel/MyCoinViewModel';
+import { LogUtil } from '@ohos/imageknife';
 
 @Entry
 @Component
@@ -32,7 +33,7 @@ struct MyCoin {
           this.getRefreshView()
         },
         onRetry: () => {
-          console.log("点击了重试按钮")
+          LogUtil.debug("点击了重试按钮")
         },
       })
     }
@@ -101,14 +102,14 @@ struct MyCoin {
   }
 
   async aboutToAppear(): Promise<void> {
-    console.log("重写该方法，改为异步，还是会走这里")
+    LogUtil.debug("重写该方法，改为异步，还是会走这里")
 
     this.viewModel.getMyCoinList(ScrollActionType.refresh)
       .then((result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>) => {
         this.processResponseData(result, ScrollActionType.refresh)
       })
       .catch((error: AxiosError) => {
-        console.log("http error: " + JSON.stringify(error))
+        LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
 

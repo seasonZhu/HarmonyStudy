@@ -8,6 +8,7 @@ import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
 import { ScrollActionType } from '../Enum/ScrollActionType';
 import httpClient from '../HttpRequest/Provider';
+import { LogUtil } from '@pura/harmony-utils';
 
 export class HomeViewModel {
 
@@ -39,18 +40,18 @@ export class HomeViewModel {
   }
 
   public loginAction(username: string, password: string) {
-    console.info("按钮点击了，准备进行做登录")
+    LogUtil.debug("按钮点击了，准备进行做登录")
     let api = 'user/login?username=' + username + '&password=' + password
     httpClient.post<BaseResponse<LoginModel>>(api)
       .then((response: AxiosResponse<BaseResponse<LoginModel>>)=> {
         // 处理成功情况
-        console.info("loginModel" + response.data.data)
+        LogUtil.debug("loginModel" + response.data.data)
         response.data.data.password = password
         AccountManager.shared().loginModel = response.data.data
       })
       .catch((error: AxiosError)=> {
         // 处理错误情况
-        console.info(JSON.stringify(error))
+        LogUtil.debug(JSON.stringify(error))
       })
   }
 }

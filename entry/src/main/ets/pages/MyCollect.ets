@@ -12,6 +12,7 @@ import { MyCollectViewModel } from '../viewModel/MyCollectViewModel';
 import { InfoCell } from '../views/InfoCell';
 import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil';
 import { CollectActionType } from '../enum/CollectActionType';
+import { LogUtil } from '@pura/harmony-utils';
 
 @Entry
 @Component
@@ -35,7 +36,7 @@ struct MyCollect {
           this.getRefreshView()
         },
         onRetry: () => {
-          console.log("点击了重试按钮")
+          LogUtil.debug("点击了重试按钮")
         },
       })
     }
@@ -88,7 +89,7 @@ struct MyCollect {
           InfoCell({
             article: item,
             onItemClick: (article: Article) => {
-              console.log("点击了cell " + article.link)
+              LogUtil.debug("点击了cell " + article.link)
             },
             onCollect: (isCollect: boolean, article: Article) => {
 
@@ -147,14 +148,14 @@ struct MyCollect {
   }
 
   async aboutToAppear(): Promise<void> {
-    console.log("重写该方法，改为异步，还是会走这里")
+    LogUtil.debug("重写该方法，改为异步，还是会走这里")
 
     this.viewModel.getMyCollectList(ScrollActionType.refresh)
       .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
         this.processResponseData(result, ScrollActionType.refresh)
       })
       .catch((error: AxiosError) => {
-        console.log("http error: " + JSON.stringify(error))
+        LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
   }

@@ -5,7 +5,7 @@ import { LoginModel } from '../model/LoginModel';
 import AccountManager from '../AccountManager/AccountManager';
 import httpClient from '../HttpRequest/Provider';
 import { LoginOrRegisterInfo } from '../entity/LoginOrRegisterInfo';
-import { PreferencesUtil } from '@pura/harmony-utils';
+import { PreferencesUtil, LogUtil } from '@pura/harmony-utils';
 
 export class LoginViewModel {
   public login(info: LoginOrRegisterInfo): Promise<boolean> {
@@ -16,7 +16,7 @@ export class LoginViewModel {
           // 处理成功情况
           if (response.data.errorCode == 0) {
             /// errorCode为0，业务上的登录成功
-            console.info("loginModel" + response.data.data)
+            LogUtil.debug("loginModel" + response.data.data)
             response.data.data.password = info.password
             AccountManager.shared().loginModel = response.data.data
             this.saveLoginOrRegisterInfo(info)
@@ -27,7 +27,7 @@ export class LoginViewModel {
         })
         .catch((error: AxiosError)=> {
           // 处理错误情况
-          console.info(JSON.stringify(error))
+          LogUtil.debug(JSON.stringify(error))
           resolve(false)
         })
     });
@@ -40,7 +40,7 @@ export class LoginViewModel {
         .then((response: AxiosResponse<BaseResponse<LoginModel>>)=> {
           // 处理成功情况
           if (response.data.errorCode == 0) {
-            console.info("loginModel" + response.data.data)
+            LogUtil.debug("loginModel" + response.data.data)
             response.data.data.password = info.password
             AccountManager.shared().loginModel = response.data.data
             this.saveLoginOrRegisterInfo(info)
@@ -51,7 +51,7 @@ export class LoginViewModel {
         })
         .catch((error: AxiosError)=> {
           // 处理错误情况
-          console.info(JSON.stringify(error))
+          LogUtil.debug(JSON.stringify(error))
           resolve(false)
         })
     });
@@ -71,7 +71,7 @@ export class LoginViewModel {
         })
         .catch((error: AxiosError)=> {
           // 处理错误情况
-          console.info(JSON.stringify(error))
+          LogUtil.debug(JSON.stringify(error))
           resolve(false)
         })
     });

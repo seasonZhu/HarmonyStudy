@@ -5,7 +5,7 @@ import { ViewStatus } from '../Enum/ViewStatus';
 import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { HotKeyModel } from '../model/HotKeyModel';
-import { KeyboardUtil, ToastUtil } from '@pura/harmony-utils';
+import { KeyboardUtil, ToastUtil, LogUtil } from '@pura/harmony-utils';
 import { Routes } from '../routes/Routes';
 import { KeywordInfo } from '../entity/KeywordInfo';
 
@@ -28,7 +28,7 @@ struct HotKey {
           this.getHotkeyView()
         },
         onRetry: () => {
-          console.log("点击了重试按钮")
+          LogUtil.debug("点击了重试按钮")
         },
       })
     }

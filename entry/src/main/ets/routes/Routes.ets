@@ -116,13 +116,13 @@ export abstract class Routes {
         if(options.success) {
           options.success()
         }
-        console.log("路由成功了")
+        LogUtil.debug("路由成功了")
       })
       .catch((error: Error) => {
         if(options.error) {
           options.error(error)
         }
-        console.log("路由失败了")
+        LogUtil.debug("路由失败了")
       })
       .finally(() => {
         if(options.finally) {
