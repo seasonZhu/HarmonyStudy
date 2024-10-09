@@ -1,5 +1,5 @@
 import webview from '@ohos.web.webview'
-import { Routes } from '../routes/Routes'
+import { Router } from '../routes/Router'
 import { RouterName } from '../routes/RouterName'
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { WebLink } from '../entity/WebLink';
@@ -21,7 +21,7 @@ struct WebPage {
 
   @State private collectIds: number[] = AccountManager.shared().loginModel?.collectIds ?? []
 
-  private webLink = Routes.getParams() as WebLink
+  private webLink = Router.getParams() as WebLink
 
   private viewModel = new MyCollectViewModel()
 

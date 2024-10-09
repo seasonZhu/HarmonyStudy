@@ -4,24 +4,9 @@ import AccountManager from '../accountManager/AccountManager'
 import { KeywordInfo } from '../entity/KeywordInfo';
 import { TreeDetailInfo } from '../entity/TreeDetailInfo';
 import { WebLink } from '../entity/WebLink';
+import { PagesConstant } from './PagesConstant';
 
-export abstract class PagesConstant {
-  public static Splash = "pages/Splash"
-  public static Index = "pages/Index"
-  public static Login = "pages/Login"
-  public static Register = "pages/Register"
-  public static MyCoin = "pages/MyCoin"
-  public static Rank = "pages/Rank"
-  public static SearchResult = "pages/SearchResult"
-  public static MyCollect = "pages/MyCollect"
-  public static Web = "pages/WebPage"
-  public static Hotkey = "pages/HotKey"
-  public static TreeDetail = "pages/TreeDetail"
-  public static Setting = "pages/Setting"
-  public static WebExample =  "pages/WebExample"
-  public static WebComponent =  "pages/WebComponent"
-}
-
+/// 这个Router只是对router的简单封装，其实不用也罢
 export interface RouterOptions {
   url: string
   params?: object
@@ -30,71 +15,73 @@ export interface RouterOptions {
   finally?: (() => void)
 }
 
-export abstract class Routes {
+export abstract class Router {
   public static toWebPage(webLink: WebLink) {
-    Routes.push({
+    Router.push({
       url: PagesConstant.Web,
       params: webLink
     })
   }
 
   public static toTreeDetail(treeDetailInfo: TreeDetailInfo) {
-    Routes.push({
+    Router.push({
       url: PagesConstant.TreeDetail,
       params: treeDetailInfo
     })
   }
 
   public static toSearchResult(keywordInfo: KeywordInfo) {
-    Routes.push({
+    Router.push({
       url: PagesConstant.SearchResult,
       params: keywordInfo
     })
   }
 
   public static toRank() {
-    Routes.push({ url: PagesConstant.Rank })
+    Router.push({ url: PagesConstant.Rank })
   }
 
   public static toRegister() {
-    Routes.push({ url: PagesConstant.Register })
+    Router.push({ url: PagesConstant.Register })
   }
 
   public static toCollect() {
-    Routes.pushWithLogin(PagesConstant.MyCollect)
+    Router.pushWithLogin(PagesConstant.MyCollect)
   }
 
   public static toMyCoin() {
-    Routes.pushWithLogin(PagesConstant.MyCoin)
+    Router.pushWithLogin(PagesConstant.MyCoin)
   }
 
   public static toSetting() {
-    Routes.pushWithLogin(PagesConstant.Setting)
+    Router.pushWithLogin(PagesConstant.Setting)
   }
 
   public static toWebExample() {
-    Routes.pushWithLogin(PagesConstant.WebExample)
+    Router.pushWithLogin(PagesConstant.WebExample)
   }
 
   public static toWebComponent() {
-    Routes.pushWithLogin(PagesConstant.WebComponent)
+    Router.pushWithLogin(PagesConstant.WebComponent)
   }
 
-  public static toLogin(showTips: boolean = true) {
-    Routes.push({url: PagesConstant.Login,
+  public static toLogin(showTips: boolean = true, callback?: (() => void)) {
+    Router.push({url: PagesConstant.Login,
       success: () => {
         if (showTips) {
-
+          if (callback) {
+            callback()
+          }
         }
       }
     })
   }
 
-  private static pushWithLogin(url: string, params?: object, showTips: boolean = true,) {
+  private static pushWithLogin(url: string, params?: object, showTips: boolean = true, callback?: (() => void)) {
     if (AccountManager.shared().isLogin()) {
-      Routes.push({url: url, params: params})
+      Router.push({url: url, params: params})
     } else {
-      Routes.toLogin(showTips)
+      Router.toLogin(showTips, callback)
     }
   }
 
@@ -110,6 +97,30 @@ export abstract class Routes {
     options: RouterOptions) {
     router.pushUrl(
       { url: options.url, params: options.params },
+      router.RouterMode.Standard
+    )
+      .then(() => {
+        if(options.success) {
+          options.success()
+        }
+        LogUtil.debug("路由成功了")
+      })
+      .catch((error: Error) => {
+        if(options.error) {
+          options.error(error)
+        }
+        LogUtil.debug("路由失败了")
+      })
+      .finally(() => {
+        if(options.finally) {
+          options.finally()
+        }
+      })
+  }
+
+  public static pushName(options: RouterOptions) {
+    router.pushNamedRoute(
+      { name: options.url, params: options.params },
       router.RouterMode.Standard
     )
       .then(() => {

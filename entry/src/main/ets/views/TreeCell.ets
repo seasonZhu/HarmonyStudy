@@ -1,7 +1,7 @@
 import { RandomUtil } from '@pura/harmony-utils/src/main/ets/utils/RandomUtil'
 import { ContentType } from '../enum/ContentType'
 import { TabModel } from '../model/TabModel'
-import { Routes } from '../routes/Routes'
+import { Router } from '../routes/Router'
 
 @Component
 export struct TreeCell {
@@ -28,7 +28,7 @@ export struct TreeCell {
                 // 内间距
               .padding(8)
               .onClick(() => {
-                Routes.toTreeDetail({tab: item, contentType: ContentType.tree})
+                Router.toTreeDetail({tab: item, contentType: ContentType.tree})
               })
           })
         }

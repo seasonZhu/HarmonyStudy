@@ -6,7 +6,7 @@ import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { HotKeyModel } from '../model/HotKeyModel';
 import { KeyboardUtil, ToastUtil, LogUtil } from '@pura/harmony-utils';
-import { Routes } from '../routes/Routes'
+import { Router } from '../routes/Router'
 import { RouterName } from '../routes/RouterName'
 import { KeywordInfo } from '../entity/KeywordInfo';
 
@@ -60,7 +60,7 @@ struct HotKey {
                 let keywordInfo: KeywordInfo = {
                   k: item.name
                 }
-                Routes.toSearchResult(keywordInfo)
+                Router.toSearchResult(keywordInfo)
               })
           })
         }
@@ -83,7 +83,7 @@ struct HotKey {
           let keywordInfo: KeywordInfo = {
             k: keyword
           }
-          Routes.toSearchResult(keywordInfo)
+          Router.toSearchResult(keywordInfo)
         } else {
           ToastUtil.showToast("搜索词不能为空")
         }

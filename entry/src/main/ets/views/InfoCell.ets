@@ -1,6 +1,6 @@
 import { Article, ArticleTag } from '../model/Article'
 import { WebLink } from '../entity/WebLink'
-import { Routes } from '../routes/Routes'
+import { Router } from '../routes/Router'
 import { StringUtils } from '../utils/StringUtils'
 
 @Component
@@ -138,7 +138,7 @@ export struct InfoCell {
       if (this.onItemClick) {
         this.onItemClick(this.article)
       }
-      Routes.toWebPage((this.article as WebLink))
+      Router.toWebPage((this.article as WebLink))
     })
     .gesture(
       LongPressGesture({ repeat: false })
@@ -277,7 +277,7 @@ export struct InfoCell {
       if (this.onItemClick) {
         this.onItemClick(this.article)
       }
-      Routes.toWebPage((this.article as WebLink))
+      Router.toWebPage((this.article as WebLink))
     })
     .gesture(
       LongPressGesture({ repeat: false })

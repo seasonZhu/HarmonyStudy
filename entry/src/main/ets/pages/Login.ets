@@ -2,7 +2,7 @@ import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil'
 import { IndexViewModel } from '../viewModel/IndexViewModel'
 import { BaseResponse } from '../model/BaseResponse';
 import { AxiosResponse } from '@ohos/axios';
-import { Routes } from '../routes/Routes'
+import { Router } from '../routes/Router'
 import { RouterName } from '../routes/RouterName'
 import { UserInfoModel } from '../model/UserInfoModel';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
@@ -82,7 +82,7 @@ struct Login {
               .fontSize(15)
               .maxLines(1)
               .onClick(() => {
-                Routes.toRegister()
+                Router.toRegister()
               })
               .margin({ right: 20 })
           }
@@ -100,7 +100,7 @@ struct Login {
               if (result) {
                 let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
                 let userInfo = response.data.data
-                Routes.back({ params: userInfo, url: "" })
+                Router.back({ params: userInfo, url: "" })
               } else {
                 ToastUtil.showToast("登录失败")
               }
@@ -123,9 +123,9 @@ struct Login {
   }
 
   onPageShow(): void {
-    let userInfo = Routes.getParams() as UserInfoModel
+    let userInfo = Router.getParams() as UserInfoModel
     if (userInfo) {
-      Routes.back({url: "", params: userInfo})
+      Router.back({url: "", params: userInfo})
     }
   }
 

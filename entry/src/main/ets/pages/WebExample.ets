@@ -5,7 +5,7 @@ import { image } from '@kit.ImageKit';
 import axios from '@ohos/axios'
 import { AxiosResponse } from '@ohos/axios';
 import { AxiosError } from '@ohos/axios';
-import { Routes } from '../routes/Routes'
+import { Router } from '../routes/Router'
 import { RouterName } from '../routes/RouterName'
 
 /*

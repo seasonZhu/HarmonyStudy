@@ -1,4 +1,4 @@
-import { PagesConstant } from '../routes/Routes';
+import { PagesConstant } from '../routes/PagesConstant';
 
 export enum MyType {
   header,

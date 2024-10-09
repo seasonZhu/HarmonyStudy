@@ -2,7 +2,7 @@ import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil'
 import { IndexViewModel } from '../viewModel/IndexViewModel'
 import { BaseResponse } from '../model/BaseResponse';
 import { AxiosResponse } from '@ohos/axios';
-import { Routes } from '../routes/Routes'
+import { Router } from '../routes/Router'
 import { RouterName } from '../routes/RouterName'
 import { UserInfoModel } from '../model/UserInfoModel';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
@@ -102,7 +102,7 @@ struct Register {
                   let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
                   let userInfo = response.data.data
                   if (response.data.errorCode == 0) {
-                    Routes.back({ params: userInfo, url: "" })
+                    Router.back({ params: userInfo, url: "" })
                   } else {
                     ToastUtil.showToast("获取用户信息失败")
                   }
@@ -132,6 +132,6 @@ struct Register {
 
   mockBackToRoot() {
     let params: UserInfoModel = { coinCount: 1000, level: 1000, nickname: "nickname", rank: "1000", userId: 1000, username: "1000" }
-    Routes.back({url: "", params: params})
+    Router.back({url: "", params: params})
   }
 }

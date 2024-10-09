@@ -1,12 +1,12 @@
 import { TreeDetailInfo } from '../entity/TreeDetailInfo';
-import { Routes } from '../routes/Routes';
+import { Router } from '../routes/Router';
 import { TabsDetail } from './TabsDetail';
 
 @Entry
 @Component
 struct TreeDetail {
 
-  treeDetailInfo = Routes.getParams() as TreeDetailInfo
+  treeDetailInfo = Router.getParams() as TreeDetailInfo
 
   build() {
     Navigation() {

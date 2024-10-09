@@ -12,7 +12,8 @@ import { ScrollActionType } from '../enum/ScrollActionType';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
-import { PagesConstant, Routes } from '../routes/Routes';
+import { Router } from '../routes/Router';
+import { PagesConstant } from '../routes/PagesConstant';
 import { ViewStatus } from '../enum/ViewStatus';
 import { LogUtil } from '@pura/harmony-utils';
 
@@ -200,7 +201,7 @@ struct SearchIcon {
       .height(60)
       .padding(16)
       .onClick(() => {
-        Routes.push({url: PagesConstant.Hotkey, success: () => {}, error: () => {}})
+        Router.push({url: PagesConstant.Hotkey, success: () => {}, error: () => {}})
       })
   }
 }

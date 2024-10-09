@@ -10,7 +10,7 @@ import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { MyCoinViewModel } from '../viewModel/MyCoinViewModel';
 import { LogUtil } from '@ohos/imageknife';
-import { Routes } from '../routes/Routes'
+import { Router } from '../routes/Router'
 import { RouterName } from '../routes/RouterName'
 
 export let PageMyCoin = "PageMyCoin"

@@ -10,7 +10,7 @@ import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { SearchResultViewModel } from '../viewModel/SearchResultViewModel';
-import { Routes } from '../routes/Routes'
+import { Router } from '../routes/Router'
 import { RouterName } from '../routes/RouterName'
 import { KeywordInfo } from '../entity/KeywordInfo';
 import { LogUtil } from '@pura/harmony-utils';
@@ -28,7 +28,7 @@ struct SearchResult {
 
   private viewModel = new SearchResultViewModel()
 
-  private keywordInfo = (Routes.getParams() as KeywordInfo)
+  private keywordInfo = (Router.getParams() as KeywordInfo)
 
   build() {
       Navigation() {

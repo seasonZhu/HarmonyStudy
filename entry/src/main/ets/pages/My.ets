@@ -1,7 +1,7 @@
 import { getTitleByMyType, MyType } from '../enum/MyType'
 import { allMyTypeCases } from '../enum/MyType'
 import { UserInfoModel } from '../model/UserInfoModel'
-import { Routes } from '../routes/Routes'
+import { Router } from '../routes/Router'
 import { MyHeader } from '../views/MyHeader'
 import { router } from '@kit.ArkUI'
 import { RouterName } from '../routes/RouterName'
@@ -66,24 +66,24 @@ export struct My {
       case MyType.header:
         break
       case MyType.ranking:
-        Routes.toRank()
+        Router.toRank()
         break
       case MyType.myCoin:
-        Routes.toMyCoin()
+        Router.toMyCoin()
         break
       case MyType.myCollect:
-        Routes.toCollect()
+        Router.toCollect()
         break
       case MyType.webExample:
-        Routes.toWebExample()
+        Router.toWebExample()
         break
       case MyType.webComponent:
-        Routes.toWebComponent()
+        Router.toWebComponent()
         break
       case MyType.setting:
-        Routes.toSetting()
+        Router.toSetting()
         // router.pushNamedRoute({ name: PageMyCoin})
-        //router.pushNamedRoute({ name: RouterName.MyCoin})
+        // router.pushNamedRoute({ name: RouterName.MyCoin})
         break
     }
   }

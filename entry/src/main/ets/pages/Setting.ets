@@ -1,6 +1,6 @@
 import { DialogUtil, LogUtil, ToastUtil } from '@pura/harmony-utils';
 import { UserInfoModel } from '../model/UserInfoModel';
-import { Routes } from '../routes/Routes'
+import { Router } from '../routes/Router'
 import { RouterName } from '../routes/RouterName'
 import { LoginViewModel } from '../viewModel/LoginViewModel';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
@@ -99,7 +99,7 @@ struct Setting {
     if (result) {
       ToastUtil.showToast("退出登录成功")
       let userInfo: UserInfoModel = {}
-      Routes.back({ url:"", params: userInfo })
+      Router.back({ url:"", params: userInfo })
     } else {
       ToastUtil.showToast("退出登录失败")
     }
