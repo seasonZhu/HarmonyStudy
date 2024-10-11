@@ -13,8 +13,8 @@ import { InfoCell } from '../views/InfoCell';
 import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil';
 import { CollectActionType } from '../enum/CollectActionType';
 import { LogUtil } from '@pura/harmony-utils';
-import { Router } from '../routes/Router'
-import { RouterName } from '../routes/RouterName'
+import { Router } from '../router/Router'
+import { RouterName } from '../router/RouterName'
 
 @Entry({routeName: RouterName.MyCollect})
 @Component

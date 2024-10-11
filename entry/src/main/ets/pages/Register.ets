@@ -2,8 +2,8 @@ import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil'
 import { IndexViewModel } from '../viewModel/IndexViewModel'
 import { BaseResponse } from '../model/BaseResponse';
 import { AxiosResponse } from '@ohos/axios';
-import { Router } from '../routes/Router'
-import { RouterName } from '../routes/RouterName'
+import { Router } from '../router/Router'
+import { RouterName } from '../router/RouterName'
 import { UserInfoModel } from '../model/UserInfoModel';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 

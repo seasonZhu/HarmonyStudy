@@ -12,8 +12,8 @@ import { ScrollActionType } from '../enum/ScrollActionType';
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
-import { Router } from '../routes/Router';
-import { PagesConstant } from '../routes/PagesConstant';
+import { Router } from '../router/Router';
+import { PagesConstant } from '../router/PagesConstant';
 import { ViewStatus } from '../enum/ViewStatus';
 import { LogUtil } from '@pura/harmony-utils';
 

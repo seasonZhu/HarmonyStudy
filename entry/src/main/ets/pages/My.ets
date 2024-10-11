@@ -1,10 +1,10 @@
 import { getTitleByMyType, MyType } from '../enum/MyType'
 import { allMyTypeCases } from '../enum/MyType'
 import { UserInfoModel } from '../model/UserInfoModel'
-import { Router } from '../routes/Router'
+import { Router } from '../router/Router'
 import { MyHeader } from '../views/MyHeader'
 import { router } from '@kit.ArkUI'
-import { RouterName } from '../routes/RouterName'
+import { RouterName } from '../router/RouterName'
 import { PageMyCoin } from './MyCoin'
 
 @Entry
@@ -84,6 +84,8 @@ export struct My {
         Router.toSetting()
         // router.pushNamedRoute({ name: PageMyCoin})
         // router.pushNamedRoute({ name: RouterName.MyCoin})
+        // Router.pushName({url: PageMyCoin})
+        // Router.pushName({url: RouterName.MyCoin})
         break
     }
   }

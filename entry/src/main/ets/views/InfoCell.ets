@@ -1,6 +1,6 @@
 import { Article, ArticleTag } from '../model/Article'
 import { WebLink } from '../entity/WebLink'
-import { Router } from '../routes/Router'
+import { Router } from '../router/Router'
 import { StringUtils } from '../utils/StringUtils'
 
 @Component

@@ -6,8 +6,8 @@ import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { HotKeyModel } from '../model/HotKeyModel';
 import { KeyboardUtil, ToastUtil, LogUtil } from '@pura/harmony-utils';
-import { Router } from '../routes/Router'
-import { RouterName } from '../routes/RouterName'
+import { Router } from '../router/Router'
+import { RouterName } from '../router/RouterName'
 import { KeywordInfo } from '../entity/KeywordInfo';
 
 @Entry({routeName: RouterName.Hotkey})

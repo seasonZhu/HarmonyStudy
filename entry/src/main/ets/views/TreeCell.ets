@@ -1,7 +1,7 @@
 import { RandomUtil } from '@pura/harmony-utils/src/main/ets/utils/RandomUtil'
 import { ContentType } from '../enum/ContentType'
 import { TabModel } from '../model/TabModel'
-import { Router } from '../routes/Router'
+import { Router } from '../router/Router'
 
 @Component
 export struct TreeCell {

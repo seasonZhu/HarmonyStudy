@@ -1,5 +1,5 @@
 import { TreeDetailInfo } from '../entity/TreeDetailInfo';
-import { Router } from '../routes/Router';
+import { Router } from '../router/Router';
 import { TabsDetail } from './TabsDetail';
 
 @Entry
