@@ -1039,6 +1039,10 @@
     {
       "name": "mainBlue",
       "value": "#2096F3"
+    },
+    {
+      "name": "sf_Green",
+      "value": "#02965E"
     }
   ]
 }

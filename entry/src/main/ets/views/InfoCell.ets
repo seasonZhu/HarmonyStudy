@@ -63,7 +63,7 @@ export struct InfoCell {
       Text() {
         ForEach(this.title, (value: string, index: number) => {
           if (index === 1) {
-            Span(StringUtils.replaceHtmlElement(value)).fontSize(18).fontColor($r('app.color.blue500'))
+            Span(StringUtils.replaceHtmlElement(value)).fontSize(18).fontColor("#2C86EF")
           } else {
             Span(StringUtils.replaceHtmlElement(value))
           }
@@ -89,7 +89,7 @@ export struct InfoCell {
         Text(this.article.superChapterName + '-' + this.article.chapterName)
           .fontSize(12)
           .padding(8)
-          .fontColor(Color.Green)
+          .fontColor("#02965E")
         Blank()
         if (this.article.extIsCollecting) {
           LoadingProgress()
@@ -187,7 +187,7 @@ export struct InfoCell {
           Text() {
             ForEach(this.title, (value: string, index: number) => {
               if (index === 1) {
-                Span(StringUtils.replaceHtmlElement(value)).fontSize(18).fontColor($r('app.color.blue500'))
+                Span(StringUtils.replaceHtmlElement(value)).fontSize(18).fontColor("#2C86EF")
               } else {
                 Span(StringUtils.replaceHtmlElement(value))
               }
@@ -212,6 +212,7 @@ export struct InfoCell {
             .constraintSize({
               maxWidth: '100%'
             })
+            .maxLines(6)
             .textOverflow({ overflow: TextOverflow.Clip })
         }
         .layoutWeight(1)
@@ -229,7 +230,7 @@ export struct InfoCell {
         Text(this.article.superChapterName + '-' + this.article.chapterName)
           .fontSize(12)
           .padding(8)
-          .fontColor(Color.Green)
+          .fontColor("#02965E")
         Blank()
         if (this.article.extIsCollecting) {
           LoadingProgress()
@@ -351,8 +352,8 @@ export struct InfoCell {
             bottom: 2
           })
           .textAlign(TextAlign.Center)
-          .fontColor(this.subTagColors[index%5])
-          .border({ color: this.subTagColors[index%5], radius: 6, width: 1 })
+          .fontColor("#2C86EF")
+          .border({ color: "#2C86EF", radius: 8, width: 1 })
           .fontSize(10)
       })
 
