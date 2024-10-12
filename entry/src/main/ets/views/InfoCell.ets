@@ -2,6 +2,7 @@ import { Article, ArticleTag } from '../model/Article'
 import { WebLink } from '../entity/WebLink'
 import { Router } from '../router/Router'
 import { StringUtils } from '../utils/StringUtils'
+import { ImageKnifeComponent, ImageKnifeOption } from '@ohos/imageknife'
 
 @Component
 export struct InfoCell {
@@ -176,9 +177,14 @@ export struct InfoCell {
 
       //标题内容
       Flex({ direction: FlexDirection.Row }) {
-        Image(this.article.envelopePic)// 直接加载网络地址，请填写一个具体的网络图片地址
-          .alt($r('app.media.pic_image_placeholder'))// 使用alt，在网络图片加载成功前使用占位图
-          .objectFit(ImageFit.Cover)
+
+        ImageKnifeComponent({
+          imageKnifeOption: new ImageKnifeOption({
+            loadSrc:this.article.envelopePic,
+            placeholderSrc:$r('app.media.pic_image_placeholder'),
+            objectFit: ImageFit.Cover
+          })
+        })
           .width("20%")
           .height(120)
           .border({ radius: 4 })

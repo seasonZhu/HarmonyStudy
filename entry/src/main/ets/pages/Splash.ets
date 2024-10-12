@@ -1,3 +1,7 @@
+/// HarmonyOS NEXT开发中，startWindowIcon可以设置全屏显示吗？
+/// https://developer.huawei.com/consumer/cn/forum/topic/0202161484354054962
+/// 不能，目前切图1260*2720
+
 @Entry
 @Component
 struct Splash {

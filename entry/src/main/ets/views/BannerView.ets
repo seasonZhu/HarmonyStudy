@@ -1,6 +1,6 @@
 import { Banner } from '../model/Banner';
 import { BaseListDataSource } from '../model/BaseListDataSource';
-import { ImageKnifeComponent, ScaleType } from '@ohos/imageknife'
+import { ImageKnifeComponent, ImageKnifeOption } from '@ohos/imageknife'
 import display from '@ohos.display';
 import { LogUtil } from '@pura/harmony-utils';
 
@@ -24,9 +24,12 @@ export struct BannerView {
   build() {
     Swiper(this.swiperControllers) {
       LazyForEach(this.data, (item: Banner) => {
-        /// 这个库我之前用着很好，不知道为啥现在就显示不出来了
-        //ImageKnifeComponent({ imageKnifeOption: {loadSrc: item.imagePath, mainScaleType: ScaleType.AUTO_HEIGHT} })
-        Image(item.imagePath)
+        ImageKnifeComponent({
+          imageKnifeOption: new ImageKnifeOption({
+            loadSrc:item.imagePath,
+            objectFit: ImageFit.Auto
+          })
+        })
       })
     }
     .width('100%')

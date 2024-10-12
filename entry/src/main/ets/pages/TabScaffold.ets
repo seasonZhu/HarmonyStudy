@@ -6,7 +6,7 @@ import { TabModel } from '../model/TabModel';
 import { TabScaffoldViewModel } from '../viewModel/TabScaffoldViewModel';
 import { StringUtils } from '../utils/StringUtils';
 import { TabsDetail } from './TabsDetail';
-import { ContentType } from '../enum/ContentType';
+import { ContentType, getTitle } from '../enum/ContentType';
 import { LogUtil } from '@pura/harmony-utils';
 
 @Entry
@@ -27,24 +27,32 @@ export struct TabScaffold {
 
   build() {
 
-    Tabs({ barPosition: BarPosition.Start, index: this.currentIndex, controller: this.tabsController }) {
-      ForEach(this.datas, (item: TabModel) => {
-        this.getPage(item)
+    Navigation() {
+      Tabs({ barPosition: BarPosition.Start, index: this.currentIndex, controller: this.tabsController }) {
+        ForEach(this.datas, (item: TabModel) => {
+          this.getPage(item)
+        })
+      }
+      .scrollable(true)
+      .vertical(false)
+      .barWidth('100%')
+      .barHeight(44)
+      .barMode(BarMode.Scrollable)
+      .onChange((index: number) => {
+        this.currentIndex = index
+        this.tabsController.changeIndex(index)
+      })
+      .onGestureSwipe((index, event) => {
+        this.currentIndex = index
+        this.tabsController.changeIndex(index)
       })
     }
-    .scrollable(true)
-    .vertical(false)
-    .barWidth('100%')
-    .barHeight(44)
-    .barMode(BarMode.Scrollable)
-    .onChange((index: number) => {
-      this.currentIndex = index
-      this.tabsController.changeIndex(index)
-    })
-    .onGestureSwipe((index, event) => {
-      this.currentIndex = index
-      this.tabsController.changeIndex(index)
-    })
+    .title(getTitle(this.contentType))
+    .mode(NavigationMode.Auto)
+    .titleMode(NavigationTitleMode.Mini)
+    .height('100%')
+    .width('100%')
+    .hideBackButton(true)
   }
 
   @Builder
