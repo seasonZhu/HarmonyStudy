@@ -16,7 +16,8 @@ export struct SecondPage {
     }
     .height('100%')
     .onClick(() => {
-      router.back({url: "pages/Index"})
+      /// 这里是entry项目中的注册的路由地址
+      router.back({url: "pages/Index", params: {"index": 0}})
     })
   }
 }

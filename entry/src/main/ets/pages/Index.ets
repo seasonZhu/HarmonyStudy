@@ -12,6 +12,7 @@ import { PreferencesUtil, ToastUtil } from '@pura/harmony-utils'
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { importHeadFile } from 'librarySDK';
+import { router } from '@kit.ArkUI';
 
 @Preview
 @Entry({routeName: RouterName.Index})
@@ -108,5 +109,9 @@ struct Index {
     if (userInfo) {
       this.loginSuccessUserInfo = userInfo
     }
+    /// 从模块传参过App侧
+    let index: number = (router.getParams() as object)?.['index']
+    this.currentIndex = index;
+    this.tabsController.changeIndex(index);
   }
 }
