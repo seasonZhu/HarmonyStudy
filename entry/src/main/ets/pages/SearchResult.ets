@@ -101,6 +101,7 @@ struct SearchResult {
         }
       })
     }
+    .cachedCount(3)
     .width("100%")
     .backgroundColor('#FFFFFF')
     .divider({ strokeWidth: 0.25, color: "#2F2F2F" })
