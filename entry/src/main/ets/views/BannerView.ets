@@ -21,6 +21,7 @@ export struct BannerView {
   }
 
   @Link data: BaseListDataSource<Banner>;
+
   build() {
     Swiper(this.swiperControllers) {
       LazyForEach(this.data, (item: Banner) => {

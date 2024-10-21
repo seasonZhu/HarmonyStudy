@@ -56,6 +56,7 @@ export abstract class BaseProvider {
    * @returns
    */
   protected get<T>(path: string, config?: AxiosRequestConfig): Promise<AxiosResponse<BaseResponse<T>, AxiosError>> {
+    /// 如果需要修改请求的配置，在这里进行修改会比较好，另外，我目前这个架构切换baseUrl的环境，也只能在这里进行操作
     return this.instance.get<BaseResponse<T>>(path, config)
   }
 
