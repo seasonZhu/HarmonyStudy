@@ -7,6 +7,9 @@ import AccountManager from '../accountManager/AccountManager';
 import { LogUtil, ToastUtil } from '@pura/harmony-utils';
 import { CollectActionType } from '../enum/CollectActionType';
 import { MyCollectViewModel } from '../viewModel/MyCollectViewModel';
+import { common } from '@kit.AbilityKit';
+import { systemShare } from '@kit.ShareKit';
+import { uniformTypeDescriptor as utd } from '@kit.ArkData';
 
 @Entry({routeName: RouterName.Web})
 @Component
@@ -121,6 +124,7 @@ struct WebPage {
         .objectFit(ImageFit.Contain)
         .onClick(() => {
           LogUtil.debug("点击了分享按钮")
+          this.shareAction()
         })
 
       Image(this.collectIcon())
@@ -190,5 +194,34 @@ struct WebPage {
     } else {
       return collectId!
     }
+  }
+
+  shareAction() {
+    // https://ost.51cto.com/posts/29508
+
+    // 构造ShareData，需配置一条有效数据信息
+    let data: systemShare.SharedData = new systemShare.SharedData({
+      //设置传输文件的类型(更多类型查看上方表格)
+      utd: utd.UniformDataType.TEXT,
+      title: this.title,
+      uri: this.webLink.link ?? "",
+    });
+
+    // 构建ShareController
+    let controller: systemShare.ShareController = new systemShare.ShareController(data);
+    // 获取UIAbility上下文对象
+    let context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
+    // 注册分享面板关闭监听
+    controller.on('dismiss', () => {
+      console.info('Share panel closed');
+      // 分享结束，可处理其他业务。
+    });
+    // 进行分享面板显示
+    controller.show(context, {
+      // DETAIL为详细预览图模式
+      previewMode: systemShare.SharePreviewMode.DETAIL,
+      // SINGLE为单选模式，传入一个记录则单传，多个则n选1；BATCH为批量模式
+      selectionMode: systemShare.SelectionMode.SINGLE
+    });
   }
 }
