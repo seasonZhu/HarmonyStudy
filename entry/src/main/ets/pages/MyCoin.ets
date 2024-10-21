@@ -96,6 +96,10 @@ struct MyCoin {
               .padding({top: 8, left: 16})
           }
           .alignItems(HorizontalAlign.Start)
+
+          //MyCoinCell({item: item})
+
+          //MyCoinCellBuilder(item)
         }
         .height(66)
       })
@@ -145,4 +149,33 @@ struct MyCoin {
       this.status = ViewStatus.success
     }
   }
+}
+
+@Reusable
+@Component
+struct MyCoinCell {
+  @Prop item: MyCoinModel
+
+  build() {
+    Column() {
+      Text(this.item.desc)
+        .padding({top: 8, left: 16})
+
+      Text(`获取积分原因：${this.item.reason}`)
+        .padding({top: 8, left: 16})
+    }
+    .alignItems(HorizontalAlign.Start)
+  }
+}
+
+@Builder
+function MyCoinCellBuilder(item: MyCoinModel) {
+  Column() {
+    Text(item.desc)
+      .padding({top: 8, left: 16})
+
+    Text(`获取积分原因：${item.reason}`)
+      .padding({top: 8, left: 16})
+  }
+  .alignItems(HorizontalAlign.Start)
 }
