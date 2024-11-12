@@ -17,6 +17,7 @@
     "pages/Setting",
     "pages/Register",
     "pages/WebExample",
-    "pages/WebComponent"
+    "pages/WebComponent",
+    "pages/ObservedV2TestPage"
   ]
 }

@@ -15,4 +15,5 @@ export abstract class PagesConstant {
   public static Setting = "pages/Setting"
   public static WebExample =  "pages/WebExample"
   public static WebComponent =  "pages/WebComponent"
+  public static ObservedV2TestPage =  "pages/ObservedV2TestPage"
 }
