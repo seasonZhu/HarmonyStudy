@@ -16,6 +16,7 @@ import { Router } from '../router/Router';
 import { PagesConstant } from '../router/PagesConstant';
 import { ViewStatus } from '../enum/ViewStatus';
 import { LogUtil } from '@pura/harmony-utils';
+import { immersion } from '../utils/Immersion';
 
 @Entry
 @Component
@@ -204,5 +205,14 @@ struct SearchIcon {
       .onClick(() => {
         Router.push({url: PagesConstant.Hotkey, success: () => {}, error: () => {}})
       })
+  }
+
+  /// 沉浸式开与关
+  immersionAction() {
+    if (immersion.onOrOff == true) {
+      immersion.onOrOffFullScreen(false)
+    } else {
+      immersion.onOrOffFullScreen(true)
+    }
   }
 }
