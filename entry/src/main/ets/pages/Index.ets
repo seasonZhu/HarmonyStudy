@@ -11,7 +11,7 @@ import { AxiosResponse } from '@ohos/axios';
 import { PreferencesUtil, ToastUtil } from '@pura/harmony-utils'
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
-// import { importHeadFile } from 'librarySDK';
+import { importHeadFile } from 'librarySDK';
 import { router } from '@kit.ArkUI';
 
 @Preview

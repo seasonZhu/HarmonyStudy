@@ -47,7 +47,7 @@ struct ObservedV2TestPage {
 
   aboutToAppear(): void {
     let fileDir: string = getContext().filesDir
-    let fileName = "__UNI__98AF8A0.wgt"
+    let fileName = "__UNI__DF9D7DE.wgt"//"__UNI__98AF8A0.wgt"
 
     getContext().resourceManager.getRawFileContent(fileName, (error, value) => {
       console.debug(`${"UniApp#"}[${"wgt File"}] ${"getRawFile:__UNI__.wgt"}`)
@@ -74,7 +74,7 @@ struct ObservedV2TestPage {
           middle: { anchor: '__container__', align: HorizontalAlign.Center }
         })
         .onClick(async ()=>{
-          const mpId = "__UNI__98AF8A0"
+          const mpId = "__UNI__DF9D7DE"//"__UNI__98AF8A0"
 
           await new Promise<void>((resolve, reject) => {
             try {
