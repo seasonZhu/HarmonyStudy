@@ -109,9 +109,12 @@ struct Index {
     if (userInfo) {
       this.loginSuccessUserInfo = userInfo
     }
+    
     /// 从模块传参过App侧
     let index: number = (router.getParams() as object)?.['index']
-    this.currentIndex = index;
-    this.tabsController.changeIndex(index);
+    if (index != null) {
+      this.currentIndex = index;
+      this.tabsController.changeIndex(index)
+    }
   }
 }

@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from '@ohos/axios'
 import List from '@ohos.util.List'
-import { AxiosClientRequestInterceptor } from './Interceptors/AxiosClientRequestInterceptor';
-import { AxiosClientResponseInterceptor } from './Interceptors/AxiosClientResponseInterceptor';
+import { AxiosClientRequestInterceptor } from './interceptors/AxiosClientRequestInterceptor';
+import { AxiosClientResponseInterceptor } from './interceptors/AxiosClientResponseInterceptor';
 import { ConfigurationAxiosClient } from './Configuration/ConfigurationAxiosClient'
 import { BaseResponse } from '../model/BaseResponse';
 
