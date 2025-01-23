@@ -62,6 +62,10 @@ export abstract class Router {
   }
 
   public static toWebComponent() {
+    Router.pushWithLogin(PagesConstant.WebComponent)
+  }
+
+  public static toObservedV2TestPage() {
     Router.pushWithLogin(PagesConstant.ObservedV2TestPage)
   }
 

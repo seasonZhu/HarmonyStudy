@@ -80,6 +80,9 @@ export struct My {
       case MyType.webComponent:
         Router.toWebComponent()
         break
+      case MyType.uniApp:
+        Router.toObservedV2TestPage()
+        break
       case MyType.setting:
         Router.toSetting()
         // router.pushNamedRoute({ name: PageMyCoin})
