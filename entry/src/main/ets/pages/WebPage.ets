@@ -153,6 +153,7 @@ struct WebPage {
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.MARQUEE })
       }
+      .margin({left: 8})
       .width('100%')
     }
     .height('100%')

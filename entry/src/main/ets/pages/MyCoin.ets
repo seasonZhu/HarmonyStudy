@@ -9,7 +9,7 @@ import { ScrollActionType } from '../enum/ScrollActionType';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { MyCoinViewModel } from '../viewModel/MyCoinViewModel';
-import { LogUtil } from '@ohos/imageknife';
+import { LogUtil } from '@pura/harmony-utils';
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 
