@@ -95,9 +95,10 @@ struct Login {
             .fontSize(17)
             .onClick(async () => {
               this.loadingDialogController.open()
-              let result = await this.viewModel.login({ username: "13437156081", password: "z19871031" })
+              let result = await this.viewModel.login({ username: this.username, password: this.password })
               this.loadingDialogController.close()
               if (result) {
+                ToastUtil.showToast("登录成功")
                 let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
                 let userInfo = response.data.data
                 Router.back({ params: userInfo, url: "" })
