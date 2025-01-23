@@ -10,6 +10,8 @@ export struct BannerView {
 
   private swiperHeight = 200
 
+  itemClick?: (item: Banner) => void
+
   aboutToAppear(): void {
     try {
       let swiperWidth = display.getDefaultDisplaySync().width
@@ -31,6 +33,11 @@ export struct BannerView {
             objectFit: ImageFit.Auto
           })
         })
+          .onClick(() => {
+            if (this.itemClick) {
+              this.itemClick(item)
+            }
+          })
       })
     }
     .width('100%')

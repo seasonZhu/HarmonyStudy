@@ -17,6 +17,7 @@ import { PagesConstant } from '../router/PagesConstant';
 import { ViewStatus } from '../enum/ViewStatus';
 import { LogUtil } from '@pura/harmony-utils';
 import { immersion } from '../utils/Immersion';
+import { WebLink } from '../entity/WebLink';
 
 @Entry
 @Component
@@ -121,7 +122,13 @@ export struct Home {
   private getListView() {
     List({ space: 20, scroller: this.scroller }) {
       ListItem() {
-        BannerView({data: $dataSource})
+        BannerView({data: $dataSource,
+          itemClick: (item) => {
+            LogUtil.debug("点击了轮播图")
+            LogUtil.debug(item.url)
+            const webLink: WebLink = { id: item.id, title: item.title, link: item.url, originId: null }
+            Router.toWebPage(webLink)
+          }})
       }
       LazyForEach(this.listDataSource, (item: Article) => {
         ListItem() {

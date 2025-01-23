@@ -62,7 +62,7 @@ export abstract class Router {
   }
 
   public static toWebComponent() {
-    Router.pushWithLogin(PagesConstant.WebComponent)
+    Router.pushWithLogin(PagesConstant.ObservedV2TestPage)
   }
 
   public static toLogin(showTips: boolean = true, callback?: (() => void)) {

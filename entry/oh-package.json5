@@ -7,7 +7,6 @@
   "license": "",
   "dependencies": {
     /// SDK包进行引入
-    /// local dependency "librarySDK" found in "/Users/dy/Documents/HarmonyOS/HarmonyStudy/entry/oh-package.json5" does not match the actual name "librarysdk" of its oh-package.json5
     "librarysdk": "file:../librarySDK"
   }
 }

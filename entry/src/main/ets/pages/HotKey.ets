@@ -76,7 +76,7 @@ struct HotKey {
   getTextInput() {
     TextInput({placeholder: "搜索关键词", controller: this.inputController})
       .enterKeyType(EnterKeyType.Search)
-      .margin({ right: 16 })
+      .margin({ top: 8, left: 16, right: 16 })
       .onSubmit((enterKey: EnterKeyType, event: SubmitEvent) => {
         let keyword = event.text
         if (keyword.length != 0) {

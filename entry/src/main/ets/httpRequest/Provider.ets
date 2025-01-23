@@ -1,13 +1,13 @@
 import List from '@ohos.util.List'
-import { AxiosClientRequestInterceptor } from './Interceptors/AxiosClientRequestInterceptor';
-import { AxiosClientResponseInterceptor } from './Interceptors/AxiosClientResponseInterceptor';
+import { AxiosClientRequestInterceptor } from './interceptors/AxiosClientRequestInterceptor';
+import { AxiosClientResponseInterceptor } from './interceptors/AxiosClientResponseInterceptor';
 import { ConfigurationAxiosClient } from './Configuration/ConfigurationAxiosClient'
-import { HttpRequestLoggerInterceptor } from './Interceptors/HttpRequestLoggerInterceptor'
-import { HttpResponseLoggerInterceptor } from './Interceptors/HttpResponseLoggerInterceptor'
+import { HttpRequestLoggerInterceptor } from './interceptors/HttpRequestLoggerInterceptor'
+import { HttpResponseLoggerInterceptor } from './interceptors/HttpResponseLoggerInterceptor'
 import { BaseProvider } from './BaseProvider';
-import { SetCookieRequestInterceptor } from './Interceptors/SetCookieRequestInterceptor';
+import { SetCookieRequestInterceptor } from './interceptors/SetCookieRequestInterceptor';
 import { LoadingDialog } from './LoadingDialog';
-import { LoadingOpenInterceptor, LoadingCloseInterceptor } from './Interceptors/LoadingInterceptor';
+import { LoadingOpenInterceptor, LoadingCloseInterceptor } from './interceptors/LoadingInterceptor';
 import { print } from '@kit.BasicServicesKit';
 
 export class Provider extends BaseProvider {
