@@ -43,7 +43,6 @@
 "@dcloudio/uni-app-runtime": "^2.3.14"
 ```
 
-
 ## Swift版wanandroid客户端
 
 [项目地址](https://github.com/seasonZhu/RxStudy)
@@ -51,6 +50,10 @@
 ## Flutter版wanandroid客户端
 
 [项目地址](https://github.com/seasonZhu/GetXStudy)
+
+## HarmonyOS版wanandroid客户端
+
+[项目地址](https://github.com/seasonZhu/HarmonyStudy)
 
 ## uni-app版wanandroid客户端
 
