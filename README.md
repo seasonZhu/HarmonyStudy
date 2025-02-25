@@ -78,3 +78,18 @@
 [合理使用动画](https://developer.huawei.com/consumer/cn/doc/best-practices-V5/bpta-fair-use-animation-V5)
 
 [帧率和丢帧分析实践](https://developer.huawei.com/consumer/cn/doc/best-practices-V5/bpta-frame-practice-V5)
+
+## 第三库版本管理小贴士
+https://docs.jiguang.cn/jpush/client/HarmonyOS/hmos_guide
+
+```
+1，^ 符号，它与semantic versioning （语义版本控制）有关系，它表示尽量使用最新版本，但保证不产生兼容问题，换句话说也就是除了大版本号以外，小版本号和补丁版本号都可以变。 但0 开头的版本号是比较特殊的，而因为 ^ 严格遵守 semantic versioning 规则，所以会出现以下情况（早先的 composer 版本并没有这样的处理，后来修正了）：^0.3.0 等于 >=0.3.0; <0.4.0，并不是<1.0.0 ，因为，semantic versioning 的规定是，大版本号以 0 开头表示这是一个非稳定版本（unstable），如果处于非稳定状态，小版本号是允许不向下兼容的！
+
+2，~符号，表示版本号只能改变最末尾那段（如果是 ~x.y 末尾就是 y，如果是 ~x.y.z 末尾就是 z），比如这种情况:
+
+~1.2 等于 >=1.2.0; <2.0.0
+
+3，因为0的特殊性所以如果你要指定 0 开头的库那一定要注意：
+
+~0.1 这种写法是很危险的，因为 ~0.1 等于 >=0.1.0; <1.0.0，可能出现无法向下兼容的情况，比较保险的写法还是：^0.1（等于 >=0.1.0; <0.2.0）
+```

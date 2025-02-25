@@ -120,7 +120,7 @@ export struct Home {
 
   @Builder
   private getListView() {
-    List({ space: 20, scroller: this.scroller }) {
+    List({ space: 0, scroller: this.scroller }) {
       ListItem() {
         BannerView({data: $dataSource,
           itemClick: (item) => {
