@@ -9,6 +9,7 @@ import ("entry/ets/pages/MyCollect")
 import ("entry/ets/pages/WebPage")
 import ("entry/ets/pages/HotKey")
 import ("entry/ets/pages/TreeDetail")
+import ("entry/ets/pages/EnvironmentSwitch")
 import ("entry/ets/pages/Setting")
 import ("entry/ets/pages/WebExample")
 import ("entry/ets/pages/WebComponent")
@@ -27,6 +28,7 @@ export enum RouterName {
   Web = "WebPage",
   Hotkey = "HotKey",
   TreeDetail = "TreeDetail",
+  EnvironmentSwitch = "EnvironmentSwitch",
   Setting = "Setting",
   WebExample =  "WebExample",
   WebComponent =  "WebComponent",

@@ -8,10 +8,11 @@ export enum MyType {
   webExample,
   webComponent,
   uniApp,
+  environmentSwitch,
   setting,
 }
 
-export let allMyTypeCases = [MyType.header, MyType.ranking, MyType.myCoin, MyType.myCollect, MyType.webExample, MyType.webComponent, MyType.uniApp, MyType.setting]
+export let allMyTypeCases = [MyType.header, MyType.ranking, MyType.myCoin, MyType.myCollect, MyType.webExample, MyType.webComponent, MyType.uniApp, MyType.environmentSwitch, MyType.setting]
 
 export function getPathByMyType(type: MyType): PagesConstant {
   switch (type) {
@@ -29,6 +30,8 @@ export function getPathByMyType(type: MyType): PagesConstant {
       return PagesConstant.WebComponent
     case MyType.uniApp:
       return PagesConstant.ObservedV2TestPage
+    case MyType.environmentSwitch:
+      return PagesConstant.EnvironmentSwitch
     case MyType.setting:
       return PagesConstant.Setting
   }
@@ -50,6 +53,8 @@ export function getTitleByMyType(type: MyType): string {
       return "Web与鸿蒙通过Port交互"
     case MyType.uniApp:
       return "跳转UniApp"
+    case MyType.environmentSwitch:
+      return "环境切换"
     case MyType.setting:
       return "设置"
   }

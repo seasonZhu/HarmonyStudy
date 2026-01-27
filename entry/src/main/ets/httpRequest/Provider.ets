@@ -9,10 +9,12 @@ import { SetCookieRequestInterceptor } from './interceptors/SetCookieRequestInte
 import { LoadingDialog } from './LoadingDialog';
 import { LoadingOpenInterceptor, LoadingCloseInterceptor } from './interceptors/LoadingInterceptor';
 import { print } from '@kit.BasicServicesKit';
+import { Environment, EnvConfig } from './Environment';
+import { environmentManager } from './EnvironmentManager';
 
 export class Provider extends BaseProvider {
-  static readonly baseUrl = "https://www.wanandroid.com/"
-  static readonly timeout = 30000
+  private static currentEnv: Environment = Environment.PROD
+  private static currentConfig: EnvConfig = EnvConfig.getConfig(Environment.PROD)
 
   private loadingDialogController: CustomDialogController = new CustomDialogController({
     builder: LoadingDialog(),
@@ -28,6 +30,55 @@ export class Provider extends BaseProvider {
     //弹窗容器样式是否自定义。默认值：false，弹窗容器的宽度根据栅格系统自适应，不跟随子节点；高度自适应子节点，最大为窗口高度的90%；圆角为24vp。
     customStyle: false
   })
+
+  /**
+   * 初始化环境配置（需要在应用启动时调用）
+   */
+  static async initEnvironment(): Promise<void> {
+    try {
+      Provider.currentEnv = await environmentManager.getCurrentEnvironment()
+      Provider.currentConfig = EnvConfig.getConfig(Provider.currentEnv)
+      console.info('Provider: 当前环境已初始化为 ' + Provider.currentEnv)
+      console.info('Provider: BaseURL = ' + Provider.currentConfig.baseUrl)
+    } catch (error) {
+      console.error('Provider: 初始化环境失败，使用默认环境')
+    }
+  }
+
+  /**
+   * 刷新环境配置（切换环境时调用）
+   */
+  static async refreshEnvironment(): Promise<void> {
+    await Provider.initEnvironment()
+  }
+
+  /**
+   * 获取当前环境
+   */
+  static getCurrentEnvironment(): Environment {
+    return Provider.currentEnv
+  }
+
+  /**
+   * 获取当前BaseURL
+   */
+  static getBaseUrl(): string {
+    return Provider.currentConfig.baseUrl
+  }
+
+  /**
+   * 获取当前超时时间
+   */
+  static getTimeout(): number {
+    return Provider.currentConfig.timeout
+  }
+
+  /**
+   * 是否启用日志
+   */
+  static isLogEnabled(): boolean {
+    return Provider.currentConfig.enableLog
+  }
 
   configurationRequestInterceptor(): List<AxiosClientRequestInterceptor> {
     let interceptors = new List<AxiosClientRequestInterceptor>()
@@ -53,8 +104,8 @@ export class Provider extends BaseProvider {
 
   configurationAxios(): ConfigurationAxiosClient {
     const config: ConfigurationAxiosClient = {
-      baseURL: Provider.baseUrl,
-      timeout: Provider.timeout,
+      baseURL: Provider.getBaseUrl(),
+      timeout: Provider.getTimeout(),
     }
     return config
   }

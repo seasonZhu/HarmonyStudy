@@ -6,6 +6,7 @@ import { MyHeader } from '../views/MyHeader'
 import { router } from '@kit.ArkUI'
 import { RouterName } from '../router/RouterName'
 import { PageMyCoin } from './MyCoin'
+import { LogUtil } from '@pura/harmony-utils'
 
 @Entry
 @Component
@@ -82,6 +83,10 @@ export struct My {
         break
       case MyType.uniApp:
         Router.toObservedV2TestPage()
+        break
+      case MyType.environmentSwitch:
+        LogUtil.debug("点击了切换环境")
+        Router.toEnvironmentSwitch()
         break
       case MyType.setting:
         Router.toSetting()

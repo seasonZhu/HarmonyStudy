@@ -12,6 +12,7 @@ export abstract class PagesConstant {
   public static Web = "pages/WebPage"
   public static Hotkey = "pages/HotKey"
   public static TreeDetail = "pages/TreeDetail"
+  public static EnvironmentSwitch = "pages/EnvironmentSwitch"
   public static Setting = "pages/Setting"
   public static WebExample =  "pages/WebExample"
   public static WebComponent =  "pages/WebComponent"

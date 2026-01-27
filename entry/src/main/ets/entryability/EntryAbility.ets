@@ -3,10 +3,27 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { AppUtil } from '@pura/harmony-utils';
 import { init } from '@dcloudio/uni-app-runtime'
+import { environmentManager } from '../httpRequest/EnvironmentManager'
+import { Provider } from '../httpRequest/Provider'
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+
+    // 初始化环境管理器
+    environmentManager.init(this.context).then(() => {
+      hilog.info(0x0000, 'testTag', '环境管理器初始化成功')
+
+      // 初始化Provider环境配置
+      return Provider.initEnvironment()
+    }).then(() => {
+      hilog.info(0x0000, 'testTag', 'Provider环境配置初始化成功')
+      const currentEnv = Provider.getCurrentEnvironment()
+      const baseUrl = Provider.getBaseUrl()
+      hilog.info(0x0000, 'testTag', `当前环境: ${currentEnv}, BaseURL: ${baseUrl}`)
+    }).catch((error: Error) => {
+      hilog.error(0x0000, 'testTag', '环境初始化失败: %{public}s', JSON.stringify(error))
+    })
   }
 
   onDestroy(): void {
