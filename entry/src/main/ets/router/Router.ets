@@ -70,17 +70,7 @@ export abstract class Router {
   }
 
   public static toEnvironmentSwitch() {
-    // 使用最原始的router.pushUrl API
-    router.pushUrl(
-      { url: PagesConstant.EnvironmentSwitch },
-      router.RouterMode.Standard
-    )
-      .then(() => {
-        LogUtil.debug("环境切换页面跳转成功")
-      })
-      .catch((error: Error) => {
-        LogUtil.debug("环境切换页面跳转失败: " + error.message)
-      })
+    Router.push({ url: PagesConstant.EnvironmentSwitch })
   }
 
   public static toLogin(showTips: boolean = true, callback?: (() => void)) {
