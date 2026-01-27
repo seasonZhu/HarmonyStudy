@@ -1,7 +1,7 @@
 import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
-import httpClient from '../HttpRequest/Provider';
-import { ScrollActionType } from '../Enum/ScrollActionType';
+import httpClient from '../httpRequest/Provider';
+import { ScrollActionType } from '../enum/ScrollActionType';
 import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
 import { KeywordInfo } from '../entity/KeywordInfo';

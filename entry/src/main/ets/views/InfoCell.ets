@@ -179,11 +179,11 @@ export struct InfoCell {
       Flex({ direction: FlexDirection.Row }) {
 
         ImageKnifeComponent({
-          imageKnifeOption: new ImageKnifeOption({
+          imageKnifeOption: {
             loadSrc:this.article.envelopePic,
             placeholderSrc:$r('app.media.pic_image_placeholder'),
             objectFit: ImageFit.Cover
-          })
+          }
         })
           .width("20%")
           .height(120)

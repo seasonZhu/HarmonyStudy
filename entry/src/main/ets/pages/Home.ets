@@ -1,6 +1,6 @@
 import { AxiosResponse } from '@ohos/axios';
 import { AxiosError } from '@ohos/axios';
-import { PullToRefresh } from '@ohos/pulltorefresh'
+import { PullToRefresh, PullToRefreshType } from '@ohos/pulltorefresh'
 import { Banner } from '../model/Banner'
 import { BaseResponse } from '../model/BaseResponse';
 import { BaseListDataSource } from '../model/BaseListDataSource';
@@ -51,6 +51,8 @@ export struct Home {
 
   @State status: ViewStatus = ViewStatus.loading
 
+  @State refreshing: boolean = false
+
   private scroller = new Scroller()
 
   viewModel = new HomeViewModel()
@@ -80,10 +82,10 @@ export struct Home {
   @Builder
   private getRefreshView() {
     PullToRefresh({
-      // 必传项，列表组件所绑定的数据
-      data: $data,
-      // 必传项，需绑定传入主体布局内的列表或宫格组件，不然可能滑不动
-      scroller: this.scroller,
+      // 必传项，容器主体布局类型
+      pullToRefreshType: PullToRefreshType.LIST,
+      // 必传项，控制是否进行下拉刷新
+      refreshing: $refreshing,
       // 必传项，自定义主体布局，内部有列表或宫格组件
       customList: () => {
         // 一个用@Builder修饰过的UI方法

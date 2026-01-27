@@ -2,9 +2,9 @@ import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
-import httpClient from '../HttpRequest/Provider';
+import httpClient from '../httpRequest/Provider';
 import { ContentType } from '../enum/ContentType';
-import { ScrollActionType } from '../Enum/ScrollActionType';
+import { ScrollActionType } from '../enum/ScrollActionType';
 import { TabModel } from '../model/TabModel';
 
 export class TabsDetailViewModel {

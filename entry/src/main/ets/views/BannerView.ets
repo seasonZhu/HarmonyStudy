@@ -28,10 +28,10 @@ export struct BannerView {
     Swiper(this.swiperControllers) {
       LazyForEach(this.data, (item: Banner) => {
         ImageKnifeComponent({
-          imageKnifeOption: new ImageKnifeOption({
+          imageKnifeOption: {
             loadSrc:item.imagePath,
             objectFit: ImageFit.Auto
-          })
+          }
         })
           .onClick(() => {
             if (this.itemClick) {

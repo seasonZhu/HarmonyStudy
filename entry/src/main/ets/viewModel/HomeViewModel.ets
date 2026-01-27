@@ -6,8 +6,8 @@ import { LoginModel } from '../model/LoginModel';
 import AccountManager from '../AccountManager/AccountManager';
 import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
-import { ScrollActionType } from '../Enum/ScrollActionType';
-import httpClient from '../HttpRequest/Provider';
+import { ScrollActionType } from '../enum/ScrollActionType';
+import httpClient from '../httpRequest/Provider';
 import { LogUtil } from '@pura/harmony-utils';
 
 export class HomeViewModel {

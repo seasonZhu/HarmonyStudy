@@ -6,12 +6,12 @@
         "type": "HarmonyOS",
         "material": {
           "certpath": "/Users/dy/.ohos/config/default_HarmonyStudy_1rRmeFsNVNAIdv1MMblm1buJ6VcaXULJTUR_cxJA1AA=.cer",
-          "storePassword": "0000001A6AFD88050286188FEDEB1913A9538B7D0D266FB9D32A2701336E272D74748743E13A48929007",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001A9809F0456A450DED83712550ED70DBC92B44637EAEAD0D6FD01F5354AABFB99D7073BAED21CA",
+          "keyPassword": "0000001A8F27DD95B0B9347E439C8499D6161CDB401DCD10DE8C595C080B2651C81B6DB89AB59B652BA6",
           "profile": "/Users/dy/.ohos/config/default_HarmonyStudy_1rRmeFsNVNAIdv1MMblm1buJ6VcaXULJTUR_cxJA1AA=.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "/Users/dy/.ohos/config/default_HarmonyStudy_1rRmeFsNVNAIdv1MMblm1buJ6VcaXULJTUR_cxJA1AA=.p12"
+          "storeFile": "/Users/dy/.ohos/config/default_HarmonyStudy_1rRmeFsNVNAIdv1MMblm1buJ6VcaXULJTUR_cxJA1AA=.p12",
+          "storePassword": "0000001AA9A8A6C21326AEDDBA307354C5D6880F5CDBB216ED6BB338D3DBCE420073329E6689CA4504F0"
         }
       }
     ],
@@ -19,13 +19,15 @@
       {
         "name": "default",
         "signingConfig": "default",
-        "compatibleSdkVersion": "5.0.0(12)",
+        "compatibleSdkVersion": "6.0.0(20)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
           "strictMode": {
             "useNormalizedOHMUrl": true
           }
-        }
+        },
+        "compileSdkVersion": "6.0.0(20)",
+        "targetSdkVersion": "6.0.0(20)"
       }
     ],
     "buildModeSet": [

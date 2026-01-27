@@ -1,5 +1,5 @@
 import { BaseListDataSource } from '../model/BaseListDataSource';
-import { ViewStatus } from '../Enum/ViewStatus';
+import { ViewStatus } from '../enum/ViewStatus';
 import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { TabModel } from '../model/TabModel';

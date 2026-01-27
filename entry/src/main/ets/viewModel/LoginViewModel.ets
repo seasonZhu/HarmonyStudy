@@ -3,7 +3,7 @@ import { AxiosError } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { LoginModel } from '../model/LoginModel';
 import AccountManager from '../AccountManager/AccountManager';
-import httpClient from '../HttpRequest/Provider';
+import httpClient from '../httpRequest/Provider';
 import { LoginOrRegisterInfo } from '../entity/LoginOrRegisterInfo';
 import { PreferencesUtil, LogUtil } from '@pura/harmony-utils';
 

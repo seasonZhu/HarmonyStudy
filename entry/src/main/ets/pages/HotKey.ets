@@ -1,7 +1,7 @@
 import { BaseListDataSource } from '../model/BaseListDataSource';
 import { StatusWeight } from '../views/StatusWeight';
 import { HotKeyViewModel } from '../viewModel/HotKeyViewModel';
-import { ViewStatus } from '../Enum/ViewStatus';
+import { ViewStatus } from '../enum/ViewStatus';
 import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { HotKeyModel } from '../model/HotKeyModel';

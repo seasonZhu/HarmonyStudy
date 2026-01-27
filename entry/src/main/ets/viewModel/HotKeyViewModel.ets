@@ -1,6 +1,6 @@
 import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
-import httpClient from '../HttpRequest/Provider';
+import httpClient from '../httpRequest/Provider';
 import { HotKeyModel } from '../model/HotKeyModel';
 
 export class HotKeyViewModel {
