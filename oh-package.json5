@@ -11,7 +11,7 @@
     "@ohos/imageknife": "3.2.8",
     "@ohos/pulltorefresh": "3.0.0",
     "@pura/harmony-utils": "1.0.2",
-    "@dcloudio/uni-app-runtime": "^2.3.14"
+    "@dcloudio/uni-app-runtime": "4.84.2025110301"
   },
   "devDependencies": {
     "@ohos/hypium": "1.0.16",

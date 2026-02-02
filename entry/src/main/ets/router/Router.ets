@@ -66,7 +66,8 @@ export abstract class Router {
   }
 
   public static toObservedV2TestPage() {
-    Router.pushWithLogin(PagesConstant.ObservedV2TestPage)
+    //Router.pushWithLogin(PagesConstant.ObservedV2TestPage)
+    Router.push({ url: PagesConstant.ObservedV2TestPage })
   }
 
   public static toEnvironmentSwitch() {

@@ -227,7 +227,7 @@ export struct ObservedV2TestPage {
 
   aboutToAppear(): void {
     let fileDir: string = getContext().filesDir
-    let fileName = "__UNI__DF9D7DE.wgt"//"__UNI__98AF8A0.wgt"
+    let fileName = "__UNI__98AF8A0.wgt"//"__UNI__DF9D7DE.wgt"//
 
     getContext().resourceManager.getRawFileContent(fileName, (error, value) => {
       console.debug(`${"UniApp#"}[${"wgt File"}] ${"getRawFile:__UNI__.wgt"}`)
@@ -244,7 +244,7 @@ export struct ObservedV2TestPage {
   }
 
   private async openLocalUniApp() {
-    const mpId = "__UNI__DF9D7DE"//"__UNI__98AF8A0"
+    const mpId = "__UNI__98AF8A0"//"__UNI__DF9D7DE"//
 
     await new Promise<void>((resolve, reject) => {
       try {
