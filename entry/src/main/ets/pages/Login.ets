@@ -46,7 +46,7 @@ struct Login {
             .margin(20)
             .fontSize(14)
             .fontColor(Color.Black)
-            .inputFilter('[0-9]', (e) => {
+            .inputFilter('[0-9]', (_e) => {
               ToastUtil.showToast("请输入11位手机号")
             })
             .onChange((value: string) => {
@@ -101,7 +101,7 @@ struct Login {
                 ToastUtil.showToast("登录成功")
                 let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
                 let userInfo = response.data.data
-                Router.back({ params: userInfo, url: "" })
+                Router.backWithParams("", userInfo)
               } else {
                 ToastUtil.showToast("登录失败")
               }
@@ -126,7 +126,7 @@ struct Login {
   onPageShow(): void {
     let userInfo = Router.getParams() as UserInfoModel
     if (userInfo) {
-      Router.back({url: "", params: userInfo})
+      Router.backWithParams("", userInfo)
     }
   }
 

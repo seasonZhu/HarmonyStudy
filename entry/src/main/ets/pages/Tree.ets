@@ -14,7 +14,7 @@ import { LogUtil } from '@pura/harmony-utils';
 
 @Entry
 @Component
-export struct Tree {
+struct Tree {
 
   @State listDataSource: BaseListDataSource<TabModel> = new BaseListDataSource<TabModel>()
 
@@ -121,3 +121,5 @@ export struct Tree {
     }
   }
 }
+
+export { Tree }

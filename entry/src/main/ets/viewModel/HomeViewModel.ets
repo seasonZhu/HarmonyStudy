@@ -3,7 +3,7 @@ import { AxiosError } from '@ohos/axios';
 import { Banner } from '../model/Banner'
 import { BaseResponse } from '../model/BaseResponse';
 import { LoginModel } from '../model/LoginModel';
-import AccountManager from '../AccountManager/AccountManager';
+import AccountManager from '../accountManager/AccountManager';
 import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
 import { ScrollActionType } from '../enum/ScrollActionType';

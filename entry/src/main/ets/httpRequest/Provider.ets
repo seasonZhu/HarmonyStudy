@@ -1,14 +1,13 @@
 import List from '@ohos.util.List'
 import { AxiosClientRequestInterceptor } from './interceptors/AxiosClientRequestInterceptor';
 import { AxiosClientResponseInterceptor } from './interceptors/AxiosClientResponseInterceptor';
-import { ConfigurationAxiosClient } from './Configuration/ConfigurationAxiosClient'
+import { ConfigurationAxiosClient } from './configuration/ConfigurationAxiosClient'
 import { HttpRequestLoggerInterceptor } from './interceptors/HttpRequestLoggerInterceptor'
 import { HttpResponseLoggerInterceptor } from './interceptors/HttpResponseLoggerInterceptor'
 import { BaseProvider } from './BaseProvider';
 import { SetCookieRequestInterceptor } from './interceptors/SetCookieRequestInterceptor';
 import { LoadingDialog } from './LoadingDialog';
 import { LoadingOpenInterceptor, LoadingCloseInterceptor } from './interceptors/LoadingInterceptor';
-import { print } from '@kit.BasicServicesKit';
 import { Environment, EnvConfig } from './Environment';
 import { environmentManager } from './EnvironmentManager';
 
@@ -80,6 +79,9 @@ export class Provider extends BaseProvider {
     return Provider.currentConfig.enableLog
   }
 
+  /**
+   * @throws
+   */
   configurationRequestInterceptor(): List<AxiosClientRequestInterceptor> {
     let interceptors = new List<AxiosClientRequestInterceptor>()
     //添加拦截器
@@ -91,6 +93,9 @@ export class Provider extends BaseProvider {
     return interceptors
   }
 
+  /**
+   * @throws
+   */
   configurationResponseInterceptor(): List<AxiosClientResponseInterceptor> {
     let interceptors = new List<AxiosClientResponseInterceptor>()
     //添加拦截器

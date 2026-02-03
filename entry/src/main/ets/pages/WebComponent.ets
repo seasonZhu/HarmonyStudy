@@ -1,7 +1,6 @@
 import { webview } from '@kit.ArkWeb';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { LogUtil } from '@pura/harmony-utils';
-import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 
 @Entry({routeName: RouterName.WebComponent})

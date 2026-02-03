@@ -1,4 +1,4 @@
-import router from '@ohos.router'
+import { router } from '@kit.ArkUI'
 import { LogUtil } from '@pura/harmony-utils';
 import AccountManager from '../accountManager/AccountManager'
 import { KeywordInfo } from '../entity/KeywordInfo';
@@ -6,157 +6,241 @@ import { TreeDetailInfo } from '../entity/TreeDetailInfo';
 import { WebLink } from '../entity/WebLink';
 import { PagesConstant } from './PagesConstant';
 
-/// 这个Router只是对router的简单封装，其实不用也罢
-export interface RouterOptions {
+/**
+ * 命名路由选项
+ */
+interface NamedRouteOptions {
   url: string
   params?: object
-  success?: (() => void)
-  error?: ((error: Error) => void)
-  finally?: (() => void)
 }
 
-export abstract class Router {
-  public static toWebPage(webLink: WebLink) {
-    Router.push({
-      url: PagesConstant.Web,
-      params: webLink
-    })
-  }
+/**
+ * 路由工具类 - 优化版本
+ *
+ * @description
+ * 提供类型安全的路由跳转功能
+ *
+ * @example
+ * ```typescript
+ * // 简单跳转
+ * Router.push(PagesConstant.Home)
+ *
+ * // 带参数跳转
+ * Router.push(PagesConstant.Web, webLink)
+ *
+ * // 类型安全的参数获取
+ * let webLink = Router.getParams<WebLink>()
+ *
+ * // 需要登录的页面
+ * Router.pushWithLogin(PagesConstant.MyCollect)
+ * ```
+ */
+export class Router {
+  private static readonly TAG = 'Router'
 
-  public static toTreeDetail(treeDetailInfo: TreeDetailInfo) {
-    Router.push({
-      url: PagesConstant.TreeDetail,
-      params: treeDetailInfo
-    })
-  }
+  // ==================== 核心路由方法 ====================
 
-  public static toSearchResult(keywordInfo: KeywordInfo) {
-    Router.push({
-      url: PagesConstant.SearchResult,
-      params: keywordInfo
-    })
-  }
-
-  public static toRank() {
-    Router.push({ url: PagesConstant.Rank })
-  }
-
-  public static toRegister() {
-    Router.push({ url: PagesConstant.Register })
-  }
-
-  public static toCollect() {
-    Router.pushWithLogin(PagesConstant.MyCollect)
-  }
-
-  public static toMyCoin() {
-    Router.pushWithLogin(PagesConstant.MyCoin)
-  }
-
-  public static toSetting() {
-    Router.pushWithLogin(PagesConstant.Setting)
-  }
-
-  public static toWebExample() {
-    Router.pushWithLogin(PagesConstant.WebExample)
-  }
-
-  public static toWebComponent() {
-    Router.pushWithLogin(PagesConstant.WebComponent)
-  }
-
-  public static toObservedV2TestPage() {
-    //Router.pushWithLogin(PagesConstant.ObservedV2TestPage)
-    Router.push({ url: PagesConstant.ObservedV2TestPage })
-  }
-
-  public static toEnvironmentSwitch() {
-    Router.push({ url: PagesConstant.EnvironmentSwitch })
-  }
-
-  public static toLogin(showTips: boolean = true, callback?: (() => void)) {
-    Router.push({url: PagesConstant.Login,
-      success: () => {
-        if (showTips) {
-          if (callback) {
-            callback()
-          }
-        }
+  /**
+   * 跳转到指定页面
+   * @param url 页面路径
+   * @param params 页面参数（可选，支持泛型）
+   */
+  static push<T = object>(url: string, params?: T): void {
+    try {
+      router.push({ url, params })
+      LogUtil.debug(`${Router.TAG}: 跳转到 ${url}`)
+    } catch (error) {
+      LogUtil.error(`${Router.TAG}: 跳转失败`, JSON.stringify(error))
+      if (error instanceof Error) {
+        throw error
       }
-    })
-  }
-
-  private static pushWithLogin(url: string, params?: object, showTips: boolean = true, callback?: (() => void)) {
-    if (AccountManager.shared().isLogin()) {
-      Router.push({url: url, params: params})
-    } else {
-      Router.toLogin(showTips, callback)
     }
   }
 
-  public static replace(options: RouterOptions) {
-    router.replaceUrl(
-      { url: options.url, params: options.params },
-      router.RouterMode.Standard)
-      .then(options.success)
-      .catch(options.error)
+  /**
+   * 替换当前页面
+   * @param url 页面路径
+   * @param params 页面参数（可选）
+   */
+  static replace<T = object>(url: string, params?: T): void {
+    try {
+      router.replace({ url, params })
+      LogUtil.debug(`${Router.TAG}: 替换到 ${url}`)
+    } catch (error) {
+      LogUtil.error(`${Router.TAG}: 替换失败`, JSON.stringify(error))
+      if (error instanceof Error) {
+        throw error
+      }
+    }
   }
 
-  public static push(
-    options: RouterOptions) {
-    router.pushUrl(
-      { url: options.url, params: options.params },
-      router.RouterMode.Standard
-    )
-      .then(() => {
-        if(options.success) {
-          options.success()
-        }
-        LogUtil.debug("路由成功了")
-      })
-      .catch((error: Error) => {
-        if(options.error) {
-          options.error(error)
-        }
-        LogUtil.debug("路由失败了")
-      })
-      .finally(() => {
-        if(options.finally) {
-          options.finally()
-        }
-      })
+  /**
+   * 返回上一页
+   */
+  static back(): void {
+    try {
+      router.back()
+      LogUtil.debug(`${Router.TAG}: 返回上一页`)
+    } catch (error) {
+      LogUtil.error(`${Router.TAG}: 返回失败`, JSON.stringify(error))
+    }
   }
 
-  public static pushName(options: RouterOptions) {
-    router.pushNamedRoute(
-      { name: options.url, params: options.params },
-      router.RouterMode.Standard
-    )
-      .then(() => {
-        if(options.success) {
-          options.success()
-        }
-        LogUtil.debug("路由成功了")
-      })
-      .catch((error: Error) => {
-        if(options.error) {
-          options.error(error)
-        }
-        LogUtil.debug("路由失败了")
-      })
-      .finally(() => {
-        if(options.finally) {
-          options.finally()
-        }
-      })
+  /**
+   * 获取页面参数（类型安全）
+   * @template T 参数类型
+   * @returns 页面参数，如果不存在返回 null
+   */
+  static getParams<T = object>(): T | null {
+    try {
+      const params = router.getParams()
+      return params ? (params as T) : null
+    } catch (error) {
+      LogUtil.error(`${Router.TAG}: 获取参数失败`, JSON.stringify(error))
+      return null
+    }
   }
 
-  public static back(options?: RouterOptions) {
-    let url = options?.url ?? ""
-    router.back({url: url, params: options?.params })
+  // ==================== 登录相关方法 ====================
+
+  /**
+   * 跳转到登录页
+   * @param callback 登录成功后的回调（可选）
+   */
+  static toLogin(callback?: () => void): void {
+    Router.push(PagesConstant.Login)
+    if (callback) {
+      // 将回调保存到全局，供登录页面调用
+      AppStorage.setOrCreate('loginCallback', callback)
+    }
   }
 
-  public static getParams(): Object {
-    return router.getParams()
+  /**
+   * 需要登录的页面跳转
+   * @param url 页面路径
+   * @param params 页面参数
+   */
+  static pushWithLogin<T = object>(url: string, params?: T): void {
+    if (AccountManager.shared().isLogin()) {
+      Router.push<T>(url, params)
+    } else {
+      // 保存目标页面信息，登录成功后跳转
+      AppStorage.setOrCreate('afterLoginTarget', { url, params })
+      Router.toLogin()
+    }
+  }
+
+  // ==================== 便捷方法 ====================
+
+  /**
+   * 跳转到 Web 页面
+   */
+  static toWebPage(webLink: WebLink): void {
+    Router.push(PagesConstant.Web, webLink)
+  }
+
+  /**
+   * 跳转到搜索结果页
+   */
+  static toSearchResult(keywordInfo: KeywordInfo): void {
+    Router.push(PagesConstant.SearchResult, keywordInfo)
+  }
+
+  /**
+   * 跳转到树形详情页
+   */
+  static toTreeDetail(treeDetailInfo: TreeDetailInfo): void {
+    Router.push(PagesConstant.TreeDetail, treeDetailInfo)
+  }
+
+  /**
+   * 跳转到排行榜
+   */
+  static toRank(): void {
+    Router.push(PagesConstant.Rank)
+  }
+
+  /**
+   * 跳转到注册页
+   */
+  static toRegister(): void {
+    Router.push(PagesConstant.Register)
+  }
+
+  /**
+   * 跳转到收藏页（需要登录）
+   */
+  static toCollect(): void {
+    Router.pushWithLogin(PagesConstant.MyCollect)
+  }
+
+  /**
+   * 跳转到积分页（需要登录）
+   */
+  static toMyCoin(): void {
+    Router.pushWithLogin(PagesConstant.MyCoin)
+  }
+
+  /**
+   * 跳转到设置页（需要登录）
+   */
+  static toSetting(): void {
+    Router.pushWithLogin(PagesConstant.Setting)
+  }
+
+  /**
+   * 跳转到Web示例页（需要登录）
+   */
+  static toWebExample(): void {
+    Router.pushWithLogin(PagesConstant.WebExample)
+  }
+
+  /**
+   * 跳转到Web组件页（需要登录）
+   */
+  static toWebComponent(): void {
+    Router.pushWithLogin(PagesConstant.WebComponent)
+  }
+
+  /**
+   * 跳转到测试页面
+   */
+  static toObservedV2TestPage(): void {
+    Router.push(PagesConstant.ObservedV2TestPage)
+  }
+
+  /**
+   * 跳转到环境切换页
+   */
+  static toEnvironmentSwitch(): void {
+    Router.push(PagesConstant.EnvironmentSwitch)
+  }
+
+  // ==================== 兼容性方法（已废弃，保持向后兼容）====================
+
+  /**
+   * @deprecated 请使用 push(url, params) 替代
+   * 保留此方法仅用于向后兼容
+   */
+  static pushName(options: NamedRouteOptions): void {
+    try {
+      router.pushNamedRoute({ name: options.url, params: options.params })
+      LogUtil.debug(`${Router.TAG}: 命名路由跳转 ${options.url}`)
+    } catch (error) {
+      LogUtil.error(`${Router.TAG}: 命名路由跳转失败`, JSON.stringify(error))
+    }
+  }
+
+  /**
+   * @deprecated 请使用 back() 替代
+   * 保留此方法仅用于向后兼容
+   */
+  static backWithParams(url: string, params?: object): void {
+    try {
+      router.back({ url, params })
+      LogUtil.debug(`${Router.TAG}: 返回到 ${url}`)
+    } catch (error) {
+      LogUtil.error(`${Router.TAG}: 返回失败`, JSON.stringify(error))
+    }
   }
 }

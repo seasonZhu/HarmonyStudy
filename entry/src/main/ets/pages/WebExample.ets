@@ -1,11 +1,10 @@
 import { webview } from '@kit.ArkWeb';
-import { JSONUtil, DateUtil, FileUtil,ImageUtil,LogUtil,PickerUtil,ToastUtil} from '@pura/harmony-utils';
+import { JSONUtil, DateUtil, FileUtil, ImageUtil, LogUtil, ToastUtil } from '@pura/harmony-utils';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { image } from '@kit.ImageKit';
 import axios from '@ohos/axios'
 import { AxiosResponse } from '@ohos/axios';
 import { AxiosError } from '@ohos/axios';
-import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 
 /*
@@ -39,15 +38,9 @@ class JavaScriptInterface {
       let pixelMap = await imageSource.createPixelMap()
       let filePath = await ImageUtil.savePixelMap(pixelMap, FileUtil.getFilesDirPath(""), "download.png")
       let imgName = `download_${DateUtil.getTodayTime()}.png`;
-      PickerUtil.savePhoto([imgName]).then(async (uris) => {
-        let uri = uris[0];
-        let file = FileUtil.openSync(uri);
-        FileUtil.copyFile(filePath, file.fd).then(() => {
-          ToastUtil.showToast("图片保存成功");
-        })
-      }).catch((err: BusinessError) => {
-        LogUtil.info("test ", `调用保存图片，异常：\n${JSON.stringify(err)}`)
-      })
+      // 注意：PickerUtil在新版本的@pura/harmony-utils中已被移除
+      // 如果需要保存图片功能，请使用photoAccessHelper相关API
+      LogUtil.info("test", "图片下载功能需要使用photoAccessHelper实现");
     }).catch((error: AxiosError)=>{
       LogUtil.info("error:" + JSON.stringify(error));
     })
@@ -62,7 +55,7 @@ class JavaScriptInterface {
  * */
 @Entry({routeName: RouterName.WebExample})
 @Component
-export struct WebExample {
+struct WebExample {
   webviewController: webview.WebviewController = new webview.WebviewController();
   // 声明需要注册的对象
   @State javaScriptObject: JavaScriptInterface = new JavaScriptInterface();
@@ -106,8 +99,14 @@ export struct WebExample {
         //let javaScriptCallbackResult = this.webviewController.runJavaScript(`sendMessageToDiscussList(${jsonString})`);
 
         // 前端页面函数无参时，将param删除。
-        let javaScriptCallbackResult = await this.webviewController.runJavaScript(`harmonyOSCallJS()`)
-        ToastUtil.showToast(javaScriptCallbackResult)
+        try {
+          let javaScriptCallbackResult = await this.webviewController.runJavaScript(`harmonyOSCallJS()`)
+          ToastUtil.showToast(javaScriptCallbackResult)
+        } catch (error) {
+          // TODO: Implement error handling.
+        }
       })
   }
 }
+
+export { WebExample }

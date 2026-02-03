@@ -37,7 +37,7 @@ export interface Article extends WebLink {
   visible: number
   zan: number
 
-  //收藏列表 coolect list返回的文章参数
+  //收藏列表 collect list返回的文章参数
   originId: number
 
   //额外添加 收藏中

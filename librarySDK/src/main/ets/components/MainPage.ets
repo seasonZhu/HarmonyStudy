@@ -3,7 +3,7 @@ import { RouteConstant } from './RouteConstant';
 
 @Entry({routeName: RouteConstant.mainPage})
 @Component
-export struct MainPage {
+struct MainPage {
   @State message: string = 'This is librarySDK Main Page';
 
   build() {
@@ -20,3 +20,5 @@ export struct MainPage {
     })
   }
 }
+
+export { MainPage }

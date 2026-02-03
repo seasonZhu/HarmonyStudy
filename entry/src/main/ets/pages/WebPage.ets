@@ -1,10 +1,10 @@
-import webview from '@ohos.web.webview'
+import { webview } from '@kit.ArkWeb'
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { WebLink } from '../entity/WebLink';
 import AccountManager from '../accountManager/AccountManager';
-import { LogUtil, ToastUtil } from '@pura/harmony-utils';
+import { LogUtil } from '@pura/harmony-utils';
 import { CollectActionType } from '../enum/CollectActionType';
 import { MyCollectViewModel } from '../viewModel/MyCollectViewModel';
 import { common } from '@kit.AbilityKit';
@@ -14,7 +14,7 @@ import { uniformTypeDescriptor as utd } from '@kit.ArkData';
 @Entry({routeName: RouterName.Web})
 @Component
 struct WebPage {
-  private controller: WebviewController = new webview.WebviewController()
+  private controller: webview.WebviewController = new webview.WebviewController()
 
   @State private loadingProgress: number = 0
 
@@ -71,7 +71,7 @@ struct WebPage {
             }
             this.loadingDialogController.open()
           })
-          .onPageEnd((event) => {
+          .onPageEnd((_event) => {
             //网页加载完成时触发该回调，且只在主frame触发。
             this.showLoadingProgress = false
             this.loadingDialogController.close()
@@ -124,7 +124,11 @@ struct WebPage {
         .objectFit(ImageFit.Contain)
         .onClick(() => {
           LogUtil.debug("点击了分享按钮")
-          this.shareAction()
+          try {
+            this.shareAction()
+          } catch (error) {
+            // TODO: Implement error handling.
+          }
         })
 
       Image(this.collectIcon())
@@ -197,6 +201,9 @@ struct WebPage {
     }
   }
 
+  /**
+   * @throws
+   */
   shareAction() {
     // https://ost.51cto.com/posts/29508
 

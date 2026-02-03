@@ -1,0 +1,12 @@
+{
+  "name": "network",
+  "version": "1.0.0",
+  "description": "Network SDK - 企业级网络请求模块",
+  "main": "Index.ets",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@ohos/axios": "^2.2.0",
+    "@pura/harmony-utils": "^1.0.0"
+  }
+}

@@ -18,7 +18,7 @@ class Son {
 
 @Entry
 @Component
-export struct ObservedV2TestPage {
+struct ObservedV2TestPage {
   person = new Person()
 
   build() {
@@ -226,10 +226,10 @@ export struct ObservedV2TestPage {
   }
 
   aboutToAppear(): void {
-    let fileDir: string = getContext().filesDir
+    let fileDir: string = getContext(this).filesDir
     let fileName = "__UNI__98AF8A0.wgt"//"__UNI__DF9D7DE.wgt"//
 
-    getContext().resourceManager.getRawFileContent(fileName, (error, value) => {
+    getContext(this).resourceManager.getRawFileContent(fileName, (error, value) => {
       console.debug(`${"UniApp#"}[${"wgt File"}] ${"getRawFile:__UNI__.wgt"}`)
       if (error != null) {
         console.error("error is " + error.message)
@@ -252,7 +252,7 @@ export struct ObservedV2TestPage {
         let isExists = isExistsUniMP(mpId)
         console.log("isExists:"+isExists)
 
-        let fileDir: string = getContext().filesDir
+        let fileDir: string = getContext(this).filesDir
         // 拼接wgt包路径
         let path = fileDir + "/"+mpId+".wgt"
         // 释放 wgt 包到运行目录
@@ -279,3 +279,5 @@ export struct ObservedV2TestPage {
     })
   }
 }
+
+export { ObservedV2TestPage }

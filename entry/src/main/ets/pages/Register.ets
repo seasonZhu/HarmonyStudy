@@ -102,7 +102,7 @@ struct Register {
                   let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
                   let userInfo = response.data.data
                   if (response.data.errorCode == 0) {
-                    Router.back({ params: userInfo, url: "" })
+                    Router.backWithParams("", userInfo)
                   } else {
                     ToastUtil.showToast("获取用户信息失败")
                   }
@@ -132,6 +132,6 @@ struct Register {
 
   mockBackToRoot() {
     let params: UserInfoModel = { coinCount: 1000, level: 1000, nickname: "nickname", rank: "1000", userId: 1000, username: "1000" }
-    Router.back({url: "", params: params})
+    Router.backWithParams("", params)
   }
 }

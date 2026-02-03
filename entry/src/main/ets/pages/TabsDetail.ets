@@ -16,7 +16,7 @@ import { LogUtil } from '@pura/harmony-utils';
 
 @Entry
 @Component
-export struct TabsDetail {
+struct TabsDetail {
 
   @Prop contentType: ContentType
 
@@ -149,3 +149,5 @@ export struct TabsDetail {
     }
   }
 }
+
+export { TabsDetail }

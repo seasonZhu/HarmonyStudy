@@ -11,7 +11,7 @@ import { AxiosResponse } from '@ohos/axios';
 import { PreferencesUtil, ToastUtil } from '@pura/harmony-utils'
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
-import { importHeadFile } from 'librarySDK';
+import { importHeadFile } from 'librarysdk';
 import { router } from '@kit.ArkUI';
 
 @Preview
@@ -109,9 +109,10 @@ struct Index {
     if (userInfo) {
       this.loginSuccessUserInfo = userInfo
     }
-    
+
     /// 从模块传参过App侧
-    let index: number = (router.getParams() as object)?.['index']
+    let params = Router.getParams() as object
+    let index: number = params?.['index']
     if (index != null) {
       this.currentIndex = index;
       this.tabsController.changeIndex(index)

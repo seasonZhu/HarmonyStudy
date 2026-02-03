@@ -38,7 +38,11 @@ struct Setting {
           .backgroundColor(Color.Black)
           .onClick(() => {
             LogUtil.debug("跳转到SDK页面")
-            router.pushNamedRoute({ name: RouteConstant.mainPage})
+            try {
+              router.pushNamedRoute({ name: RouteConstant.mainPage})
+            } catch (error) {
+              LogUtil.debug('跳转SDK页面失败: ' + JSON.stringify(error))
+            }
           })
 
         Blank()
@@ -99,7 +103,7 @@ struct Setting {
     if (result) {
       ToastUtil.showToast("退出登录成功")
       let userInfo: UserInfoModel = {}
-      Router.back({ url:"", params: userInfo })
+      Router.backWithParams("", userInfo)
     } else {
       ToastUtil.showToast("退出登录失败")
     }

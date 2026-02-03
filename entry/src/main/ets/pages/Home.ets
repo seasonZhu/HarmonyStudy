@@ -21,7 +21,7 @@ import { WebLink } from '../entity/WebLink';
 
 @Entry
 @Component
-export struct Home {
+struct Home {
 
   @State message: string = "正在加载"
 
@@ -204,6 +204,8 @@ export struct Home {
   }
 }
 
+export { Home }
+
 @Component
 struct SearchIcon {
   build() {
@@ -212,16 +214,16 @@ struct SearchIcon {
       .height(60)
       .padding(16)
       .onClick(() => {
-        Router.push({url: PagesConstant.Hotkey, success: () => {}, error: () => {}})
+        Router.push(PagesConstant.Hotkey)
       })
   }
 
   /// 沉浸式开与关
   immersionAction() {
     if (immersion.onOrOff == true) {
-      immersion.onOrOffFullScreen(false)
+      immersion.onOrOffFullScreen(false, getContext(this))
     } else {
-      immersion.onOrOffFullScreen(true)
+      immersion.onOrOffFullScreen(true, getContext(this))
     }
   }
 }

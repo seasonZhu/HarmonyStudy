@@ -10,7 +10,7 @@ import { LogUtil } from '@pura/harmony-utils'
 
 @Entry
 @Component
-export struct My {
+struct My {
 
   @Prop userInfo: UserInfoModel
 
@@ -106,3 +106,5 @@ export struct My {
     this.userInfo = this.loginSuccessUserInfo
   }
 }
+
+export { My }

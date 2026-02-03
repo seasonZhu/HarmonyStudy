@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} fr
 import List from '@ohos.util.List'
 import { AxiosClientRequestInterceptor } from './interceptors/AxiosClientRequestInterceptor';
 import { AxiosClientResponseInterceptor } from './interceptors/AxiosClientResponseInterceptor';
-import { ConfigurationAxiosClient } from './Configuration/ConfigurationAxiosClient'
+import { ConfigurationAxiosClient } from './configuration/ConfigurationAxiosClient'
 import { BaseResponse } from '../model/BaseResponse';
 
 export abstract class BaseProvider {
@@ -16,14 +16,22 @@ export abstract class BaseProvider {
     this.instance = axios.create(this.configurationAxios())
 
     // 配置请求拦截器
-    this.configurationRequestInterceptor().forEach((interceptor: AxiosClientRequestInterceptor) => {
-      this.instance.interceptors.request.use(interceptor.onFulfilled, interceptor.onRejected)
-    })
+    try {
+      this.configurationRequestInterceptor().forEach((interceptor: AxiosClientRequestInterceptor) => {
+        this.instance.interceptors.request.use(interceptor.onFulfilled, interceptor.onRejected)
+      })
+    } catch (error) {
+      // TODO: Implement error handling.
+    }
 
     // 配置响应拦截器
-    this.configurationResponseInterceptor().forEach((interceptor: AxiosClientResponseInterceptor) => {
-      this.instance.interceptors.response.use(interceptor.onFulfilled, interceptor.onRejected)
-    })
+    try {
+      this.configurationResponseInterceptor().forEach((interceptor: AxiosClientResponseInterceptor) => {
+        this.instance.interceptors.response.use(interceptor.onFulfilled, interceptor.onRejected)
+      })
+    } catch (error) {
+      // TODO: Implement error handling.
+    }
 
   }
 

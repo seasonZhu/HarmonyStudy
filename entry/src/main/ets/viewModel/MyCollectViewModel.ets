@@ -47,7 +47,6 @@ export class MyCollectViewModel {
           ToastUtil.showToast("收藏失败")
           return false
         }
-        break
       case CollectActionType.cancel:
         api = "lg/uncollect_originId/" + id + "/json"
         let cancelCollectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post(api)
@@ -68,7 +67,6 @@ export class MyCollectViewModel {
           ToastUtil.showToast("取消收藏失败")
           return false
         }
-        break
     }
   }
 }

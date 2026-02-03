@@ -5,7 +5,7 @@ import { ViewStatus } from '../enum/ViewStatus';
 import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import { HotKeyModel } from '../model/HotKeyModel';
-import { KeyboardUtil, ToastUtil, LogUtil } from '@pura/harmony-utils';
+import { ToastUtil, LogUtil } from '@pura/harmony-utils';
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { KeywordInfo } from '../entity/KeywordInfo';
@@ -77,7 +77,7 @@ struct HotKey {
     TextInput({placeholder: "搜索关键词", controller: this.inputController})
       .enterKeyType(EnterKeyType.Search)
       .margin({ top: 8, left: 16, right: 16 })
-      .onSubmit((enterKey: EnterKeyType, event: SubmitEvent) => {
+      .onSubmit((_enterKey: EnterKeyType, event: SubmitEvent) => {
         let keyword = event.text
         if (keyword.length != 0) {
           let keywordInfo: KeywordInfo = {

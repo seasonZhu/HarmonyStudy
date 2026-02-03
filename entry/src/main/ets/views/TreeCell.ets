@@ -1,4 +1,4 @@
-import { RandomUtil } from '@pura/harmony-utils/src/main/ets/utils/RandomUtil'
+import { RandomUtil } from '@pura/harmony-utils'
 import { ContentType } from '../enum/ContentType'
 import { TabModel } from '../model/TabModel'
 import { Router } from '../router/Router'
@@ -37,12 +37,12 @@ export struct TreeCell {
     }
   }
 
-  getRandomString() {
-    let string = RandomUtil.randomColor()
-    if (string === "#FFFFFF") {
+  getRandomString(): string {
+    let color = RandomUtil.getRandomColor()
+    if (color === "#FFFFFF") {
       return "#2C86EF"
     } else {
-      return string
+      return color
     }
   }
 }

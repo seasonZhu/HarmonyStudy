@@ -1,7 +1,6 @@
 import { Environment } from '../httpRequest/Environment'
 import { environmentManager } from '../httpRequest/EnvironmentManager'
 import { common } from '@kit.AbilityKit'
-import promptAction from '@ohos.promptAction'
 import { LogUtil } from '@pura/harmony-utils';
 import { RouterName } from '../router/RouterName'
 
@@ -28,10 +27,14 @@ struct EnvironmentSwitch {
   async onSelectEnvironment(env: Environment): Promise<void> {
     if (env === this.currentEnvironment) {
       // 已经是当前环境，提示用户
-      promptAction.showToast({
-        message: '当前已是该环境',
-        duration: 2000
-      })
+      try {
+        this.getUIContext().getPromptAction().showToast({
+          message: '当前已是该环境',
+          duration: 2000
+        })
+      } catch (error) {
+        // TODO: Implement error handling.
+      }
       return
     }
 
@@ -50,7 +53,7 @@ struct EnvironmentSwitch {
       LogUtil.debug('环境已切换为: ' + env)
 
       // 显示成功提示
-      promptAction.showToast({
+      this.getUIContext().getPromptAction().showToast({
         message: `已切换至${environmentManager.getEnvironmentDisplayName(env)}，应用即将退出`,
         duration: 2000
       })
@@ -61,7 +64,7 @@ struct EnvironmentSwitch {
       }, 2000)
     } catch (error) {
       LogUtil.debug('切换环境失败: ' + JSON.stringify(error))
-      promptAction.showToast({
+      this.getUIContext().getPromptAction().showToast({
         message: '切换失败，请重试',
         duration: 2000
       })
@@ -73,7 +76,9 @@ struct EnvironmentSwitch {
    */
   exitApp(): void {
     const context = getContext(this) as common.UIAbilityContext
-    context.terminateSelf()
+    context.terminateSelf().catch(() => {
+      // TODO: Implement error handling.
+    })
   }
 
   build() {

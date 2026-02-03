@@ -1,7 +1,7 @@
 import { Banner } from '../model/Banner';
 import { BaseListDataSource } from '../model/BaseListDataSource';
 import { ImageKnifeComponent, ImageKnifeOption } from '@ohos/imageknife'
-import display from '@ohos.display';
+import { display } from '@kit.ArkUI';
 import { LogUtil } from '@pura/harmony-utils';
 
 @Component
