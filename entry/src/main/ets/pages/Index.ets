@@ -84,7 +84,7 @@ struct Index {
       .tabBar(this.tabBarItem(getTabModel(type)))
     } else {
       TabContent() {
-        My({userInfo: this.userInfo })
+        My()
       }
       .tabBar(this.tabBarItem(getTabModel(type)))
     }
@@ -100,6 +100,7 @@ struct Index {
       if (result) {
         let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
         this.userInfo = response.data.data
+        this.loginSuccessUserInfo = response.data.data
       }
     }
   }

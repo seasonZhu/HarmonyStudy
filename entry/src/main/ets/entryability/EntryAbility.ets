@@ -5,7 +5,7 @@ import { AppUtil } from '@pura/harmony-utils';
 import { init } from '@dcloudio/uni-app-runtime'
 import { environmentManager } from '../httpRequest/EnvironmentManager'
 import { Provider } from '../httpRequest/Provider'
-import { NetworkProvider } from '../httpRequest/NetworkProvider'
+import { NetworkProvider } from '../network/examples/NetworkProvider'
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {

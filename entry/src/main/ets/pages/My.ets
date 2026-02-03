@@ -12,10 +12,7 @@ import { LogUtil } from '@pura/harmony-utils'
 @Component
 struct My {
 
-  @Prop userInfo: UserInfoModel
-
   @Consume
-  @Watch("update")
   loginSuccessUserInfo: UserInfoModel
 
 
@@ -25,7 +22,7 @@ struct My {
         ForEach(allMyTypeCases, (type: MyType) => {
           ListItem() {
             if (type == MyType.header) {
-              MyHeader({userInfo: this.userInfo})
+              MyHeader({userInfo: this.loginSuccessUserInfo})
                 .height(150)
                 .width('100%')
             } else {
@@ -100,10 +97,6 @@ struct My {
 
   aboutToAppear(): void {
 
-  }
-
-  update() {
-    this.userInfo = this.loginSuccessUserInfo
   }
 }
 

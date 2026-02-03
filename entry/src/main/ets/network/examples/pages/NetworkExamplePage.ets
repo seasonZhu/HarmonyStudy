@@ -4,7 +4,7 @@
  * 所有接口都使用真实的 WanAndroid API
  */
 
-import { NetworkProvider } from '../../../httpRequest/NetworkProvider'
+import { NetworkProvider } from '../NetworkProvider'
 import { Environment } from 'network'
 import { NetworkExampleViewModel, ViewState } from '../viewModel/NetworkExampleViewModel'
 import { Article, Banner, HotKey } from '../api/WanAndroidModels'
