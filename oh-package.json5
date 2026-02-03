@@ -10,7 +10,7 @@
     "@ohos/axios": "2.2.7",
     "@ohos/imageknife": "3.2.8",
     "@ohos/pulltorefresh": "3.0.0",
-    "@pura/harmony-utils": "1.0.2",
+    "@pura/harmony-utils": "1.4.0",
     "@dcloudio/uni-app-runtime": "4.84.2025110301"
   },
   "devDependencies": {

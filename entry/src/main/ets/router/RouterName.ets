@@ -14,6 +14,7 @@ import ("entry/ets/pages/Setting")
 import ("entry/ets/pages/WebExample")
 import ("entry/ets/pages/WebComponent")
 import ("entry/ets/pages/ObservedV2TestPage")
+import ("entry/ets/network/examples/pages/NetworkExamplePage")
 
 
 export enum RouterName {
@@ -32,5 +33,6 @@ export enum RouterName {
   Setting = "Setting",
   WebExample =  "WebExample",
   WebComponent =  "WebComponent",
-  ObservedV2TestPage = "ObservedV2TestPage"
+  ObservedV2TestPage = "ObservedV2TestPage",
+  NetworkExample = "NetworkExamplePage"
 }

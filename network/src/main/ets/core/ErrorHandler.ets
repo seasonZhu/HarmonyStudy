@@ -4,6 +4,28 @@ import { HttpConfig } from '../models/HttpConfig'
 import { LogUtil } from '@pura/harmony-utils'
 
 /**
+ * 错误响应数据接口
+ */
+interface ErrorResponseData {
+  message?: string
+  msg?: string
+  error?: string
+  errorMessage?: string
+  error_message?: string
+  errorMsg?: string
+  error_msg?: string
+}
+
+/**
+ * Axios响应接口
+ */
+interface AxiosResponseLike {
+  status: number
+  statusText: string
+  data: object | null | string | number | boolean
+}
+
+/**
  * 错误处理器
  * @description 统一处理HTTP请求错误，将各种错误转换为ApiError
  */
@@ -45,7 +67,8 @@ export class ErrorHandler {
 
     // 处理Axios错误
     if (this.isAxiosError(error)) {
-      return this.handleAxiosError(error, url, method)
+      const axiosError: AxiosError = error as AxiosError
+      return this.handleAxiosError(axiosError, url, method)
     }
 
     // 其他未知错误
@@ -57,8 +80,9 @@ export class ErrorHandler {
    * @param error 错误对象
    * @returns 是否为Axios错误
    */
-  private isAxiosError(error: Error): error is AxiosError {
-    return (error as AxiosError).isAxiosError === true
+  private isAxiosError(error: Error): boolean {
+    const axiosError: AxiosError = error as AxiosError
+    return axiosError.isAxiosError === true
   }
 
   /**
@@ -69,10 +93,12 @@ export class ErrorHandler {
    * @returns ApiError
    */
   private handleAxiosError(error: AxiosError, url?: string, method?: string): ApiError {
-    const { code, response, message } = error
+    const code: string = error.code ?? ''
+    const axiosResponse: AxiosResponseLike | null = error.response as AxiosResponseLike | null
+    const message: string = error.message ?? ''
 
     // 网络错误
-    if (code === 'ERR_NETWORK' || !response) {
+    if (code === 'ERR_NETWORK' || !axiosResponse) {
       LogUtil.error('[ErrorHandler] 网络错误', message)
       return createNetworkError(
         message || '网络连接失败，请检查网络设置',
@@ -81,7 +107,7 @@ export class ErrorHandler {
     }
 
     // 超时错误
-    if (code === 'ECONNABORTED' || message?.includes('timeout')) {
+    if (code === 'ECONNABORTED' || message.includes('timeout')) {
       LogUtil.error('[ErrorHandler] 请求超时', message)
       return createTimeoutError(
         message || '请求超时，请稍后重试',
@@ -90,8 +116,11 @@ export class ErrorHandler {
     }
 
     // 有响应的错误
-    if (response) {
-      const { status, statusText, data } = response
+    if (axiosResponse) {
+      const response: AxiosResponseLike = axiosResponse as AxiosResponseLike
+      const status: number = response.status
+      const statusText: string = response.statusText ?? ''
+      const data: object | null | string | number | boolean = response.data
 
       // 401 未授权
       if (status === 401) {
@@ -136,29 +165,34 @@ export class ErrorHandler {
    * @param data 响应数据
    * @returns 错误消息
    */
-  private extractErrorMessage(data: unknown): string | null {
+  private extractErrorMessage(data: object | string | number | boolean | null): string | null {
     if (!data || typeof data !== 'object') {
       return null
     }
 
-    const responseData = data as Record<string, unknown>
+    const responseData: ErrorResponseData = data as ErrorResponseData
 
     // 尝试多种可能的错误消息字段
-    const possibleKeys = [
-      'message',
-      'msg',
-      'error',
-      'errorMessage',
-      'error_message',
-      'errorMsg',
-      'error_msg'
-    ]
-
-    for (const key of possibleKeys) {
-      const value = responseData[key]
-      if (typeof value === 'string') {
-        return value
-      }
+    if (responseData.message && typeof responseData.message === 'string') {
+      return responseData.message
+    }
+    if (responseData.msg && typeof responseData.msg === 'string') {
+      return responseData.msg
+    }
+    if (responseData.error && typeof responseData.error === 'string') {
+      return responseData.error
+    }
+    if (responseData.errorMessage && typeof responseData.errorMessage === 'string') {
+      return responseData.errorMessage
+    }
+    if (responseData.error_message && typeof responseData.error_message === 'string') {
+      return responseData.error_message
+    }
+    if (responseData.errorMsg && typeof responseData.errorMsg === 'string') {
+      return responseData.errorMsg
+    }
+    if (responseData.error_msg && typeof responseData.error_msg === 'string') {
+      return responseData.error_msg
     }
 
     return null

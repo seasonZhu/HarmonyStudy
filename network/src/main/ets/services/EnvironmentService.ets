@@ -69,7 +69,7 @@ export const environmentConfigs: Record<Environment, EnvironmentConfig> = {
   [Environment.DEV]: {
     name: '开发环境',
     description: '开发环境 - 用于日常开发调试',
-    baseURL: 'https://dev-api.example.com',
+    baseURL: 'https://www.wanandroid.com/',
     timeout: 30000,
     enableLog: true,
     debugMode: true
@@ -78,7 +78,7 @@ export const environmentConfigs: Record<Environment, EnvironmentConfig> = {
   [Environment.TEST]: {
     name: '测试环境',
     description: '测试环境 - 用于功能测试验证',
-    baseURL: 'https://test-api.example.com',
+    baseURL: 'https://www.wanandroid.com/',
     timeout: 15000,
     enableLog: true,
     debugMode: true
@@ -87,7 +87,7 @@ export const environmentConfigs: Record<Environment, EnvironmentConfig> = {
   [Environment.STAGING]: {
     name: '预发布环境',
     description: '预发布环境 - 用于上线前验证',
-    baseURL: 'https://staging-api.example.com',
+    baseURL: 'https://www.wanandroid.com/',
     timeout: 15000,
     enableLog: true,
     debugMode: false
@@ -96,9 +96,9 @@ export const environmentConfigs: Record<Environment, EnvironmentConfig> = {
   [Environment.PROD]: {
     name: '生产环境',
     description: '生产环境 - 正式对外发布环境',
-    baseURL: 'https://api.example.com',
+    baseURL: 'https://www.wanandroid.com/',
     timeout: 15000,
-    enableLog: false,
+    enableLog: true,
     debugMode: false
   }
 }
@@ -129,9 +129,9 @@ export class EnvironmentService {
   private preferences: preferences.Preferences | null = null
 
   /**
-   * 当前环境
+   * 当前环境（默认为开发环境，方便查看日志）
    */
-  private currentEnvironment: Environment = Environment.PROD
+  private currentEnvironment: Environment = Environment.DEV
 
   /**
    * 私有构造函数

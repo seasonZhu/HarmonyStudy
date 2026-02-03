@@ -5,10 +5,13 @@ import { AppUtil } from '@pura/harmony-utils';
 import { init } from '@dcloudio/uni-app-runtime'
 import { environmentManager } from '../httpRequest/EnvironmentManager'
 import { Provider } from '../httpRequest/Provider'
+import { NetworkProvider } from '../httpRequest/NetworkProvider'
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+    // 初始化 NetworkProvider
+    NetworkProvider.init(this.context)
 
     // 初始化环境管理器
     environmentManager.init(this.context).then(() => {

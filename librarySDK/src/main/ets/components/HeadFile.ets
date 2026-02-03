@@ -1,4 +1,4 @@
-import('librarysdk/ets/components/MainPage');
-import('librarysdk/ets/components/SecondPage');
+import('librarySDK/ets/components/MainPage');
+import('librarySDK/ets/components/SecondPage');
 
 export function importHeadFile() {}

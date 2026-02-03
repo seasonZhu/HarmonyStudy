@@ -216,6 +216,13 @@ export class Router {
     Router.push(PagesConstant.EnvironmentSwitch)
   }
 
+  /**
+   * 跳转到网络请求示例页
+   */
+  static toNetworkExample(): void {
+    Router.push(PagesConstant.NetworkExample)
+  }
+
   // ==================== 兼容性方法（已废弃，保持向后兼容）====================
 
   /**

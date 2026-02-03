@@ -118,7 +118,7 @@ export interface HttpConfig {
   /**
    * 自配置
    */
-  customConfig?: Record<string, unknown>
+  customConfig?: object
 }
 
 /**
@@ -231,17 +231,39 @@ export function mergeConfig(
   globalConfig: HttpGlobalConfig,
   requestConfig: HttpConfig
 ): HttpConfig {
-  return {
-    ...requestConfig,
+  // 手动合并headers - 不使用for..in
+  const mergedHeaders: HttpHeaders = {}
+  const globalKeys = Object.keys(globalConfig.headers) as string[]
+  for (let i = 0; i < globalKeys.length; i++) {
+    const key = globalKeys[i]
+    mergedHeaders[key] = globalConfig.headers[key]
+  }
+  if (requestConfig.headers) {
+    const localKeys = Object.keys(requestConfig.headers) as string[]
+    for (let i = 0; i < localKeys.length; i++) {
+      const key = localKeys[i]
+      mergedHeaders[key] = requestConfig.headers[key]
+    }
+  }
+
+  const result: HttpConfig = {
+    url: requestConfig.url,
+    method: requestConfig.method,
     baseURL: requestConfig.baseURL || globalConfig.baseURL,
+    headers: mergedHeaders,
+    params: requestConfig.params,
+    data: requestConfig.data,
     timeout: requestConfig.timeout ?? globalConfig.timeout,
-    headers: { ...globalConfig.headers, ...requestConfig.headers },
     showLoading: requestConfig.showLoading ?? globalConfig.showLoading,
     loadingText: requestConfig.loadingText || globalConfig.loadingText,
     enableRetry: requestConfig.enableRetry ?? globalConfig.enableRetry,
     maxRetryCount: requestConfig.maxRetryCount ?? globalConfig.maxRetryCount,
     retryDelay: requestConfig.retryDelay ?? globalConfig.retryDelay,
     requireAuth: requestConfig.requireAuth ?? globalConfig.requireAuth,
-    enableLog: requestConfig.enableLog ?? globalConfig.enableLog
+    enableLog: requestConfig.enableLog ?? globalConfig.enableLog,
+    tag: requestConfig.tag,
+    responseType: requestConfig.responseType,
+    customConfig: requestConfig.customConfig
   }
+  return result
 }

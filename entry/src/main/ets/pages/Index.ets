@@ -11,9 +11,9 @@ import { AxiosResponse } from '@ohos/axios';
 import { PreferencesUtil, ToastUtil } from '@pura/harmony-utils'
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
-import { importHeadFile } from 'librarysdk';
+import { importHeadFile } from 'librarySDK';
 import { router } from '@kit.ArkUI';
-
+import  { HttpClient } from 'network'
 @Preview
 @Entry({routeName: RouterName.Index})
 @Component

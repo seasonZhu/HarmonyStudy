@@ -56,7 +56,7 @@ export function createSuccessResponse<T>(data: T, message: string = '操作成�
  */
 export function createErrorResponse<T>(errorCode: number, errorMessage: string): ApiResponse<T> {
   return {
-    data: undefined as unknown as T,
+    data: null as T,
     errorCode,
     errorMsg: errorMessage
   }

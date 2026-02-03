@@ -1,5 +1,5 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from '@ohos/axios'
-import { HttpConfig, RequestMethod, HttpGlobalConfig, defaultGlobalConfig, mergeConfig } from '../models/HttpConfig'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig, ResponseType } from '@ohos/axios'
+import { HttpConfig, RequestMethod, HttpGlobalConfig, defaultGlobalConfig, mergeConfig, HttpParams, HttpBody } from '../models/HttpConfig'
 import { ApiResponse } from '../models/ApiResponse'
 import { ApiError, ApiErrorType, convertToApiError, createNetworkError, createTimeoutError, createServerError, createAuthError, createClientError } from '../models/ApiError'
 import { InterceptorManager } from './InterceptorManager'
@@ -47,7 +47,19 @@ export class HttpClient {
    * @param config 全局配置
    */
   constructor(config: Partial<HttpGlobalConfig> = {}) {
-    this.globalConfig = { ...defaultGlobalConfig, ...config }
+    // 手动合并配置，不使用Object.assign
+    this.globalConfig = {
+      baseURL: config.baseURL !== undefined ? config.baseURL : defaultGlobalConfig.baseURL,
+      timeout: config.timeout !== undefined ? config.timeout : defaultGlobalConfig.timeout,
+      headers: config.headers !== undefined ? config.headers : defaultGlobalConfig.headers,
+      enableLog: config.enableLog !== undefined ? config.enableLog : defaultGlobalConfig.enableLog,
+      showLoading: config.showLoading !== undefined ? config.showLoading : defaultGlobalConfig.showLoading,
+      loadingText: config.loadingText !== undefined ? config.loadingText : defaultGlobalConfig.loadingText,
+      enableRetry: config.enableRetry !== undefined ? config.enableRetry : defaultGlobalConfig.enableRetry,
+      maxRetryCount: config.maxRetryCount !== undefined ? config.maxRetryCount : defaultGlobalConfig.maxRetryCount,
+      retryDelay: config.retryDelay !== undefined ? config.retryDelay : defaultGlobalConfig.retryDelay,
+      requireAuth: config.requireAuth !== undefined ? config.requireAuth : defaultGlobalConfig.requireAuth
+    }
     this.axiosInstance = axios.create({
       baseURL: this.globalConfig.baseURL,
       timeout: this.globalConfig.timeout
@@ -66,21 +78,28 @@ export class HttpClient {
   private setupInterceptors(): void {
     // 请求拦截器
     this.axiosInstance.interceptors.request.use(
-      (config) => {
-        return this.interceptorManager.executeRequestInterceptors(config)
+      async (config: InternalAxiosRequestConfig) => {
+        const axiosConfig: AxiosRequestConfig = config as AxiosRequestConfig
+        const result: AxiosRequestConfig = await this.interceptorManager.executeRequestInterceptors(axiosConfig)
+        return result as InternalAxiosRequestConfig
       },
-      (error) => {
-        return Promise.reject(this.interceptorManager.executeRequestErrorInterceptors(error))
+      (error: Error) => {
+        const axiosError: AxiosError = error as AxiosError
+        return this.interceptorManager.executeRequestErrorInterceptors(axiosError).then((e: Error) => {
+          throw e
+        })
       }
     )
 
     // 响应拦截器
     this.axiosInstance.interceptors.response.use(
-      (response) => {
+      (response: AxiosResponse) => {
         return this.interceptorManager.executeResponseInterceptors(response)
       },
-      (error) => {
-        return Promise.reject(this.interceptorManager.executeResponseErrorInterceptors(error))
+      (error: Error) => {
+        return this.interceptorManager.executeResponseErrorInterceptors(error as AxiosError).catch((e: Error) => {
+          throw e
+        })
       }
     )
   }
@@ -90,7 +109,18 @@ export class HttpClient {
    * @param config 新的配置
    */
   updateGlobalConfig(config: Partial<HttpGlobalConfig>): void {
-    this.globalConfig = { ...this.globalConfig, ...config }
+    // 手动合并配置
+    if (config.baseURL !== undefined) this.globalConfig.baseURL = config.baseURL
+    if (config.timeout !== undefined) this.globalConfig.timeout = config.timeout
+    if (config.headers !== undefined) this.globalConfig.headers = config.headers
+    if (config.enableLog !== undefined) this.globalConfig.enableLog = config.enableLog
+    if (config.showLoading !== undefined) this.globalConfig.showLoading = config.showLoading
+    if (config.loadingText !== undefined) this.globalConfig.loadingText = config.loadingText
+    if (config.enableRetry !== undefined) this.globalConfig.enableRetry = config.enableRetry
+    if (config.maxRetryCount !== undefined) this.globalConfig.maxRetryCount = config.maxRetryCount
+    if (config.retryDelay !== undefined) this.globalConfig.retryDelay = config.retryDelay
+    if (config.requireAuth !== undefined) this.globalConfig.requireAuth = config.requireAuth
+
     this.axiosInstance.defaults.baseURL = this.globalConfig.baseURL
     this.axiosInstance.defaults.timeout = this.globalConfig.timeout
   }
@@ -99,7 +129,18 @@ export class HttpClient {
    * 获取全局配置
    */
   getGlobalConfig(): HttpGlobalConfig {
-    return { ...this.globalConfig }
+    return {
+      baseURL: this.globalConfig.baseURL,
+      timeout: this.globalConfig.timeout,
+      headers: this.globalConfig.headers,
+      enableLog: this.globalConfig.enableLog,
+      showLoading: this.globalConfig.showLoading,
+      loadingText: this.globalConfig.loadingText,
+      enableRetry: this.globalConfig.enableRetry,
+      maxRetryCount: this.globalConfig.maxRetryCount,
+      retryDelay: this.globalConfig.retryDelay,
+      requireAuth: this.globalConfig.requireAuth
+    }
   }
 
   /**
@@ -132,15 +173,25 @@ export class HttpClient {
     }
 
     try {
+      // 根据responseType设置正确的类型
+      let responseTypeValue: ResponseType = 'json' as ResponseType
+      if (mergedConfig.responseType === 'text') {
+        responseTypeValue = 'text' as ResponseType
+      } else if (mergedConfig.responseType === 'arraybuffer') {
+        responseTypeValue = 'arraybuffer' as ResponseType
+      } else if (mergedConfig.responseType === 'blob') {
+        responseTypeValue = 'blob' as ResponseType
+      }
+
       const axiosConfig: AxiosRequestConfig = {
         url: mergedConfig.url,
         method: mergedConfig.method,
         baseURL: mergedConfig.baseURL,
         headers: mergedConfig.headers,
-        params: mergedConfig.params,
-        data: mergedConfig.data,
+        params: mergedConfig.params as Record<string, string | number | boolean>,
+        data: mergedConfig.data as object | string,
         timeout: mergedConfig.timeout,
-        responseType: mergedConfig.responseType
+        responseType: responseTypeValue
       }
 
       const response: AxiosResponse<ApiResponse<T>> = await this.axiosInstance.request(axiosConfig)
@@ -151,8 +202,9 @@ export class HttpClient {
       }
 
       return response.data
-    } catch (error) {
-      const apiError = this.handleRequestError(error as Error, mergedConfig)
+    } catch (e) {
+      const error = e instanceof Error ? e : new Error(String(e))
+      const apiError = this.handleRequestError(error, mergedConfig)
       throw apiError
     } finally {
       // 隐藏加载提示
@@ -173,13 +225,29 @@ export class HttpClient {
    * @param config 额外配置
    * @returns Promise<ApiResponse<T>>
    */
-  async get<T>(url: string, params?: Record<string, unknown>, config?: Partial<HttpConfig>): Promise<ApiResponse<T>> {
-    return this.request<T>({
+  async get<T>(url: string, params?: HttpParams, config?: Partial<HttpConfig>): Promise<ApiResponse<T>> {
+    const requestConfig: HttpConfig = {
       url,
       method: RequestMethod.GET,
-      params,
-      ...config
-    })
+      params: params
+    }
+    if (config) {
+      if (config.baseURL !== undefined) requestConfig.baseURL = config.baseURL
+      if (config.headers !== undefined) requestConfig.headers = config.headers
+      if (config.data !== undefined) requestConfig.data = config.data
+      if (config.timeout !== undefined) requestConfig.timeout = config.timeout
+      if (config.showLoading !== undefined) requestConfig.showLoading = config.showLoading
+      if (config.loadingText !== undefined) requestConfig.loadingText = config.loadingText
+      if (config.enableRetry !== undefined) requestConfig.enableRetry = config.enableRetry
+      if (config.maxRetryCount !== undefined) requestConfig.maxRetryCount = config.maxRetryCount
+      if (config.retryDelay !== undefined) requestConfig.retryDelay = config.retryDelay
+      if (config.requireAuth !== undefined) requestConfig.requireAuth = config.requireAuth
+      if (config.enableLog !== undefined) requestConfig.enableLog = config.enableLog
+      if (config.tag !== undefined) requestConfig.tag = config.tag
+      if (config.responseType !== undefined) requestConfig.responseType = config.responseType
+      if (config.customConfig !== undefined) requestConfig.customConfig = config.customConfig
+    }
+    return this.request<T>(requestConfig)
   }
 
   /**
@@ -189,13 +257,29 @@ export class HttpClient {
    * @param config 额外配置
    * @returns Promise<ApiResponse<T>>
    */
-  async post<T>(url: string, data?: unknown, config?: Partial<HttpConfig>): Promise<ApiResponse<T>> {
-    return this.request<T>({
+  async post<T>(url: string, data?: HttpBody, config?: Partial<HttpConfig>): Promise<ApiResponse<T>> {
+    const requestConfig: HttpConfig = {
       url,
       method: RequestMethod.POST,
-      data,
-      ...config
-    })
+      data: data
+    }
+    if (config) {
+      if (config.baseURL !== undefined) requestConfig.baseURL = config.baseURL
+      if (config.headers !== undefined) requestConfig.headers = config.headers
+      if (config.params !== undefined) requestConfig.params = config.params
+      if (config.timeout !== undefined) requestConfig.timeout = config.timeout
+      if (config.showLoading !== undefined) requestConfig.showLoading = config.showLoading
+      if (config.loadingText !== undefined) requestConfig.loadingText = config.loadingText
+      if (config.enableRetry !== undefined) requestConfig.enableRetry = config.enableRetry
+      if (config.maxRetryCount !== undefined) requestConfig.maxRetryCount = config.maxRetryCount
+      if (config.retryDelay !== undefined) requestConfig.retryDelay = config.retryDelay
+      if (config.requireAuth !== undefined) requestConfig.requireAuth = config.requireAuth
+      if (config.enableLog !== undefined) requestConfig.enableLog = config.enableLog
+      if (config.tag !== undefined) requestConfig.tag = config.tag
+      if (config.responseType !== undefined) requestConfig.responseType = config.responseType
+      if (config.customConfig !== undefined) requestConfig.customConfig = config.customConfig
+    }
+    return this.request<T>(requestConfig)
   }
 
   /**
@@ -205,13 +289,29 @@ export class HttpClient {
    * @param config 额外配置
    * @returns Promise<ApiResponse<T>>
    */
-  async put<T>(url: string, data?: unknown, config?: Partial<HttpConfig>): Promise<ApiResponse<T>> {
-    return this.request<T>({
+  async put<T>(url: string, data?: HttpBody, config?: Partial<HttpConfig>): Promise<ApiResponse<T>> {
+    const requestConfig: HttpConfig = {
       url,
       method: RequestMethod.PUT,
-      data,
-      ...config
-    })
+      data: data
+    }
+    if (config) {
+      if (config.baseURL !== undefined) requestConfig.baseURL = config.baseURL
+      if (config.headers !== undefined) requestConfig.headers = config.headers
+      if (config.params !== undefined) requestConfig.params = config.params
+      if (config.timeout !== undefined) requestConfig.timeout = config.timeout
+      if (config.showLoading !== undefined) requestConfig.showLoading = config.showLoading
+      if (config.loadingText !== undefined) requestConfig.loadingText = config.loadingText
+      if (config.enableRetry !== undefined) requestConfig.enableRetry = config.enableRetry
+      if (config.maxRetryCount !== undefined) requestConfig.maxRetryCount = config.maxRetryCount
+      if (config.retryDelay !== undefined) requestConfig.retryDelay = config.retryDelay
+      if (config.requireAuth !== undefined) requestConfig.requireAuth = config.requireAuth
+      if (config.enableLog !== undefined) requestConfig.enableLog = config.enableLog
+      if (config.tag !== undefined) requestConfig.tag = config.tag
+      if (config.responseType !== undefined) requestConfig.responseType = config.responseType
+      if (config.customConfig !== undefined) requestConfig.customConfig = config.customConfig
+    }
+    return this.request<T>(requestConfig)
   }
 
   /**
@@ -221,13 +321,29 @@ export class HttpClient {
    * @param config 额外配置
    * @returns Promise<ApiResponse<T>>
    */
-  async delete<T>(url: string, params?: Record<string, unknown>, config?: Partial<HttpConfig>): Promise<ApiResponse<T>> {
-    return this.request<T>({
+  async delete<T>(url: string, params?: HttpParams, config?: Partial<HttpConfig>): Promise<ApiResponse<T>> {
+    const requestConfig: HttpConfig = {
       url,
       method: RequestMethod.DELETE,
-      params,
-      ...config
-    })
+      params: params
+    }
+    if (config) {
+      if (config.baseURL !== undefined) requestConfig.baseURL = config.baseURL
+      if (config.headers !== undefined) requestConfig.headers = config.headers
+      if (config.data !== undefined) requestConfig.data = config.data
+      if (config.timeout !== undefined) requestConfig.timeout = config.timeout
+      if (config.showLoading !== undefined) requestConfig.showLoading = config.showLoading
+      if (config.loadingText !== undefined) requestConfig.loadingText = config.loadingText
+      if (config.enableRetry !== undefined) requestConfig.enableRetry = config.enableRetry
+      if (config.maxRetryCount !== undefined) requestConfig.maxRetryCount = config.maxRetryCount
+      if (config.retryDelay !== undefined) requestConfig.retryDelay = config.retryDelay
+      if (config.requireAuth !== undefined) requestConfig.requireAuth = config.requireAuth
+      if (config.enableLog !== undefined) requestConfig.enableLog = config.enableLog
+      if (config.tag !== undefined) requestConfig.tag = config.tag
+      if (config.responseType !== undefined) requestConfig.responseType = config.responseType
+      if (config.customConfig !== undefined) requestConfig.customConfig = config.customConfig
+    }
+    return this.request<T>(requestConfig)
   }
 
   /**
@@ -237,13 +353,29 @@ export class HttpClient {
    * @param config 额外配置
    * @returns Promise<ApiResponse<T>>
    */
-  async patch<T>(url: string, data?: unknown, config?: Partial<HttpConfig>): Promise<ApiResponse<T>> {
-    return this.request<T>({
+  async patch<T>(url: string, data?: HttpBody, config?: Partial<HttpConfig>): Promise<ApiResponse<T>> {
+    const requestConfig: HttpConfig = {
       url,
       method: RequestMethod.PATCH,
-      data,
-      ...config
-    })
+      data: data
+    }
+    if (config) {
+      if (config.baseURL !== undefined) requestConfig.baseURL = config.baseURL
+      if (config.headers !== undefined) requestConfig.headers = config.headers
+      if (config.params !== undefined) requestConfig.params = config.params
+      if (config.timeout !== undefined) requestConfig.timeout = config.timeout
+      if (config.showLoading !== undefined) requestConfig.showLoading = config.showLoading
+      if (config.loadingText !== undefined) requestConfig.loadingText = config.loadingText
+      if (config.enableRetry !== undefined) requestConfig.enableRetry = config.enableRetry
+      if (config.maxRetryCount !== undefined) requestConfig.maxRetryCount = config.maxRetryCount
+      if (config.retryDelay !== undefined) requestConfig.retryDelay = config.retryDelay
+      if (config.requireAuth !== undefined) requestConfig.requireAuth = config.requireAuth
+      if (config.enableLog !== undefined) requestConfig.enableLog = config.enableLog
+      if (config.tag !== undefined) requestConfig.tag = config.tag
+      if (config.responseType !== undefined) requestConfig.responseType = config.responseType
+      if (config.customConfig !== undefined) requestConfig.customConfig = config.customConfig
+    }
+    return this.request<T>(requestConfig)
   }
 
   /**
@@ -266,7 +398,7 @@ export class HttpClient {
    * @param interceptor 拦截器函数
    * @returns 拦截器ID
    */
-  addRequestInterceptor(interceptor: (config: AxiosRequestConfig) => AxiosRequestConfig): number {
+  addRequestInterceptor(interceptor: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig>): number {
     return this.axiosInstance.interceptors.request.use(interceptor)
   }
 

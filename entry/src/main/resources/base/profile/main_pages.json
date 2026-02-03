@@ -19,6 +19,7 @@
     "pages/WebExample",
     "pages/WebComponent",
     "pages/ObservedV2TestPage",
-    "pages/EnvironmentSwitch"
+    "pages/EnvironmentSwitch",
+    "network/examples/pages/NetworkExamplePage"
   ]
 }

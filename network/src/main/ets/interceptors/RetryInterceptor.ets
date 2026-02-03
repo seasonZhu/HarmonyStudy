@@ -4,6 +4,21 @@ import { ApiError, ApiErrorType } from '../models/ApiError'
 import { LogUtil } from '@pura/harmony-utils'
 
 /**
+ * 重试统计信息
+ */
+export interface RetryStats {
+  totalRetries: number
+  retryingRequests: number
+}
+
+/**
+ * 扩展的Axios请求配置（带重试计数）
+ */
+export interface RetryAxiosRequestConfig extends AxiosRequestConfig {
+  __retryCount?: number
+}
+
+/**
  * 重试拦截器配置
  */
 export interface RetryInterceptorConfig {
@@ -41,9 +56,21 @@ export interface RetryInterceptorConfig {
 }
 
 /**
+ * 完整重试配置（所有必需字段）
+ */
+export interface FullRetryConfig {
+  enabled: boolean
+  maxRetryCount: number
+  retryDelay: number
+  useExponentialBackoff: boolean
+  backoffBase: number
+  shouldRetry: (error: Error) => boolean
+}
+
+/**
  * 默认重试配置
  */
-const defaultRetryConfig: Required<RetryInterceptorConfig> = {
+const defaultRetryConfig: FullRetryConfig = {
   enabled: true,
   maxRetryCount: 3,
   retryDelay: 1000,
@@ -68,7 +95,7 @@ export class RetryInterceptor {
   /**
    * 重试配置
    */
-  private config: Required<RetryInterceptorConfig>
+  private config: FullRetryConfig
 
   /**
    * 当前重试计数映射
@@ -80,7 +107,14 @@ export class RetryInterceptor {
    * @param config 重试配置
    */
   constructor(config: RetryInterceptorConfig = {}) {
-    this.config = { ...defaultRetryConfig, ...config }
+    this.config = {
+      enabled: config.enabled !== undefined ? config.enabled : defaultRetryConfig.enabled,
+      maxRetryCount: config.maxRetryCount !== undefined ? config.maxRetryCount : defaultRetryConfig.maxRetryCount,
+      retryDelay: config.retryDelay !== undefined ? config.retryDelay : defaultRetryConfig.retryDelay,
+      useExponentialBackoff: config.useExponentialBackoff !== undefined ? config.useExponentialBackoff : defaultRetryConfig.useExponentialBackoff,
+      backoffBase: config.backoffBase !== undefined ? config.backoffBase : defaultRetryConfig.backoffBase,
+      shouldRetry: config.shouldRetry !== undefined ? config.shouldRetry : defaultRetryConfig.shouldRetry
+    }
     LogUtil.debug('[RetryInterceptor] 初始化完成', JSON.stringify(this.config))
   }
 
@@ -89,7 +123,12 @@ export class RetryInterceptor {
    * @param config 新配置
    */
   updateConfig(config: Partial<RetryInterceptorConfig>): void {
-    this.config = { ...this.config, ...config }
+    if (config.enabled !== undefined) this.config.enabled = config.enabled
+    if (config.maxRetryCount !== undefined) this.config.maxRetryCount = config.maxRetryCount
+    if (config.retryDelay !== undefined) this.config.retryDelay = config.retryDelay
+    if (config.useExponentialBackoff !== undefined) this.config.useExponentialBackoff = config.useExponentialBackoff
+    if (config.backoffBase !== undefined) this.config.backoffBase = config.backoffBase
+    if (config.shouldRetry !== undefined) this.config.shouldRetry = config.shouldRetry
     LogUtil.debug('[RetryInterceptor] 配置已更新', JSON.stringify(this.config))
   }
 
@@ -143,12 +182,15 @@ export class RetryInterceptor {
     }
 
     // 获取请求标识
-    const axiosError = error as AxiosError
-    const config = axiosError.config as AxiosRequestConfig & { __retryCount?: number }
-    const requestId = this.generateRequestIdentifier(config)
+    const axiosError: AxiosError = error as AxiosError
+    const requestConfig: RetryAxiosRequestConfig | undefined = axiosError.config
+    if (!requestConfig) {
+      throw error
+    }
+    const requestId = this.generateRequestIdentifier(requestConfig)
 
     // 获取当前重试次数
-    const currentRetryCount = config.__retryCount || 0
+    const currentRetryCount = requestConfig.__retryCount || 0
 
     // 检查是否超过最大重试次数
     if (currentRetryCount >= this.config.maxRetryCount) {
@@ -157,21 +199,21 @@ export class RetryInterceptor {
     }
 
     // 增加重试计数
-    config.__retryCount = currentRetryCount + 1
-    this.retryCountMap.set(requestId, config.__retryCount)
+    requestConfig.__retryCount = currentRetryCount + 1
+    this.retryCountMap.set(requestId, requestConfig.__retryCount)
 
     // 计算延迟时间
     const delayMs = this.calculateDelay(currentRetryCount)
 
     LogUtil.debug(
-      `[RetryInterceptor] 准备重试 (${config.__retryCount}/${this.config.maxRetryCount})`,
+      `[RetryInterceptor] 准备重试 (${requestConfig.__retryCount}/${this.config.maxRetryCount})`,
       `延迟: ${delayMs}ms, 请求: ${requestId}`
     )
 
     // 延迟后重试
     await this.delay(delayMs)
 
-    LogUtil.info(`[RetryInterceptor] 开始重试 (${config.__retryCount}/${this.config.maxRetryCount})`, requestId)
+    LogUtil.info(`[RetryInterceptor] 开始重试 (${requestConfig.__retryCount}/${this.config.maxRetryCount})`, requestId)
   }
 
   /**
@@ -189,19 +231,17 @@ export class RetryInterceptor {
   /**
    * 获取当前重试统计
    */
-  getStats(): {
-    totalRetries: number
-    retryingRequests: number
-  } {
+  getStats(): RetryStats {
     let totalRetries = 0
     for (const count of this.retryCountMap.values()) {
       totalRetries += count
     }
 
-    return {
-      totalRetries,
+    const stats: RetryStats = {
+      totalRetries: totalRetries,
       retryingRequests: this.retryCountMap.size
     }
+    return stats
   }
 }
 

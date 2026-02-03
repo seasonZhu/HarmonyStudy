@@ -208,10 +208,26 @@ export class LoadingService {
    */
   private parseConfig(config?: LoadingConfig | string): LoadingConfig {
     if (typeof config === 'string') {
-      return { ...defaultLoadingConfig, text: config }
+      const result: LoadingConfig = {
+        text: config,
+        autoCancel: defaultLoadingConfig.autoCancel,
+        maskColor: defaultLoadingConfig.maskColor,
+        customStyle: defaultLoadingConfig.customStyle
+      }
+      return result
     }
 
-    return { ...defaultLoadingConfig, ...config }
+    if (!config) {
+      return defaultLoadingConfig
+    }
+
+    const result: LoadingConfig = {
+      text: config.text !== undefined ? config.text : defaultLoadingConfig.text,
+      autoCancel: config.autoCancel !== undefined ? config.autoCancel : defaultLoadingConfig.autoCancel,
+      maskColor: config.maskColor !== undefined ? config.maskColor : defaultLoadingConfig.maskColor,
+      customStyle: config.customStyle !== undefined ? config.customStyle : defaultLoadingConfig.customStyle
+    }
+    return result
   }
 }
 

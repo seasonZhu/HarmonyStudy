@@ -2,6 +2,26 @@ import { AxiosRequestConfig, InternalAxiosRequestConfig } from '@ohos/axios'
 import { LogUtil } from '@pura/harmony-utils'
 
 /**
+ * 基础Token配置（不含函数）
+ */
+export interface BaseTokenConfig {
+  enabled: boolean
+  tokenKey: string
+  headerName: string
+  tokenPrefix: string
+  autoRefresh: boolean
+}
+
+/**
+ * 完整Token配置（包含函数）
+ */
+export interface FullTokenConfig extends BaseTokenConfig {
+  getToken: () => string | Promise<string>
+  refreshToken?: (currentToken: string) => string | Promise<string>
+  onTokenExpired?: (error: Error) => void
+}
+
+/**
  * Token拦截器配置
  */
 export interface TokenInterceptorConfig {
@@ -53,7 +73,7 @@ export interface TokenInterceptorConfig {
 /**
  * 默认Token配置
  */
-const defaultTokenConfig: Required<Omit<TokenInterceptorConfig, 'getToken' | 'refreshToken' | 'onTokenExpired'>> = {
+const defaultTokenConfig: BaseTokenConfig = {
   enabled: true,
   tokenKey: 'authorization',
   headerName: 'Authorization',
@@ -69,12 +89,7 @@ export class TokenInterceptor {
   /**
    * Token配置
    */
-  private config: Required<Omit<TokenInterceptorConfig, 'getToken' | 'refreshToken' | 'onTokenExpired'>> &
-    {
-      getToken: () => string | Promise<string>
-      refreshToken?: (currentToken: string) => string | Promise<string>
-      onTokenExpired?: (error: Error) => void
-    }
+  private config: FullTokenConfig
 
   /**
    * 当前Token
@@ -96,10 +111,22 @@ export class TokenInterceptor {
    * @param config Token配置
    */
   constructor(config: TokenInterceptorConfig = {}) {
+    let getTokenFunc: () => string | Promise<string>
+    if (config.getToken) {
+      getTokenFunc = config.getToken
+    } else {
+      getTokenFunc = (): string => this.getDefaultToken()
+    }
+
     this.config = {
-      ...defaultTokenConfig,
-      ...config,
-      getToken: config.getToken || this.getDefaultToken.bind(this)
+      enabled: config.enabled !== undefined ? config.enabled : defaultTokenConfig.enabled,
+      tokenKey: config.tokenKey !== undefined ? config.tokenKey : defaultTokenConfig.tokenKey,
+      headerName: config.headerName !== undefined ? config.headerName : defaultTokenConfig.headerName,
+      tokenPrefix: config.tokenPrefix !== undefined ? config.tokenPrefix : defaultTokenConfig.tokenPrefix,
+      autoRefresh: config.autoRefresh !== undefined ? config.autoRefresh : defaultTokenConfig.autoRefresh,
+      getToken: getTokenFunc,
+      refreshToken: config.refreshToken,
+      onTokenExpired: config.onTokenExpired
     }
     LogUtil.debug('[TokenInterceptor] 初始化完成')
   }
@@ -119,7 +146,14 @@ export class TokenInterceptor {
    * @param config 新配置
    */
   updateConfig(config: Partial<TokenInterceptorConfig>): void {
-    this.config = { ...this.config, ...config }
+    if (config.enabled !== undefined) this.config.enabled = config.enabled
+    if (config.tokenKey !== undefined) this.config.tokenKey = config.tokenKey
+    if (config.headerName !== undefined) this.config.headerName = config.headerName
+    if (config.tokenPrefix !== undefined) this.config.tokenPrefix = config.tokenPrefix
+    if (config.autoRefresh !== undefined) this.config.autoRefresh = config.autoRefresh
+    if (config.getToken !== undefined) this.config.getToken = config.getToken
+    if (config.refreshToken !== undefined) this.config.refreshToken = config.refreshToken
+    if (config.onTokenExpired !== undefined) this.config.onTokenExpired = config.onTokenExpired
     LogUtil.debug('[TokenInterceptor] 配置已更新')
   }
 

@@ -2,6 +2,16 @@ import { AxiosRequestConfig, AxiosResponse, AxiosError } from '@ohos/axios'
 import { LogUtil } from '@pura/harmony-utils'
 
 /**
+ * 拦截器统计信息
+ */
+export interface InterceptorStats {
+  requestCount: number
+  requestErrorCount: number
+  responseCount: number
+  responseErrorCount: number
+}
+
+/**
  * 请求拦截器函数类型
  */
 export type RequestInterceptorFunction = (config: AxiosRequestConfig) => AxiosRequestConfig | Promise<AxiosRequestConfig>
@@ -19,7 +29,7 @@ export type ResponseInterceptorFunction = (response: AxiosResponse) => AxiosResp
 /**
  * 响应错误拦截器函数类型
  */
-export type ResponseErrorInterceptorFunction = (error: AxiosError) => any
+export type ResponseErrorInterceptorFunction = (error: AxiosError) => Error | Promise<Error> | Promise<never>
 
 /**
  * 拦截器管理器
@@ -99,13 +109,14 @@ export class InterceptorManager {
    * @returns 处理后的配置
    */
   async executeRequestInterceptors(config: AxiosRequestConfig): Promise<AxiosRequestConfig> {
-    let processedConfig = config
+    let processedConfig: AxiosRequestConfig = config
 
     for (const interceptor of this.requestInterceptors) {
       try {
         processedConfig = await interceptor(processedConfig)
-      } catch (error) {
-        LogUtil.error('[InterceptorManager] 请求拦截器执行失败', JSON.stringify(error))
+      } catch (e) {
+        const error = e instanceof Error ? e : new Error(String(e))
+        LogUtil.error('[InterceptorManager] 请求拦截器执行失败', error.message)
         throw error
       }
     }
@@ -119,13 +130,15 @@ export class InterceptorManager {
    * @returns 处理后的错误
    */
   async executeRequestErrorInterceptors(error: AxiosError): Promise<Error> {
-    let processedError = error
+    let processedError: AxiosError = error
 
     for (const interceptor of this.requestErrorInterceptors) {
       try {
-        processedError = await interceptor(processedError)
-      } catch (err) {
-        LogUtil.error('[InterceptorManager] 请求错误拦截器执行失败', JSON.stringify(err))
+        const result = await interceptor(processedError)
+        processedError = result as AxiosError
+      } catch (e) {
+        const err = e instanceof Error ? e : new Error(String(e))
+        LogUtil.error('[InterceptorManager] 请求错误拦截器执行失败', err.message)
         return processedError
       }
     }
@@ -139,13 +152,14 @@ export class InterceptorManager {
    * @returns 处理后的响应
    */
   async executeResponseInterceptors(response: AxiosResponse): Promise<AxiosResponse> {
-    let processedResponse = response
+    let processedResponse: AxiosResponse = response
 
     for (const interceptor of this.responseInterceptors) {
       try {
         processedResponse = await interceptor(processedResponse)
-      } catch (error) {
-        LogUtil.error('[InterceptorManager] 响应拦截器执行失败', JSON.stringify(error))
+      } catch (e) {
+        const error = e instanceof Error ? e : new Error(String(e))
+        LogUtil.error('[InterceptorManager] 响应拦截器执行失败', error.message)
         throw error
       }
     }
@@ -158,38 +172,39 @@ export class InterceptorManager {
    * @param error Axios错误
    * @returns 处理后的结果
    */
-  async executeResponseErrorInterceptors(error: AxiosError): Promise<any> {
-    let processedError = error
+  async executeResponseErrorInterceptors(error: AxiosError): Promise<never> {
+    let processedError: AxiosError = error
 
     for (const interceptor of this.responseErrorInterceptors) {
       try {
         const result = await interceptor(processedError)
         if (result !== undefined) {
-          return result
+          const errorToThrow = result instanceof Error ? result : new Error(String(result))
+          throw errorToThrow
         }
-      } catch (err) {
-        LogUtil.error('[InterceptorManager] 响应错误拦截器执行失败', JSON.stringify(err))
-        // 继续执行下一个拦截器
+      } catch (e) {
+        const err = e instanceof Error ? e : new Error(String(e))
+        if (err === processedError) {
+          LogUtil.error('[InterceptorManager] 响应错误拦截器执行失败', err.message)
+        } else {
+          throw err
+        }
       }
     }
 
-    return Promise.reject(processedError)
+    throw new Error(processedError.message)
   }
 
   /**
    * 获取拦截器统计信息
    */
-  getStats(): {
-    requestCount: number
-    requestErrorCount: number
-    responseCount: number
-    responseErrorCount: number
-  } {
-    return {
+  getStats(): InterceptorStats {
+    const stats: InterceptorStats = {
       requestCount: this.requestInterceptors.length,
       requestErrorCount: this.requestErrorInterceptors.length,
       responseCount: this.responseInterceptors.length,
       responseErrorCount: this.responseErrorInterceptors.length
     }
+    return stats
   }
 }

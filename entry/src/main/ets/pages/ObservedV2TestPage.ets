@@ -1,6 +1,7 @@
 // [Harmony 状态管理神器 @ObservedV2](https://juejin.cn/post/7391704406327164982)
 import { openUniMP,isExistsUniMP, releaseWgtToRunPath } from '@dcloudio/uni-app-runtime';
 import { FileUtil } from '@pura/harmony-utils';
+import { Router } from '../router/Router';
 
 @ObservedV2
 class Person {
@@ -23,9 +24,10 @@ struct ObservedV2TestPage {
 
   build() {
     Navigation() {
-      Column() {
-        // 标题说明卡片
+      Scroll() {
         Column() {
+          // 标题说明卡片
+          Column() {
           Text('@ObservedV2 状态管理')
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
@@ -187,6 +189,53 @@ struct ObservedV2TestPage {
         .borderRadius(12)
         .margin({ left: 16, right: 16, top: 16, bottom: 16 })
 
+        // 网络请求示例卡片
+        Column() {
+          Row() {
+            Column() {
+              Text('网络请求示例')
+                .fontSize(16)
+                .fontWeight(FontWeight.Medium)
+                .fontColor('#333333')
+
+              Text('完整的 HTTP 请求示例')
+                .fontSize(12)
+                .fontColor('#999999')
+                .margin({ top: 4 })
+            }
+            .alignItems(HorizontalAlign.Start)
+            .layoutWeight(1)
+
+            Text('示例')
+              .fontSize(14)
+              .fontColor('#FFFFFF')
+              .backgroundColor('#9C27B0')
+              .padding({ left: 8, right: 8, top: 4, bottom: 4 })
+              .borderRadius(4)
+          }
+          .width('100%')
+          .height(80)
+          .padding({ left: 16, right: 16 })
+          .backgroundColor('#FFFFFF')
+          .borderRadius(12)
+
+          Button('查看网络请求示例')
+            .width('100%')
+            .height(44)
+            .fontSize(16)
+            .backgroundColor('#9C27B0')
+            .borderRadius(8)
+            .margin({ top: 12 })
+            .onClick(() => {
+              Router.push('network/examples/pages/NetworkExamplePage')
+            })
+        }
+        .width('100%')
+        .padding(16)
+        .backgroundColor('#F8F8F8')
+        .borderRadius(12)
+        .margin({ left: 16, right: 16, top: 16 })
+
         // 说明区域
         Column() {
           Text('功能说明')
@@ -207,18 +256,26 @@ struct ObservedV2TestPage {
             .fontSize(12)
             .fontColor('#666666')
             .margin({ top: 4 })
+
+          Text('• 网络请求完整示例页面')
+            .fontSize(12)
+            .fontColor('#666666')
+            .margin({ top: 4 })
         }
         .width('100%')
         .padding(16)
         .backgroundColor('#FFF8E1')
         .borderRadius(12)
         .margin({ left: 16, right: 16, bottom: 20 })
-
-        Blank()
+      }
+      .width('100%')
+      .backgroundColor('#F8F8F8')
       }
       .width('100%')
       .height('100%')
-      .backgroundColor('#F8F8F8')
+      .scrollable(ScrollDirection.Vertical)
+      .scrollBar(BarState.Auto)
+      .edgeEffect(EdgeEffect.Spring)
     }
     .title('状态管理测试')
     .mode(NavigationMode.Auto)

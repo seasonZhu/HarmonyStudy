@@ -82,9 +82,39 @@ export interface LoggingInterceptorConfig {
 }
 
 /**
+ * 日志条目接口
+ */
+export interface LogEntry {
+  message: string
+  timestamp?: number
+}
+
+/**
+ * Headers接口
+ */
+export interface HttpHeadersLike {
+  forEach(callback: (value: string, key: string) => void): void
+}
+
+/**
+ * 完整日志拦截器配置
+ */
+export interface FullLoggingConfig {
+  enabled: boolean
+  logLevel: LogLevel
+  logHeaders: boolean
+  logBody: boolean
+  logResponseHeaders: boolean
+  logResponseBody: boolean
+  maxBodyLength: number
+  prettyPrint: boolean
+  logPrefix: string
+}
+
+/**
  * 默认日志配置
  */
-const defaultLoggingConfig: Required<LoggingInterceptorConfig> = {
+const defaultLoggingConfig: FullLoggingConfig = {
   enabled: true,
   logLevel: LogLevel.DEBUG,
   logHeaders: true,
@@ -104,7 +134,7 @@ export class LoggingInterceptor {
   /**
    * 日志配置
    */
-  private config: Required<LoggingInterceptorConfig>
+  private config: FullLoggingConfig
 
   /**
    * 请求开始时间映射
@@ -116,7 +146,17 @@ export class LoggingInterceptor {
    * @param config 日志配置
    */
   constructor(config: LoggingInterceptorConfig = {}) {
-    this.config = { ...defaultLoggingConfig, ...config }
+    this.config = {
+      enabled: config.enabled !== undefined ? config.enabled : defaultLoggingConfig.enabled,
+      logLevel: config.logLevel !== undefined ? config.logLevel : defaultLoggingConfig.logLevel,
+      logHeaders: config.logHeaders !== undefined ? config.logHeaders : defaultLoggingConfig.logHeaders,
+      logBody: config.logBody !== undefined ? config.logBody : defaultLoggingConfig.logBody,
+      logResponseHeaders: config.logResponseHeaders !== undefined ? config.logResponseHeaders : defaultLoggingConfig.logResponseHeaders,
+      logResponseBody: config.logResponseBody !== undefined ? config.logResponseBody : defaultLoggingConfig.logResponseBody,
+      maxBodyLength: config.maxBodyLength !== undefined ? config.maxBodyLength : defaultLoggingConfig.maxBodyLength,
+      prettyPrint: config.prettyPrint !== undefined ? config.prettyPrint : defaultLoggingConfig.prettyPrint,
+      logPrefix: config.logPrefix !== undefined ? config.logPrefix : defaultLoggingConfig.logPrefix
+    }
     LogUtil.debug('[LoggingInterceptor] 初始化完成')
   }
 
@@ -125,7 +165,15 @@ export class LoggingInterceptor {
    * @param config 新配置
    */
   updateConfig(config: Partial<LoggingInterceptorConfig>): void {
-    this.config = { ...this.config, ...config }
+    if (config.enabled !== undefined) this.config.enabled = config.enabled
+    if (config.logLevel !== undefined) this.config.logLevel = config.logLevel
+    if (config.logHeaders !== undefined) this.config.logHeaders = config.logHeaders
+    if (config.logBody !== undefined) this.config.logBody = config.logBody
+    if (config.logResponseHeaders !== undefined) this.config.logResponseHeaders = config.logResponseHeaders
+    if (config.logResponseBody !== undefined) this.config.logResponseBody = config.logResponseBody
+    if (config.maxBodyLength !== undefined) this.config.maxBodyLength = config.maxBodyLength
+    if (config.prettyPrint !== undefined) this.config.prettyPrint = config.prettyPrint
+    if (config.logPrefix !== undefined) this.config.logPrefix = config.logPrefix
     LogUtil.debug('[LoggingInterceptor] 配置已更新')
   }
 
@@ -143,7 +191,7 @@ export class LoggingInterceptor {
    * @param data 数据对象
    * @returns 格式化后的JSON字符串
    */
-  private formatJson(data: unknown): string {
+  private formatJson(data: object): string {
     try {
       const jsonString = JSON.stringify(data, null, this.config.prettyPrint ? 2 : 0)
       if (jsonString.length > this.config.maxBodyLength) {
@@ -192,6 +240,30 @@ export class LoggingInterceptor {
   }
 
   /**
+   * 格式化headers对象
+   */
+  private formatHeaders(headers: HttpHeadersLike | object): string {
+    const result: string[] = []
+    // 尝试使用forEach方法
+    const headersLike = headers as HttpHeadersLike
+    if (headersLike.forEach && typeof headersLike.forEach === 'function') {
+      headersLike.forEach((value: string, key: string) => {
+        result.push(`  ${key}: ${value}`)
+      })
+    } else if (headers) {
+      // 如果没有forEach方法，使用Object.keys来遍历
+      const keys = Object.keys(headers)
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i]
+        // 使用动态访问来获取值
+        const value: string | number | boolean | object | null | undefined = (headers as object)[key as string]
+        result.push(`  ${key}: ${String(value)}`)
+      }
+    }
+    return result.join('\n')
+  }
+
+  /**
    * 请求拦截器
    * @param config 请求配置
    * @returns 处理后的请求配置
@@ -216,11 +288,7 @@ export class LoggingInterceptor {
 
     // 请求头
     if (this.config.logHeaders && config.headers) {
-      const headers: Record<string, string> = {}
-      config.headers.forEach((value, key) => {
-        headers[key] = value as string
-      })
-      logs.push(`  Headers: ${this.formatJson(headers)}`)
+      logs.push(`  Headers: ${this.formatHeaders(config.headers)}`)
     }
 
     // 请求体
@@ -228,7 +296,7 @@ export class LoggingInterceptor {
       if (typeof config.data === 'string') {
         logs.push(`  Body: ${this.truncateString(config.data)}`)
       } else {
-        logs.push(`  Body: ${this.formatJson(config.data)}`)
+        logs.push(`  Body: ${this.formatJson(config.data as object)}`)
       }
     }
 
@@ -263,11 +331,7 @@ export class LoggingInterceptor {
 
     // 响应头
     if (this.config.logResponseHeaders && response.headers) {
-      const headers: Record<string, string> = {}
-      response.headers.forEach((value, key) => {
-        headers[key] = value as string
-      })
-      logs.push(`  Headers: ${this.formatJson(headers)}`)
+      logs.push(`  Headers: ${this.formatHeaders(response.headers)}`)
     }
 
     // 响应体
@@ -318,7 +382,12 @@ export class LoggingInterceptor {
 
     // 响应数据
     if (error.response?.data) {
-      logs.push(`  Response: ${this.formatJson(error.response.data)}`)
+      const data = error.response.data
+      if (typeof data === 'object') {
+        logs.push(`  Response: ${this.formatJson(data as object)}`)
+      } else {
+        logs.push(`  Response: ${String(data)}`)
+      }
     }
 
     LogUtil.error(logs.join('\n'))

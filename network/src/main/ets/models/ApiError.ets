@@ -1,4 +1,78 @@
 /**
+ * 错误详情类
+ */
+export class ErrorDetails {
+  private data: Map<string, string | number | boolean | null | undefined> = new Map()
+
+  set(key: string, value: string | number | boolean | null | undefined): void {
+    this.data.set(key, value)
+  }
+
+  get(key: string): string | number | boolean | null | undefined {
+    return this.data.get(key)
+  }
+
+  has(key: string): boolean {
+    return this.data.has(key)
+  }
+
+  keys(): string[] {
+    return Array.from(this.data.keys())
+  }
+
+  clear(): void {
+    this.data.clear()
+  }
+
+  get size(): number {
+    return this.data.size
+  }
+}
+
+/**
+ * ApiError构造函数选项接口
+ */
+export interface ApiErrorOptions {
+  statusCode?: number
+  businessCode?: number
+  details?: ErrorDetails
+  originalError?: Error
+  url?: string
+  method?: string
+}
+
+/**
+ * ApiError JSON序列化接口
+ */
+export interface ApiErrorJson {
+  name: string
+  message: string
+  type: ApiErrorType
+  statusCode?: number
+  businessCode?: number
+  details?: ErrorDetails
+  url?: string
+  method?: string
+}
+
+/**
+ * 网络错误选项
+ */
+export interface NetworkErrorOptions {
+  url?: string
+  method?: string
+  originalError?: Error
+}
+
+/**
+ * 服务器错误选项
+ */
+export interface ServerErrorOptions {
+  url?: string
+  method?: string
+}
+
+/**
  * API错误类型枚举
  * @description 定义所有可能的API错误类型
  */
@@ -67,7 +141,7 @@ export class ApiError extends Error {
   /**
    * 错误详情
    */
-  readonly details?: Record<string, unknown>
+  readonly details?: ErrorDetails
 
   /**
    * 原始错误对象
@@ -93,14 +167,7 @@ export class ApiError extends Error {
   constructor(
     message: string,
     type: ApiErrorType,
-    options?: {
-      statusCode?: number
-      businessCode?: number
-      details?: Record<string, unknown>
-      originalError?: Error
-      url?: string
-      method?: string
-    }
+    options?: ApiErrorOptions
   ) {
     super(message)
     this.name = 'ApiError'
@@ -116,17 +183,20 @@ export class ApiError extends Error {
   /**
    * 转换为JSON对象
    */
-  toJSON(): Record<string, unknown> {
-    return {
+  toJSON(): ApiErrorJson {
+    const result: ApiErrorJson = {
       name: this.name,
       message: this.message,
       type: this.type,
       statusCode: this.statusCode,
       businessCode: this.businessCode,
-      details: this.details,
       url: this.url,
       method: this.method
     }
+    if (this.details) {
+      result.details = this.details
+    }
+    return result
   }
 
   /**
@@ -154,9 +224,14 @@ export class ApiError extends Error {
  */
 export function createNetworkError(
   message: string = '网络连接失败',
-  options?: { url?: string; method?: string; originalError?: Error }
+  options?: NetworkErrorOptions
 ): ApiError {
-  return new ApiError(message, ApiErrorType.NETWORK_ERROR, options)
+  const errorOptions: ApiErrorOptions = {
+    url: options?.url,
+    method: options?.method,
+    originalError: options?.originalError
+  }
+  return new ApiError(message, ApiErrorType.NETWORK_ERROR, errorOptions)
 }
 
 /**
@@ -164,9 +239,14 @@ export function createNetworkError(
  */
 export function createTimeoutError(
   message: string = '请求超时',
-  options?: { url?: string; method?: string; originalError?: Error }
+  options?: NetworkErrorOptions
 ): ApiError {
-  return new ApiError(message, ApiErrorType.TIMEOUT_ERROR, options)
+  const errorOptions: ApiErrorOptions = {
+    url: options?.url,
+    method: options?.method,
+    originalError: options?.originalError
+  }
+  return new ApiError(message, ApiErrorType.TIMEOUT_ERROR, errorOptions)
 }
 
 /**
@@ -175,9 +255,16 @@ export function createTimeoutError(
 export function createServerError(
   statusCode: number,
   message: string = '服务器错误',
-  options?: { url?: string; method?: string }
+  options?: ServerErrorOptions
 ): ApiError {
-  return new ApiError(message, ApiErrorType.SERVER_ERROR, { statusCode, ...options })
+  const errorOptions: ApiErrorOptions = {
+    statusCode: statusCode
+  }
+  if (options) {
+    errorOptions.url = options.url
+    errorOptions.method = options.method
+  }
+  return new ApiError(message, ApiErrorType.SERVER_ERROR, errorOptions)
 }
 
 /**
@@ -186,9 +273,16 @@ export function createServerError(
 export function createClientError(
   statusCode: number,
   message: string = '客户端错误',
-  options?: { url?: string; method?: string }
+  options?: ServerErrorOptions
 ): ApiError {
-  return new ApiError(message, ApiErrorType.CLIENT_ERROR, { statusCode, ...options })
+  const errorOptions: ApiErrorOptions = {
+    statusCode: statusCode
+  }
+  if (options) {
+    errorOptions.url = options.url
+    errorOptions.method = options.method
+  }
+  return new ApiError(message, ApiErrorType.CLIENT_ERROR, errorOptions)
 }
 
 /**
@@ -196,9 +290,16 @@ export function createClientError(
  */
 export function createAuthError(
   message: string = '认证失败',
-  options?: { url?: string; method?: string }
+  options?: ServerErrorOptions
 ): ApiError {
-  return new ApiError(message, ApiErrorType.AUTH_ERROR, { statusCode: 401, ...options })
+  const errorOptions: ApiErrorOptions = {
+    statusCode: 401
+  }
+  if (options) {
+    errorOptions.url = options.url
+    errorOptions.method = options.method
+  }
+  return new ApiError(message, ApiErrorType.AUTH_ERROR, errorOptions)
 }
 
 /**
@@ -207,9 +308,16 @@ export function createAuthError(
 export function createBusinessError(
   businessCode: number,
   message: string,
-  options?: { url?: string; method?: string }
+  options?: ServerErrorOptions
 ): ApiError {
-  return new ApiError(message, ApiErrorType.SERVER_ERROR, { businessCode, ...options })
+  const errorOptions: ApiErrorOptions = {
+    businessCode: businessCode
+  }
+  if (options) {
+    errorOptions.url = options.url
+    errorOptions.method = options.method
+  }
+  return new ApiError(message, ApiErrorType.SERVER_ERROR, errorOptions)
 }
 
 /**
