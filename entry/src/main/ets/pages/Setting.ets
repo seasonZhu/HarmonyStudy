@@ -97,11 +97,11 @@ struct Setting {
     let result = await this.viewModel.logout()
     this.loadingDialogController.close()
     if (result) {
-      ToastUtil.showToast("退出登录成功")
+      ToastUtil.showToast($r('app.string.logout_success'))
       let userInfo: UserInfoModel = {}
       Router.backWithParams("", userInfo)
     } else {
-      ToastUtil.showToast("退出登录失败")
+      ToastUtil.showToast($r('app.string.logout_failed'))
     }
   }
 }

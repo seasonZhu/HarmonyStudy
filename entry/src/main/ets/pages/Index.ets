@@ -95,7 +95,7 @@ struct Index {
     let password = await PreferencesUtil.get("password", "") as string
 
     if (username.length != 0 && password.length != 0) {
-      ToastUtil.showToast("进行自动登录")
+      ToastUtil.showToast($r('app.string.auto_login'))
       let result = await this.viewModel.login({username: username, password: password})
       if (result) {
         let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()

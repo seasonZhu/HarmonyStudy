@@ -49,7 +49,7 @@ struct Register {
           .fontSize(14)
           .fontColor(Color.Black)
           .inputFilter('[0-9]', (e) => {
-            ToastUtil.showToast("请输入11位手机号")
+            ToastUtil.showToast($r('app.string.phone_number_invalid'))
           })
           .onChange((value: string) => {
             this.username = value
@@ -104,13 +104,13 @@ struct Register {
                   if (response.data.errorCode == 0) {
                     Router.backWithParams("", userInfo)
                   } else {
-                    ToastUtil.showToast("获取用户信息失败")
+                    ToastUtil.showToast($r('app.string.get_user_info_failed'))
                   }
                 } else {
-                  ToastUtil.showToast("注册失败")
+                  ToastUtil.showToast($r('app.string.register_failed'))
                 }
               } else {
-                ToastUtil.showToast("两次密码输入不一致")
+                ToastUtil.showToast($r('app.string.password_inconsistent'))
               }
           })
       }

@@ -34,7 +34,7 @@ export class MyCollectViewModel {
         api = "lg/collect/" + id + "/json"
         let collectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post(api)
         if (collectResponse.data.errorCode == 0) {
-          ToastUtil.showToast("收藏成功")
+          ToastUtil.showToast($r('app.string.collect_success'))
           if (AccountManager.shared().loginModel && AccountManager.shared().loginModel?.collectIds) {
             let newLoginModel = AccountManager.shared().loginModel!
             let collectIds = AccountManager.shared().loginModel?.collectIds!
@@ -44,14 +44,14 @@ export class MyCollectViewModel {
           }
           return true
         } else {
-          ToastUtil.showToast("收藏失败")
+          ToastUtil.showToast($r('app.string.collect_failed'))
           return false
         }
       case CollectActionType.cancel:
         api = "lg/uncollect_originId/" + id + "/json"
         let cancelCollectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post(api)
         if (cancelCollectResponse.data.errorCode == 0) {
-          ToastUtil.showToast("取消收藏成功")
+          ToastUtil.showToast($r('app.string.uncollect_success'))
           if (AccountManager.shared().loginModel && AccountManager.shared().loginModel?.collectIds) {
             let newLoginModel = AccountManager.shared().loginModel!
             let collectIds = AccountManager.shared().loginModel?.collectIds!
@@ -64,7 +64,7 @@ export class MyCollectViewModel {
           }
           return true
         } else {
-          ToastUtil.showToast("取消收藏失败")
+          ToastUtil.showToast($r('app.string.uncollect_failed'))
           return false
         }
     }

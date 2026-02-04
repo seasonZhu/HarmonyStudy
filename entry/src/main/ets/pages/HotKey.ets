@@ -85,7 +85,7 @@ struct HotKey {
           }
           Router.toSearchResult(keywordInfo)
         } else {
-          ToastUtil.showToast("搜索词不能为空")
+          ToastUtil.showToast($r('app.string.search_keyword_empty'))
         }
       })
   }

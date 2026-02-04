@@ -47,7 +47,7 @@ struct Login {
             .fontSize(14)
             .fontColor(Color.Black)
             .inputFilter('[0-9]', (_e) => {
-              ToastUtil.showToast("请输入11位手机号")
+              ToastUtil.showToast($r('app.string.phone_number_invalid'))
             })
             .onChange((value: string) => {
               this.username = value
@@ -98,12 +98,12 @@ struct Login {
               let result = await this.viewModel.login({ username: this.username, password: this.password })
               this.loadingDialogController.close()
               if (result) {
-                ToastUtil.showToast("登录成功")
+                ToastUtil.showToast($r('app.string.login_success'))
                 let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
                 let userInfo = response.data.data
                 Router.backWithParams("", userInfo)
               } else {
-                ToastUtil.showToast("登录失败")
+                ToastUtil.showToast($r('app.string.login_failed'))
               }
             })
         }
