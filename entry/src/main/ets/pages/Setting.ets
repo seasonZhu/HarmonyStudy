@@ -69,10 +69,6 @@ struct Setting {
     .width('100%')
   }
 
-  aboutToAppear(): void {
-
-  }
-
   aboutToDisappear(): void {
 
   }

@@ -3,6 +3,9 @@
  * 统一管理列表相关的配置参数
  */
 export class ListConfig {
+  /** 列表项间距 */
+  static readonly SPACE: number = 20
+
   /** 列表缓存数量 */
   static readonly CACHED_COUNT: number = 3
 

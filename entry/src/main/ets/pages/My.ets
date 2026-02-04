@@ -3,9 +3,6 @@ import { allMyTypeCases } from '../enum/MyType'
 import { UserInfoModel } from '../model/UserInfoModel'
 import { Router } from '../router/Router'
 import { MyHeader } from '../views/MyHeader'
-import { router } from '@kit.ArkUI'
-import { RouterName } from '../router/RouterName'
-import { PageMyCoin } from './MyCoin'
 import { LogUtil } from '@pura/harmony-utils'
 
 @Entry
@@ -87,16 +84,8 @@ struct My {
         break
       case MyType.setting:
         Router.toSetting()
-        // router.pushNamedRoute({ name: PageMyCoin})
-        // router.pushNamedRoute({ name: RouterName.MyCoin})
-        // Router.pushName({url: PageMyCoin})
-        // Router.pushName({url: RouterName.MyCoin})
         break
     }
-  }
-
-  aboutToAppear(): void {
-
   }
 }
 

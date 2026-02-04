@@ -13,7 +13,6 @@ import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
 import { Router } from '../router/Router';
-import { PagesConstant } from '../router/PagesConstant';
 import { ViewStatus } from '../enum/ViewStatus';
 import { LogUtil } from '@pura/harmony-utils';
 import { immersion } from '../utils/Immersion';
@@ -36,7 +35,6 @@ struct Home {
 
   @State dataSource: BaseListDataSource<Banner> = new BaseListDataSource<Banner>()
 
-  /// 这个地方我写个空数组还是this.dataSource.originData，好像都没有关系
   @State data: Banner[] = this.dataSource.originData
 
   @State listDataSource: BaseListDataSource<Article> = new BaseListDataSource<Article>()
@@ -56,7 +54,6 @@ struct Home {
       StatusWeight({
         status: this.status,
         contentBuilder: () => {
-          // 这个地方不能直接将一个组件放在里面，必须使用一个@Builder装饰器修饰的函数
           this.getRefreshView()
         },
         onRetry: () => {
@@ -159,11 +156,10 @@ struct Home {
     .width("100%")
     .backgroundColor($r('app.color.white'))
     .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
-    .edgeEffect(EdgeEffect.None) // 必须设置列表为滑动到边缘无效果
+    .edgeEffect(EdgeEffect.None)
   }
 
   async aboutToAppear(): Promise<void> {
-    LogUtil.debug("重写该方法，改为异步，还是会走这里")
     this.viewModel.networkRequest(ScrollActionType.refresh)
       .then((results: AxiosResponse[]) => {
         ListDataProcessor.processMixedData(
@@ -183,6 +179,10 @@ struct Home {
       });
   }
 
+  aboutToDisappear(): void {
+    this.loadingDialogController.close()
+  }
+
 }
 
 export { Home }
@@ -195,10 +195,9 @@ struct SearchIcon {
       .height(60)
       .padding(16)
       .onClick(() => {
-        Router.push(PagesConstant.Hotkey)
+        Router.toHotkey()
       })
   }
-
   /// 沉浸式开与关
   immersionAction() {
     if (immersion.onOrOff == true) {

@@ -35,7 +35,6 @@ struct Rank {
       StatusWeight({
         status: this.status,
         contentBuilder: () => {
-          // 这个地方不能直接将一个组件放在里面，必须使用一个@Builder装饰器修饰的函数
           this.getRefreshView()
         },
         onRetry: () => {
@@ -100,7 +99,7 @@ struct Rank {
 
   @Builder
   private getListView() {
-    List({ space: 20, scroller: this.scroller }) {
+    List({ space: ListConfig.SPACE, scroller: this.scroller }) {
       LazyForEach(this.listDataSource, (item: RankModel) => {
         ListItem() {
           Column() {
@@ -115,15 +114,14 @@ struct Rank {
         .height(66)
       })
     }
+    .cachedCount(ListConfig.CACHED_COUNT)
     .width("100%")
     .backgroundColor($r('app.color.white'))
     .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
-    .edgeEffect(EdgeEffect.None) // 必须设置列表为滑动到边缘无效果
+    .edgeEffect(EdgeEffect.None)
   }
 
   async aboutToAppear(): Promise<void> {
-    LogUtil.debug("重写该方法，改为异步，还是会走这里")
-
     this.viewModel.getRankList(ScrollActionType.refresh)
       .then((result: AxiosResponse<BaseResponse<PageModel<RankModel>>>) => {
         ListDataProcessor.processPagedListData(

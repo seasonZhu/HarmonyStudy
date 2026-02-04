@@ -35,7 +35,6 @@ struct Tree {
       StatusWeight({
         status: this.status,
         contentBuilder: () => {
-          // 这个地方不能直接将一个组件放在里面，必须使用一个@Builder装饰器修饰的函数
           this.getRefreshView()
         },
         onRetry: async () => {
@@ -90,15 +89,16 @@ struct Tree {
 
   @Builder
   private getListView() {
-    List({ space: 20, scroller: this.scroller }) {
+    List({ space: ListConfig.SPACE, scroller: this.scroller }) {
       LazyForEach(this.listDataSource, (item: TabModel) => {
         TreeCell({item: item})
       })
     }
+    .cachedCount(ListConfig.CACHED_COUNT)
     .width("100%")
     .backgroundColor($r('app.color.white'))
     .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
-    .edgeEffect(EdgeEffect.None) // 必须设置列表为滑动到边缘无效果
+    .edgeEffect(EdgeEffect.None)
   }
 
   async aboutToAppear(): Promise<void> {

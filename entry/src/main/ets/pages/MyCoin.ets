@@ -17,7 +17,6 @@ import { ListConfig } from '../constants/StyleConstants';
 
 export let PageMyCoin = "PageMyCoin"
 
-// @Entry({routeName: PageMyCoin})
 @Entry({routeName: RouterName.MyCoin})
 @Component
 struct MyCoin {
@@ -38,7 +37,6 @@ struct MyCoin {
       StatusWeight({
         status: this.status,
         contentBuilder: () => {
-          // 这个地方不能直接将一个组件放在里面，必须使用一个@Builder装饰器修饰的函数
           this.getRefreshView()
         },
         onRetry: () => {
@@ -56,16 +54,11 @@ struct MyCoin {
   @Builder
   private getRefreshView() {
     PullToRefresh({
-      // 必传项，容器主体布局类型
       pullToRefreshType: PullToRefreshType.LIST,
-      // 必传项，控制是否进行下拉刷新
       refreshing: $refreshing,
-      // 必传项，自定义主体布局，内部有列表或宫格组件
       customList: () => {
-        // 一个用@Builder修饰过的UI方法
         this.getListView()
       },
-      // 可选项，下拉刷新回调
       onRefresh: async () => {
         let result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>> = await this.viewModel.getMyCoinList(ScrollActionType.refresh)
         ListDataProcessor.processPagedListData(
@@ -78,7 +71,6 @@ struct MyCoin {
         )
         return '刷新成功'
       },
-      // 可选项，上拉加载更多回调
       onLoadMore: () => {
         return new Promise<string>((resolve, reject) => {
           this.viewModel.getMyCoinList(ScrollActionType.loadMore)
@@ -103,7 +95,7 @@ struct MyCoin {
 
   @Builder
   private getListView() {
-    List({ space: 20, scroller: this.scroller }) {
+    List({ space: ListConfig.SPACE, scroller: this.scroller }) {
       LazyForEach(this.listDataSource, (item: MyCoinModel) => {
         ListItem() {
           Column() {
@@ -114,23 +106,18 @@ struct MyCoin {
               .padding({top: 8, left: 16})
           }
           .alignItems(HorizontalAlign.Start)
-
-          //MyCoinCell({item: item})
-
-          //MyCoinCellBuilder(item)
         }
         .height(66)
       })
     }
+    .cachedCount(ListConfig.CACHED_COUNT)
     .width("100%")
     .backgroundColor($r('app.color.white'))
     .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
-    .edgeEffect(EdgeEffect.None) // 必须设置列表为滑动到边缘无效果
+    .edgeEffect(EdgeEffect.None)
   }
 
   async aboutToAppear(): Promise<void> {
-    LogUtil.debug("重写该方法，改为异步，还是会走这里")
-
     this.viewModel.getMyCoinList(ScrollActionType.refresh)
       .then((result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>) => {
         ListDataProcessor.processPagedListData(
@@ -148,33 +135,4 @@ struct MyCoin {
       });
 
   }
-}
-
-@Reusable
-@Component
-struct MyCoinCell {
-  @Prop item: MyCoinModel
-
-  build() {
-    Column() {
-      Text(this.item.desc)
-        .padding({top: 8, left: 16})
-
-      Text(`获取积分原因：${this.item.reason}`)
-        .padding({top: 8, left: 16})
-    }
-    .alignItems(HorizontalAlign.Start)
-  }
-}
-
-@Builder
-function MyCoinCellBuilder(item: MyCoinModel) {
-  Column() {
-    Text(item.desc)
-      .padding({top: 8, left: 16})
-
-    Text(`获取积分原因：${item.reason}`)
-      .padding({top: 8, left: 16})
-  }
-  .alignItems(HorizontalAlign.Start)
 }

@@ -217,6 +217,13 @@ export class Router {
   }
 
   /**
+   * 跳转到搜索热词页
+   */
+  static toHotkey(): void {
+    Router.push(PagesConstant.Hotkey)
+  }
+
+  /**
    * 跳转到网络请求示例页
    */
   static toNetworkExample(): void {
