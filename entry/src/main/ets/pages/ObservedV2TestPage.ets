@@ -313,11 +313,22 @@ struct ObservedV2TestPage {
         // 拼接wgt包路径
         let path = fileDir + "/"+mpId+".wgt"
         // 释放 wgt 包到运行目录
-        releaseWgtToRunPath(mpId, path, (code:number, data: object)=>{
-          console.log(JSON.stringify({code,data}))
+        releaseWgtToRunPath(mpId, path, (code:number, error: Error|null)=>{
+          console.log(JSON.stringify({code, error}))
           resolve()
           // 启动小程序
-          const mp = openUniMP(mpId)
+          const mp = openUniMP(mpId, {
+            capsuleMenuActionSheetItems: [
+              {
+                id: '1',
+                title: 'test1'
+              },
+              {
+                id: '2',
+                title: 'test2'
+              }
+            ]
+          })
           mp.on('close',()=>{
             console.log('UniMP-close')
           })
@@ -326,6 +337,17 @@ struct ObservedV2TestPage {
           })
           mp.on('hide',()=>{
             console.log('UniMP-hide')
+          })
+          mp.on('menuItemClick', (id: string) => {
+            console.log('menuItemClick', id)
+
+            // 宿主向小程序发送消息
+            mp.sendUniMPEvent("NativeEvent", {msg: "native message"})
+          })
+
+          mp.on('uniMPEvent', (event: string, data: ESObject, notify: (result: string) => void) => {
+            console.log(`宿主收到小程序消息，事件：${event}，消息：${JSON.stringify(data)}`);
+            notify('宿主成功接收小程序消息')
           })
         })
       } catch(err){

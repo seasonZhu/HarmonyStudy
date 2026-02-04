@@ -28,7 +28,7 @@ struct Tree {
 
   private scroller = new Scroller()
 
-  viewModel!: TabScaffoldViewModel
+  private viewModel: TabScaffoldViewModel | null = null
 
   build() {
     Navigation() {
@@ -38,7 +38,7 @@ struct Tree {
           this.getRefreshView()
         },
         onRetry: async () => {
-          let result: AxiosResponse = await this.viewModel.getTabs()
+          let result: AxiosResponse = await this.viewModel!.getTabs()
           ListDataProcessor.processArrayListData(
             this.listDataSource,
             result,
@@ -73,7 +73,7 @@ struct Tree {
       refreshConfigurator: this.setNoLoadMoreRefreshConfig(),
       // 可选项，下拉刷新回调
       onRefresh: async () => {
-        let result: AxiosResponse = await this.viewModel.getTabs()
+        let result: AxiosResponse = await this.viewModel!.getTabs()
         ListDataProcessor.processArrayListData(
           this.listDataSource,
           result,
