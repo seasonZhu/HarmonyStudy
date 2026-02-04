@@ -76,9 +76,9 @@ struct Login {
             Text("还没有账号？进行注册")
               .decoration({
                 type: TextDecorationType.Underline,
-                color: "#3079FF"
+                color: $r('app.color.text_grey')
               })
-              .fontColor("#3079FF")
+              .fontColor($r('app.color.text_grey'))
               .fontSize(15)
               .maxLines(1)
               .onClick(() => {
@@ -87,12 +87,12 @@ struct Login {
               .margin({ right: 20 })
           }
 
-          Button("登 录", { type: ButtonType.Capsule, stateEffect: true })
-            .backgroundColor(0x317aff)
+          Button($r('app.string.login_button'), { type: ButtonType.Capsule, stateEffect: true })
+            .backgroundColor($r('app.color.login_button'))
             .width("95%")
-            .margin({ top: 40, left: 20, right: 20, bottom: 20 })
+            .margin({ top: 20, left: 16, right: 16, bottom: 16 })
             .height(40)
-            .fontSize(17)
+            .fontSize(20)
             .onClick(async () => {
               this.loadingDialogController.open()
               let result = await this.viewModel.login({ username: this.username, password: this.password })
@@ -112,7 +112,7 @@ struct Login {
         .height('100%')
 
     }
-    .title("登录")
+    .title($r('app.string.login'))
     .mode(NavigationMode.Auto)
     .titleMode(NavigationTitleMode.Mini)
     .height('100%')

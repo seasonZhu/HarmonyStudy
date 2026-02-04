@@ -11,6 +11,202 @@
     {
       "name": "EntryAbility_label",
       "value": "wandroid"
+    },
+    {
+      "name": "loading",
+      "value": "正在加载"
+    },
+    {
+      "name": "loading_more",
+      "value": "加载中..."
+    },
+    {
+      "name": "login",
+      "value": "登录"
+    },
+    {
+      "name": "register",
+      "value": "注册"
+    },
+    {
+      "name": "home",
+      "value": "首页"
+    },
+    {
+      "name": "my",
+      "value": "我的"
+    },
+    {
+      "name": "my_coin",
+      "value": "我的积分"
+    },
+    {
+      "name": "my_collect",
+      "value": "我的收藏"
+    },
+    {
+      "name": "settings",
+      "value": "设置"
+    },
+    {
+      "name": "phone_number_hint",
+      "value": "请输入手机号"
+    },
+    {
+      "name": "password_hint",
+      "value": "请输入密码"
+    },
+    {
+      "name": "repassword_hint",
+      "value": "请再次输入密码"
+    },
+    {
+      "name": "search_keyword_hint",
+      "value": "搜索关键词"
+    },
+    {
+      "name": "login_button",
+      "value": "登 录"
+    },
+    {
+      "name": "register_button",
+      "value": "注 册"
+    },
+    {
+      "name": "no_account_register",
+      "value": "还没有账号？进行注册"
+    },
+    {
+      "name": "auto_login",
+      "value": "进行自动登录"
+    },
+    {
+      "name": "login_success",
+      "value": "登录成功"
+    },
+    {
+      "name": "login_failed",
+      "value": "登录失败"
+    },
+    {
+      "name": "register_failed",
+      "value": "注册失败"
+    },
+    {
+      "name": "get_user_info_failed",
+      "value": "获取用户信息失败"
+    },
+    {
+      "name": "password_inconsistent",
+      "value": "两次密码输入不一致"
+    },
+    {
+      "name": "logout_success",
+      "value": "退出登录成功"
+    },
+    {
+      "name": "logout_failed",
+      "value": "退出登录失败"
+    },
+    {
+      "name": "refresh_success",
+      "value": "刷新成功"
+    },
+    {
+      "name": "load_more_complete",
+      "value": "上拉完成"
+    },
+    {
+      "name": "load_more_failed",
+      "value": "上拉失败"
+    },
+    {
+      "name": "search_keyword_empty",
+      "value": "搜索词不能为空"
+    },
+    {
+      "name": "click_retry",
+      "value": "点击了重试按钮"
+    },
+    {
+      "name": "click_banner",
+      "value": "点击了轮播图"
+    },
+    {
+      "name": "click_share",
+      "value": "点击了分享按钮"
+    },
+    {
+      "name": "click_collect",
+      "value": "点击了收藏按钮"
+    },
+    {
+      "name": "click_switch_env",
+      "value": "点击了切换环境"
+    },
+    {
+      "name": "loading_login",
+      "value": "正在登录..."
+    },
+    {
+      "name": "loading_register",
+      "value": "正在注册..."
+    },
+    {
+      "name": "warm_prompt",
+      "value": "温馨提示"
+    },
+    {
+      "name": "logout_confirm",
+      "value": "是否退出登录？"
+    },
+    {
+      "name": "cancel",
+      "value": "取消"
+    },
+    {
+      "name": "confirm",
+      "value": "确定"
+    },
+    {
+      "name": "logging_out",
+      "value": "正在登出..."
+    },
+    {
+      "name": "request_failed_retry",
+      "value": "请求失败，点击重试。"
+    },
+    {
+      "name": "no_data",
+      "value": "暂 无 数 据"
+    },
+    {
+      "name": "loading_request",
+      "value": "正在加载..."
+    },
+    {
+      "name": "phone_number_invalid",
+      "value": "请输入11位手机号"
+    },
+    {
+      "name": "collect_success",
+      "value": "收藏成功"
+    },
+    {
+      "name": "collect_failed",
+      "value": "收藏失败"
+    },
+    {
+      "name": "uncollect_success",
+      "value": "取消收藏成功"
+    },
+    {
+      "name": "uncollect_failed",
+      "value": "取消收藏失败"
+    },
+    {
+      "name": "requesting",
+      "value": "请求中..."
     }
   ]
 }

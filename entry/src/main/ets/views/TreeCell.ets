@@ -13,13 +13,13 @@ export struct TreeCell {
       Column() {
         Text(this.item.name)
           .textAlign(TextAlign.Start)
-          .padding({left: 12, bottom: 16})
+          .padding({left: 8, bottom: 20})
 
         Flex({ wrap:FlexWrap.Wrap, }){
           ForEach(this.item.children, (item: TabModel) => {
             Text(item.name)
               .fontColor(Color.White)
-              .backgroundColor("#2C86EF")
+              .backgroundColor($r('app.color.app_blue'))
               .borderRadius(4)
               .fontSize(16)
               .textAlign(TextAlign.Center)
@@ -39,8 +39,8 @@ export struct TreeCell {
 
   getRandomString(): string {
     let color = RandomUtil.getRandomColor()
-    if (color === "#FFFFFF") {
-      return "#2C86EF"
+    if (color === '#FFFFFF') {
+      return '#2C86EF'
     } else {
       return color
     }

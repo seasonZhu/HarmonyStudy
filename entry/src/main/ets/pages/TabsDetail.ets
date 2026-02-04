@@ -13,6 +13,8 @@ import { TabsDetailViewModel } from '../viewModel/TabsDetailViewModel';
 import { ContentType } from '../enum/ContentType';
 import { TabModel } from '../model/TabModel';
 import { LogUtil } from '@pura/harmony-utils';
+import { ListDataProcessor } from '../utils/ListDataProcessor';
+import { ListConfig } from '../constants/StyleConstants';
 
 @Entry
 @Component
@@ -64,7 +66,14 @@ struct TabsDetail {
       // 可选项，下拉刷新回调
       onRefresh: async () => {
         let result: AxiosResponse<BaseResponse<PageModel<Article>>> = await this.viewModel.getTabsDetailList(ScrollActionType.refresh)
-        this.processResponseData(result, ScrollActionType.refresh)
+        ListDataProcessor.processPagedListData(
+          this.listDataSource,
+          result,
+          ScrollActionType.refresh,
+          (status: ViewStatus) => {
+            this.status = status
+          }
+        )
         return '刷新成功'
       },
       // 可选项，上拉加载更多回调
@@ -72,7 +81,14 @@ struct TabsDetail {
         return new Promise<string>((resolve, reject) => {
           this.viewModel.getTabsDetailList(ScrollActionType.loadMore)
             .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
-              this.processResponseData(result, ScrollActionType.loadMore)
+              ListDataProcessor.processPagedListData(
+                this.listDataSource,
+                result,
+                ScrollActionType.loadMore,
+                (status: ViewStatus) => {
+                  this.status = status
+                }
+              )
               resolve('上拉完成');
             })
             .catch((error: AxiosError) => {
@@ -102,8 +118,8 @@ struct TabsDetail {
     }
     .cachedCount(3)
     .width("100%")
-    .backgroundColor('#FFFFFF')
-    .divider({ strokeWidth: 0.25, color: "#2F2F2F" })
+    .backgroundColor($r('app.color.white'))
+    .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
     .edgeEffect(EdgeEffect.None) // 必须设置列表为滑动到边缘无效果
   }
 
@@ -114,39 +130,20 @@ struct TabsDetail {
 
     this.viewModel.getTabsDetailList(ScrollActionType.refresh)
       .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
-        this.processResponseData(result, ScrollActionType.refresh)
+        ListDataProcessor.processPagedListData(
+          this.listDataSource,
+          result,
+          ScrollActionType.refresh,
+          (status: ViewStatus) => {
+            this.status = status
+          }
+        )
       })
       .catch((error: AxiosError) => {
         LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
 
-  }
-
-  processResponseData(result: AxiosResponse<BaseResponse<PageModel<Article>>>, type: ScrollActionType) {
-
-    let response = result.data as BaseResponse<PageModel<Article>>
-
-    if (type == ScrollActionType.refresh) {
-      this.listDataSource.removeAll()
-
-      response.data.datas.forEach((item) => {
-        this.listDataSource.addData(item)
-      })
-
-      if (this.listDataSource.originData.length == 0) {
-        this.status = ViewStatus.empty
-      } else {
-        this.status = ViewStatus.success
-      }
-
-    } else {
-      response.data.datas.forEach((item) => {
-        this.listDataSource.addData(item)
-      })
-
-      this.status = ViewStatus.success
-    }
   }
 }
 

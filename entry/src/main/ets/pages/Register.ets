@@ -87,12 +87,12 @@ struct Register {
             this.repassword = value
           })
 
-        Button("注 册", { type: ButtonType.Capsule, stateEffect: true })
-          .backgroundColor(0x317aff)
+        Button($r('app.string.register_button'), { type: ButtonType.Capsule, stateEffect: true })
+          .backgroundColor($r('app.color.login_button'))
           .width("95%")
-          .margin({ top: 40, left: 20, right: 20, bottom: 20 })
+          .margin({ top: 20, left: 16, right: 16, bottom: 16 })
           .height(40)
-          .fontSize(17)
+          .fontSize(20)
           .onClick(async () => {
               if (this.password === this.repassword) {
                 this.loadingDialogController.open()
@@ -119,7 +119,7 @@ struct Register {
       .height('100%')
 
     }
-    .title("注册")
+    .title($r('app.string.register'))
     .mode(NavigationMode.Auto)
     .titleMode(NavigationTitleMode.Mini)
     .height('100%')

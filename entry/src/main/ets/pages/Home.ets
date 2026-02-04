@@ -18,25 +18,19 @@ import { ViewStatus } from '../enum/ViewStatus';
 import { LogUtil } from '@pura/harmony-utils';
 import { immersion } from '../utils/Immersion';
 import { WebLink } from '../entity/WebLink';
+import { ListDataProcessor } from '../utils/ListDataProcessor';
+import { ListConfig } from '../constants/StyleConstants';
 
 @Entry
 @Component
 struct Home {
 
-  @State message: string = "正在加载"
+  @State message: string = 'loading'
 
   private loadingDialogController: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog(),
-    // 点击遮障层退出时的回调
-    cancel: () => {
-    },
-    //是否允许点击遮障层退出
+    builder: LoadingDialog({ text: '请求中...' }),
     autoCancel: false,
     alignment: DialogAlignment.Center,
-    offset: { dx: 0, dy: 0 },
-    //弹窗宽度占栅格宽度的个数。默认为按照窗口大小自适应，异常值按默认值处理，最大栅格数为系统最大栅格数
-    gridCount: 2,
-    //弹窗容器样式是否自定义。默认值：false，弹窗容器的宽度根据栅格系统自适应，不跟随子节点；高度自适应子节点，最大为窗口高度的90%；圆角为24vp。
     customStyle: false
   })
 
@@ -66,11 +60,11 @@ struct Home {
           this.getRefreshView()
         },
         onRetry: () => {
-          LogUtil.debug("点击了重试按钮")
+          LogUtil.debug($r('app.string.click_retry'))
         },
       })
     }
-    .title("首页")
+    .title($r('app.string.home'))
     .mode(NavigationMode.Auto)
     .titleMode(NavigationTitleMode.Mini)
     .height('100%')
@@ -93,10 +87,17 @@ struct Home {
       },
       // 可选项，下拉刷新回调
       onRefresh: async () => {
-        //this.loadingDialogController.open()
         let results: AxiosResponse[] = await this.viewModel.networkRequest(ScrollActionType.refresh)
-        //this.loadingDialogController.close()
-        this.processResponseData(results, ScrollActionType.refresh)
+        ListDataProcessor.processMixedData(
+          this.dataSource,
+          this.listDataSource,
+          results,
+          ScrollActionType.refresh,
+          (status: ViewStatus) => {
+            this.status = status
+          },
+          (hotArticles: Article[], normalArticles: Article[]) => hotArticles.concat(normalArticles)
+        )
         return '刷新成功'
       },
       // 可选项，上拉加载更多回调
@@ -104,7 +105,15 @@ struct Home {
         return new Promise<string>((resolve, reject) => {
           this.viewModel.networkRequest(ScrollActionType.loadMore)
             .then((results: AxiosResponse[]) => {
-              this.processResponseData(results, ScrollActionType.loadMore)
+              ListDataProcessor.processMixedData(
+                this.dataSource,
+                this.listDataSource,
+                results,
+                ScrollActionType.loadMore,
+                (status: ViewStatus) => {
+                  this.status = status
+                }
+              )
               resolve('上拉完成');
             })
             .catch((error: AxiosError) => {
@@ -126,7 +135,7 @@ struct Home {
       ListItem() {
         BannerView({data: $dataSource,
           itemClick: (item) => {
-            LogUtil.debug("点击了轮播图")
+            LogUtil.debug($r('app.string.click_banner'))
             LogUtil.debug(item.url)
             const webLink: WebLink = { id: item.id, title: item.title, link: item.url, originId: null }
             Router.toWebPage(webLink)
@@ -146,10 +155,10 @@ struct Home {
         }
       })
     }
-    .cachedCount(3)
+    .cachedCount(ListConfig.CACHED_COUNT)
     .width("100%")
-    .backgroundColor('#FFFFFF')
-    .divider({ strokeWidth: 0.25, color: "#2F2F2F" })
+    .backgroundColor($r('app.color.white'))
+    .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
     .edgeEffect(EdgeEffect.None) // 必须设置列表为滑动到边缘无效果
   }
 
@@ -157,7 +166,16 @@ struct Home {
     LogUtil.debug("重写该方法，改为异步，还是会走这里")
     this.viewModel.networkRequest(ScrollActionType.refresh)
       .then((results: AxiosResponse[]) => {
-        this.processResponseData(results, ScrollActionType.refresh)
+        ListDataProcessor.processMixedData(
+          this.dataSource,
+          this.listDataSource,
+          results,
+          ScrollActionType.refresh,
+          (status: ViewStatus) => {
+            this.status = status
+          },
+          (hotArticles: Article[], normalArticles: Article[]) => hotArticles.concat(normalArticles)
+        )
       })
       .catch((error: AxiosError) => {
         LogUtil.debug("http error: " + JSON.stringify(error))
@@ -165,43 +183,6 @@ struct Home {
       });
   }
 
-  processResponseData(results: AxiosResponse[], type: ScrollActionType) {
-    if (type == ScrollActionType.refresh) {
-      this.dataSource.removeAll()
-      this.listDataSource.removeAll()
-
-      let responseBanners = results[0].data as BaseResponse<Banner[]>
-      let responseHotArticle = results[1].data as BaseResponse<Article[]>
-      let responseNormalArticle = results[2].data as BaseResponse<PageModel<Article>>
-
-      let allArticle = responseHotArticle.data.concat(responseNormalArticle.data.datas)
-
-      if (type == ScrollActionType.refresh) {
-        responseBanners.data.forEach((item) => {
-          this.dataSource.addData(item)
-        })
-      }
-
-      allArticle.forEach((item) => {
-        this.listDataSource.addData(item)
-      })
-
-      if (this.listDataSource.originData.length == 0) {
-        this.status = ViewStatus.empty
-      } else {
-        this.status = ViewStatus.success
-      }
-
-    } else {
-      let responseNormalArticle = results[0].data as BaseResponse<PageModel<Article>>
-
-      responseNormalArticle.data.datas.forEach((item) => {
-        this.listDataSource.addData(item)
-      })
-
-      this.status = ViewStatus.success
-    }
-  }
 }
 
 export { Home }

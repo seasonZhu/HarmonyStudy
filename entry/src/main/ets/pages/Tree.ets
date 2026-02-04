@@ -11,6 +11,8 @@ import { TreeCell } from '../views/TreeCell';
 import { TabScaffoldViewModel } from '../viewModel/TabScaffoldViewModel';
 import { ContentType } from '../enum/ContentType';
 import { LogUtil } from '@pura/harmony-utils';
+import { ListDataProcessor } from '../utils/ListDataProcessor';
+import { ListConfig } from '../constants/StyleConstants';
 
 @Entry
 @Component
@@ -38,7 +40,14 @@ struct Tree {
         },
         onRetry: async () => {
           let result: AxiosResponse = await this.viewModel.getTabs()
-          this.processResponseData(result, ScrollActionType.refresh)
+          ListDataProcessor.processArrayListData(
+            this.listDataSource,
+            result,
+            ScrollActionType.refresh,
+            (status: ViewStatus) => {
+              this.status = status
+            }
+          )
         },
       })
     }
@@ -66,7 +75,14 @@ struct Tree {
       // 可选项，下拉刷新回调
       onRefresh: async () => {
         let result: AxiosResponse = await this.viewModel.getTabs()
-        this.processResponseData(result, ScrollActionType.refresh)
+        ListDataProcessor.processArrayListData(
+          this.listDataSource,
+          result,
+          ScrollActionType.refresh,
+          (status: ViewStatus) => {
+            this.status = status
+          }
+        )
         return '刷新成功'
       },
     })
@@ -80,8 +96,8 @@ struct Tree {
       })
     }
     .width("100%")
-    .backgroundColor('#FFFFFF')
-    .divider({ strokeWidth: 0.25, color: "#2F2F2F" })
+    .backgroundColor($r('app.color.white'))
+    .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
     .edgeEffect(EdgeEffect.None) // 必须设置列表为滑动到边缘无效果
   }
 
@@ -89,7 +105,14 @@ struct Tree {
     this.viewModel = new TabScaffoldViewModel(ContentType.tree)
     this.viewModel.getTabs()
       .then((result: AxiosResponse) => {
-        this.processResponseData(result, ScrollActionType.refresh)
+        ListDataProcessor.processArrayListData(
+          this.listDataSource,
+          result,
+          ScrollActionType.refresh,
+          (status: ViewStatus) => {
+            this.status = status
+          }
+        )
       })
       .catch((error: AxiosError) => {
         LogUtil.debug("http error: " + JSON.stringify(error))
@@ -101,24 +124,6 @@ struct Tree {
     let config = new PullToRefreshConfigurator()
     config.setHasLoadMore(false)
     return config
-  }
-
-  processResponseData(result: AxiosResponse<BaseResponse<TabModel[]>>, type: ScrollActionType) {
-    if (type == ScrollActionType.refresh) {
-      this.listDataSource.removeAll()
-
-      let response = result.data
-
-      response.data.forEach((item) => {
-        this.listDataSource.addData(item)
-      })
-
-      if (this.listDataSource.originData.length == 0) {
-        this.status = ViewStatus.empty
-      } else {
-        this.status = ViewStatus.success
-      }
-    }
   }
 }
 

@@ -51,7 +51,7 @@ struct My {
         })
       }
     }
-    .title("我的")
+    .title($r('app.string.my'))
     .mode(NavigationMode.Auto)
     .titleMode(NavigationTitleMode.Mini)
     .height('100%')

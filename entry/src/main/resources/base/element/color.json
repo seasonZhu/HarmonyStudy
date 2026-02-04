@@ -1043,6 +1043,42 @@
     {
       "name": "sf_Green",
       "value": "#02965E"
+    },
+    {
+      "name": "app_blue",
+      "value": "#2C86EF"
+    },
+    {
+      "name": "text_grey",
+      "value": "#3079FF"
+    },
+    {
+      "name": "text_primary",
+      "value": "#333333"
+    },
+    {
+      "name": "text_secondary",
+      "value": "#6B6B6B"
+    },
+    {
+      "name": "text_tertiary",
+      "value": "#999999"
+    },
+    {
+      "name": "text_grey_dark",
+      "value": "#666666"
+    },
+    {
+      "name": "bg_grey",
+      "value": "#F5F5F5"
+    },
+    {
+      "name": "divider_color",
+      "value": "#2F2F2F"
+    },
+    {
+      "name": "login_button",
+      "value": "#317aff"
     }
   ]
 }

@@ -13,6 +13,8 @@ import { InfoCell } from '../views/InfoCell';
 import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil';
 import { CollectActionType } from '../enum/CollectActionType';
 import { LogUtil } from '@pura/harmony-utils';
+import { ListDataProcessor } from '../utils/ListDataProcessor';
+import { ListConfig } from '../constants/StyleConstants';
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 
@@ -44,7 +46,7 @@ struct MyCollect {
         },
       })
     }
-    .title("我的收藏")
+    .title($r('app.string.my_collect'))
     .mode(NavigationMode.Auto)
     .titleMode(NavigationTitleMode.Mini)
     .height('100%')
@@ -66,7 +68,14 @@ struct MyCollect {
       // 可选项，下拉刷新回调
       onRefresh: async () => {
         let result: AxiosResponse<BaseResponse<PageModel<Article>>> = await this.viewModel.getMyCollectList(ScrollActionType.refresh)
-        this.processResponseData(result, ScrollActionType.refresh)
+        ListDataProcessor.processPagedListData(
+          this.listDataSource,
+          result,
+          ScrollActionType.refresh,
+          (status: ViewStatus) => {
+            this.status = status
+          }
+        )
         return '刷新成功'
       },
       // 可选项，上拉加载更多回调
@@ -74,7 +83,14 @@ struct MyCollect {
         return new Promise<string>((resolve, reject) => {
           this.viewModel.getMyCollectList(ScrollActionType.loadMore)
             .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
-              this.processResponseData(result, ScrollActionType.loadMore)
+              ListDataProcessor.processPagedListData(
+                this.listDataSource,
+                result,
+                ScrollActionType.loadMore,
+                (status: ViewStatus) => {
+                  this.status = status
+                }
+              )
               resolve('上拉完成');
             })
             .catch((error: AxiosError) => {
@@ -128,8 +144,8 @@ struct MyCollect {
       }, (item: Article, index) => item.id.toString())
     }
     .width("100%")
-    .backgroundColor('#FFFFFF')
-    .divider({ strokeWidth: 0.25, color: "#2F2F2F" })
+    .backgroundColor($r('app.color.white'))
+    .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
     .edgeEffect(EdgeEffect.None) // 必须设置列表为滑动到边缘无效果
   }
 
@@ -156,34 +172,18 @@ struct MyCollect {
 
     this.viewModel.getMyCollectList(ScrollActionType.refresh)
       .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
-        this.processResponseData(result, ScrollActionType.refresh)
+        ListDataProcessor.processPagedListData(
+          this.listDataSource,
+          result,
+          ScrollActionType.refresh,
+          (status: ViewStatus) => {
+            this.status = status
+          }
+        )
       })
       .catch((error: AxiosError) => {
         LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
-  }
-
-  processResponseData(result: AxiosResponse<BaseResponse<PageModel<Article>>>, type: ScrollActionType) {
-
-    let response = result.data as BaseResponse<PageModel<Article>>
-
-    if (type == ScrollActionType.refresh) {
-
-      this.listDataSource.removeAll()
-
-      this.listDataSource.addListData(response.data.datas)
-
-      if (this.listDataSource.originData.length == 0) {
-        this.status = ViewStatus.empty
-      } else {
-        this.status = ViewStatus.success
-      }
-
-    } else {
-      this.status = ViewStatus.success
-
-      this.listDataSource.addListData(response.data.datas)
-    }
   }
 }

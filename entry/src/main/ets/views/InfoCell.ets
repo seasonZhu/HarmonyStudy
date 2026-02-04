@@ -64,7 +64,7 @@ export struct InfoCell {
       Text() {
         ForEach(this.title, (value: string, index: number) => {
           if (index === 1) {
-            Span(StringUtils.replaceHtmlElement(value)).fontSize(18).fontColor("#2C86EF")
+            Span(StringUtils.replaceHtmlElement(value)).fontSize(18).fontColor($r('app.color.app_blue'))
           } else {
             Span(StringUtils.replaceHtmlElement(value))
           }
@@ -90,7 +90,7 @@ export struct InfoCell {
         Text(this.article.superChapterName + '-' + this.article.chapterName)
           .fontSize(12)
           .padding(8)
-          .fontColor("#02965E")
+          .fontColor($r('app.color.sf_Green'))
         Blank()
         if (this.article.extIsCollecting) {
           LoadingProgress()
@@ -133,7 +133,7 @@ export struct InfoCell {
       }
       .width('100%')
     }
-    .backgroundColor("#FFFFFF")
+    .backgroundColor($r('app.color.white'))
     .width('100%')
     .onClick(() => {
       if (this.onItemClick) {
@@ -193,7 +193,7 @@ export struct InfoCell {
           Text() {
             ForEach(this.title, (value: string, index: number) => {
               if (index === 1) {
-                Span(StringUtils.replaceHtmlElement(value)).fontSize(18).fontColor("#2C86EF")
+                Span(StringUtils.replaceHtmlElement(value)).fontSize(18).fontColor($r('app.color.app_blue'))
               } else {
                 Span(StringUtils.replaceHtmlElement(value))
               }
@@ -236,7 +236,7 @@ export struct InfoCell {
         Text(this.article.superChapterName + '-' + this.article.chapterName)
           .fontSize(12)
           .padding(8)
-          .fontColor("#02965E")
+          .fontColor($r('app.color.sf_Green'))
         Blank()
         if (this.article.extIsCollecting) {
           LoadingProgress()
@@ -358,8 +358,8 @@ export struct InfoCell {
             bottom: 2
           })
           .textAlign(TextAlign.Center)
-          .fontColor("#2C86EF")
-          .border({ color: "#2C86EF", radius: 8, width: 1 })
+          .fontColor($r('app.color.app_blue'))
+          .border({ color: $r('app.color.app_blue'), radius: 8, width: 1 })
           .fontSize(10)
       })
 

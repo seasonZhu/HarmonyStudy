@@ -62,7 +62,7 @@ struct Setting {
       .width('100%')
       .height('100%')
     }
-    .title("设置")
+    .title($r('app.string.settings'))
     .mode(NavigationMode.Auto)
     .titleMode(NavigationTitleMode.Mini)
     .height('100%')

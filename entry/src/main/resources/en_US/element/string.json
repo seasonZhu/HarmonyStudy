@@ -11,6 +11,202 @@
     {
       "name": "EntryAbility_label",
       "value": "wandroid"
+    },
+    {
+      "name": "loading",
+      "value": "Loading"
+    },
+    {
+      "name": "loading_more",
+      "value": "Loading..."
+    },
+    {
+      "name": "login",
+      "value": "Login"
+    },
+    {
+      "name": "register",
+      "value": "Register"
+    },
+    {
+      "name": "home",
+      "value": "Home"
+    },
+    {
+      "name": "my",
+      "value": "Me"
+    },
+    {
+      "name": "my_coin",
+      "value": "My Points"
+    },
+    {
+      "name": "my_collect",
+      "value": "My Collection"
+    },
+    {
+      "name": "settings",
+      "value": "Settings"
+    },
+    {
+      "name": "phone_number_hint",
+      "value": "Enter phone number"
+    },
+    {
+      "name": "password_hint",
+      "value": "Enter password"
+    },
+    {
+      "name": "repassword_hint",
+      "value": "Re-enter password"
+    },
+    {
+      "name": "search_keyword_hint",
+      "value": "Search keywords"
+    },
+    {
+      "name": "login_button",
+      "value": "LOGIN"
+    },
+    {
+      "name": "register_button",
+      "value": "REGISTER"
+    },
+    {
+      "name": "no_account_register",
+      "value": "No account? Register"
+    },
+    {
+      "name": "auto_login",
+      "value": "Auto login"
+    },
+    {
+      "name": "login_success",
+      "value": "Login successful"
+    },
+    {
+      "name": "login_failed",
+      "value": "Login failed"
+    },
+    {
+      "name": "register_failed",
+      "value": "Registration failed"
+    },
+    {
+      "name": "get_user_info_failed",
+      "value": "Failed to get user info"
+    },
+    {
+      "name": "password_inconsistent",
+      "value": "Passwords do not match"
+    },
+    {
+      "name": "logout_success",
+      "value": "Logout successful"
+    },
+    {
+      "name": "logout_failed",
+      "value": "Logout failed"
+    },
+    {
+      "name": "refresh_success",
+      "value": "Refresh successful"
+    },
+    {
+      "name": "load_more_complete",
+      "value": "Load more complete"
+    },
+    {
+      "name": "load_more_failed",
+      "value": "Load more failed"
+    },
+    {
+      "name": "search_keyword_empty",
+      "value": "Search keyword cannot be empty"
+    },
+    {
+      "name": "click_retry",
+      "value": "Retry button clicked"
+    },
+    {
+      "name": "click_banner",
+      "value": "Banner clicked"
+    },
+    {
+      "name": "click_share",
+      "value": "Share button clicked"
+    },
+    {
+      "name": "click_collect",
+      "value": "Collect button clicked"
+    },
+    {
+      "name": "click_switch_env",
+      "value": "Switch environment clicked"
+    },
+    {
+      "name": "loading_login",
+      "value": "Logging in..."
+    },
+    {
+      "name": "loading_register",
+      "value": "Registering..."
+    },
+    {
+      "name": "warm_prompt",
+      "value": "Warm Prompt"
+    },
+    {
+      "name": "logout_confirm",
+      "value": "Are you sure to logout?"
+    },
+    {
+      "name": "cancel",
+      "value": "Cancel"
+    },
+    {
+      "name": "confirm",
+      "value": "Confirm"
+    },
+    {
+      "name": "logging_out",
+      "value": "Logging out..."
+    },
+    {
+      "name": "request_failed_retry",
+      "value": "Request failed, tap to retry."
+    },
+    {
+      "name": "no_data",
+      "value": "No Data"
+    },
+    {
+      "name": "loading_request",
+      "value": "Loading..."
+    },
+    {
+      "name": "phone_number_invalid",
+      "value": "Please enter 11-digit phone number"
+    },
+    {
+      "name": "collect_success",
+      "value": "Collection successful"
+    },
+    {
+      "name": "collect_failed",
+      "value": "Collection failed"
+    },
+    {
+      "name": "uncollect_success",
+      "value": "Uncollection successful"
+    },
+    {
+      "name": "uncollect_failed",
+      "value": "Uncollection failed"
+    },
+    {
+      "name": "requesting",
+      "value": "Requesting..."
     }
   ]
 }

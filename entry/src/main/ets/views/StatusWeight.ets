@@ -48,11 +48,11 @@ export struct StatusWeight {
   private loading() {
     Column() {
       LoadingProgress()
-        .color("#2C86EF")
+        .color($r('app.color.app_blue'))
         .width(60)
         .height(60)
 
-      Text('正在加载...')
+      Text($r('app.string.loading_request'))
         .margin({
           top: 48
         })
@@ -70,7 +70,7 @@ export struct StatusWeight {
         .height(160)
         .width(280)
         .objectFit(ImageFit.Auto)
-      Text('请求失败，点击重试。')
+      Text($r('app.string.request_failed_retry'))
         .margin({
           top: 48
         })
@@ -89,7 +89,7 @@ export struct StatusWeight {
         .height(180)
         .width(180)
         .objectFit(ImageFit.Auto)
-      Text('暂 无 数 据')
+      Text($r('app.string.no_data'))
         .margin({
           top: 48
         })

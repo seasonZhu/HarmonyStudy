@@ -8,6 +8,7 @@ import { StringUtils } from '../utils/StringUtils';
 import { TabsDetail } from './TabsDetail';
 import { ContentType, getTitle } from '../enum/ContentType';
 import { LogUtil } from '@pura/harmony-utils';
+import { LoadingDialog } from '../httpRequest/LoadingDialog';
 
 @Entry
 @Component
@@ -24,6 +25,17 @@ struct TabScaffold {
   @State currentIndex: number = 0
 
   private tabsController = new TabsController()
+
+  private loadingDialogController: CustomDialogController = new CustomDialogController({
+    builder: LoadingDialog({ text: '加载中...' }),
+    cancel: () => {
+    },
+    autoCancel: false,
+    alignment: DialogAlignment.Center,
+    offset: { dx: 0, dy: 0 },
+    gridCount: 2,
+    customStyle: false
+  })
 
   build() {
 
@@ -72,7 +84,12 @@ struct TabScaffold {
 
   async aboutToAppear(): Promise<void> {
     this.viewModel = new TabScaffoldViewModel(this.contentType)
+
+    this.loadingDialogController.open()
+
     let response: AxiosResponse<BaseResponse<TabModel[]>> = await this.viewModel.getTabs()
+
+    this.loadingDialogController.close()
 
     this.datas = response.data.data
     LogUtil.debug(this.datas.length.toString())
@@ -82,6 +99,10 @@ struct TabScaffold {
     } else {
       this.status = ViewStatus.error
     }
+  }
+
+  aboutToDisappear(): void {
+    this.loadingDialogController.close()
   }
 }
 
