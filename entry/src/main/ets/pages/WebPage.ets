@@ -1,7 +1,7 @@
 import { webview } from '@kit.ArkWeb'
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
-import { LoadingDialog } from '../httpRequest/LoadingDialog';
+import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 import { WebLink } from '../entity/WebLink';
 import AccountManager from '../accountManager/AccountManager';
 import { LogUtil } from '@pura/harmony-utils';
@@ -10,6 +10,7 @@ import { MyCollectViewModel } from '../viewModel/MyCollectViewModel';
 import { common } from '@kit.AbilityKit';
 import { systemShare } from '@kit.ShareKit';
 import { uniformTypeDescriptor as utd } from '@kit.ArkData';
+import { ErrorHandler } from '../utils/ErrorHandler'
 
 @Entry({routeName: RouterName.Web})
 @Component
@@ -28,20 +29,7 @@ struct WebPage {
 
   private viewModel = new MyCollectViewModel()
 
-  private loadingDialogController: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({text: "加载中..."}),
-    // 点击遮障层退出时的回调
-    cancel: () => {
-    },
-    //是否允许点击遮障层退出
-    autoCancel: false,
-    alignment: DialogAlignment.Center,
-    offset: { dx: 0, dy: 0 },
-    //弹窗宽度占栅格宽度的个数。默认为按照窗口大小自适应，异常值按默认值处理，最大栅格数为系统最大栅格数
-    gridCount: 2,
-    //弹窗容器样式是否自定义。默认值：false，弹窗容器的宽度根据栅格系统自适应，不跟随子节点；高度自适应子节点，最大为窗口高度的90%；圆角为24vp。
-    customStyle: false
-  })
+  private loadingHelper = new LoadingDialogHelper('加载中...')
 
   build() {
     Navigation() {
@@ -69,12 +57,12 @@ struct WebPage {
             if (event?.url) {
 
             }
-            this.loadingDialogController.open()
+            this.loadingHelper.show('加载中...')
           })
           .onPageEnd((_event) => {
             //网页加载完成时触发该回调，且只在主frame触发。
             this.showLoadingProgress = false
-            this.loadingDialogController.close()
+            this.loadingHelper.hide()
           })
           .onProgressChange((event) => {
             //网页加载进度变化时触发该回调。
@@ -83,10 +71,10 @@ struct WebPage {
             }
           })
           .onErrorReceive(() => {
-            this.loadingDialogController.close()
+            this.loadingHelper.hide()
           })
           .onHttpErrorReceive(() => {
-            this.loadingDialogController.close()
+            this.loadingHelper.hide()
           })
           .onTitleReceive((event) => {
             //网页document标题更改时触发该回调。
@@ -127,7 +115,7 @@ struct WebPage {
           try {
             this.shareAction()
           } catch (error) {
-            // TODO: Implement error handling.
+            ErrorHandler.handle(error, '分享功能调用失败')
           }
         })
 
@@ -164,7 +152,7 @@ struct WebPage {
   }
 
   aboutToDisappear(): void {
-    this.loadingDialogController.close()
+    this.loadingHelper.destroy()
   }
 
   aboutToAppear(): void {
@@ -221,7 +209,7 @@ struct WebPage {
     let context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
     // 注册分享面板关闭监听
     controller.on('dismiss', () => {
-      console.info('Share panel closed');
+      LogUtil.info('Share panel closed');
       // 分享结束，可处理其他业务。
     });
     // 进行分享面板显示

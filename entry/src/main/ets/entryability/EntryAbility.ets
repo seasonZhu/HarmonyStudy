@@ -6,6 +6,7 @@ import { init } from '@dcloudio/uni-app-runtime'
 import { environmentManager } from '../httpRequest/EnvironmentManager'
 import { Provider } from '../httpRequest/Provider'
 import { NetworkProvider } from '../network/examples/NetworkProvider'
+import { LoadingDialogHelper } from '../utils/LoadingDialogHelper'
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -45,6 +46,8 @@ export default class EntryAbility extends UIAbility {
         return;
       }
       hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');
+      // 初始化 LoadingDialogHelper
+      LoadingDialogHelper.init(windowStage)
     });
 
     AppUtil.init(this.context)

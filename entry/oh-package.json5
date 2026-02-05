@@ -6,9 +6,10 @@
   "author": "",
   "license": "",
   "dependencies": {
-    /// SDK包进行引入
     "librarySDK": "file:../librarySDK",
-    "network": "file:../network"
-  }
+    "network": "file:../network",
+    "@jxt/xt_hud": "^3.4.0"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
 }
-

@@ -1,36 +1,21 @@
 import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil'
-import { IndexViewModel } from '../viewModel/IndexViewModel'
-import { BaseResponse } from '../model/BaseResponse';
-import { AxiosResponse } from '@ohos/axios';
+import { LoginViewModel, LoginResult } from '../viewModel/LoginViewModel'
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { UserInfoModel } from '../model/UserInfoModel';
-import { LoadingDialog } from '../httpRequest/LoadingDialog';
+import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 
 @Entry({routeName: RouterName.Login})
 @Component
 struct Login {
 
-  private loadingDialogController: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({text: "正在登录..."}),
-    // 点击遮障层退出时的回调
-    cancel: () => {
-    },
-    //是否允许点击遮障层退出
-    autoCancel: false,
-    alignment: DialogAlignment.Center,
-    offset: { dx: 0, dy: 0 },
-    //弹窗宽度占栅格宽度的个数。默认为按照窗口大小自适应，异常值按默认值处理，最大栅格数为系统最大栅格数
-    gridCount: 2,
-    //弹窗容器样式是否自定义。默认值：false，弹窗容器的宽度根据栅格系统自适应，不跟随子节点；高度自适应子节点，最大为窗口高度的90%；圆角为24vp。
-    customStyle: false
-  })
-
   @State username: string = ""
 
   @State password: string = ""
 
-  viewModel = new IndexViewModel()
+  viewModel = new LoginViewModel()
+
+  private loadingHelper = new LoadingDialogHelper('正在登录...')
 
   build() {
     Navigation() {
@@ -94,15 +79,21 @@ struct Login {
             .height(40)
             .fontSize(20)
             .onClick(async () => {
-              this.loadingDialogController.open()
-              let result = await this.viewModel.login({ username: this.username, password: this.password })
-              this.loadingDialogController.close()
-              if (result) {
-                ToastUtil.showToast($r('app.string.login_success'))
-                let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-                let userInfo = response.data.data
-                Router.backWithParams("", userInfo)
-              } else {
+              try {
+                const result: LoginResult = await this.loadingHelper.wrap(
+                  this.viewModel.loginWithUserInfo({
+                    username: this.username,
+                    password: this.password
+                  })
+                )
+
+                if (result && result.success && result.userInfo) {
+                  ToastUtil.showToast($r('app.string.login_success'))
+                  Router.backWithParams("", result.userInfo)
+                } else {
+                  ToastUtil.showToast($r('app.string.login_failed'))
+                }
+              } catch (error) {
                 ToastUtil.showToast($r('app.string.login_failed'))
               }
             })
@@ -120,7 +111,7 @@ struct Login {
   }
 
   aboutToDisappear(): void {
-    this.loadingDialogController.close()
+    this.loadingHelper.destroy()
   }
 
   onPageShow(): void {

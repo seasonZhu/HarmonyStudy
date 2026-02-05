@@ -3,7 +3,7 @@ import { UserInfoModel } from '../model/UserInfoModel';
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { LoginViewModel } from '../viewModel/LoginViewModel';
-import { LoadingDialog } from '../httpRequest/LoadingDialog';
+import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 import { MainPage } from 'librarySDK/src/main/ets/components/MainPage';
 import { SDKTools } from 'librarySDK/src/main/ets/components/SDKTools';
 import { router } from '@kit.ArkUI';
@@ -12,22 +12,10 @@ import { RouteConstant } from 'librarySDK';
 @Entry({routeName: RouterName.Setting})
 @Component
 struct Setting {
-  private loadingDialogController: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({text: "正在登出..."}),
-    // 点击遮障层退出时的回调
-    cancel: () => {
-    },
-    //是否允许点击遮障层退出
-    autoCancel: false,
-    alignment: DialogAlignment.Center,
-    offset: { dx: 0, dy: 0 },
-    //弹窗宽度占栅格宽度的个数。默认为按照窗口大小自适应，异常值按默认值处理，最大栅格数为系统最大栅格数
-    gridCount: 2,
-    //弹窗容器样式是否自定义。默认值：false，弹窗容器的宽度根据栅格系统自适应，不跟随子节点；高度自适应子节点，最大为窗口高度的90%；圆角为24vp。
-    customStyle: false
-  })
 
   viewModel = new LoginViewModel()
+
+  private loadingHelper = new LoadingDialogHelper('正在登出...')
 
   build() {
     Navigation() {
@@ -93,14 +81,16 @@ struct Setting {
   }
 
   async logout() {
-    this.loadingDialogController.open()
-    let result = await this.viewModel.logout()
-    this.loadingDialogController.close()
-    if (result) {
-      ToastUtil.showToast($r('app.string.logout_success'))
-      let userInfo: UserInfoModel = {}
-      Router.backWithParams("", userInfo)
-    } else {
+    try {
+      let result = await this.loadingHelper.wrap(this.viewModel.logout())
+      if (result) {
+        ToastUtil.showToast($r('app.string.logout_success'))
+        let userInfo: UserInfoModel = {}
+        Router.backWithParams("", userInfo)
+      } else {
+        ToastUtil.showToast($r('app.string.logout_failed'))
+      }
+    } catch (error) {
       ToastUtil.showToast($r('app.string.logout_failed'))
     }
   }

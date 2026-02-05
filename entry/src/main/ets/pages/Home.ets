@@ -9,7 +9,6 @@ import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
 import { HomeViewModel } from '../viewModel/HomeViewModel';
 import { ScrollActionType } from '../enum/ScrollActionType';
-import { LoadingDialog } from '../httpRequest/LoadingDialog';
 import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
 import { Router } from '../router/Router';
@@ -25,13 +24,6 @@ import { ListConfig } from '../constants/StyleConstants';
 struct Home {
 
   @State message: string = 'loading'
-
-  private loadingDialogController: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({ text: '请求中...' }),
-    autoCancel: false,
-    alignment: DialogAlignment.Center,
-    customStyle: false
-  })
 
   @State dataSource: BaseListDataSource<Banner> = new BaseListDataSource<Banner>()
 
@@ -180,7 +172,7 @@ struct Home {
   }
 
   aboutToDisappear(): void {
-    this.loadingDialogController.close()
+    // 清理资源
   }
 
 }

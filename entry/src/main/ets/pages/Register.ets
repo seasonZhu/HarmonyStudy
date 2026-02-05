@@ -1,30 +1,13 @@
 import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil'
-import { IndexViewModel } from '../viewModel/IndexViewModel'
-import { BaseResponse } from '../model/BaseResponse';
-import { AxiosResponse } from '@ohos/axios';
+import { LoginViewModel, RegisterResult } from '../viewModel/LoginViewModel'
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { UserInfoModel } from '../model/UserInfoModel';
-import { LoadingDialog } from '../httpRequest/LoadingDialog';
+import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 
 @Entry({routeName: RouterName.Register})
 @Component
 struct Register {
-
-  private loadingDialogController: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({text: "正在注册..."}),
-    // 点击遮障层退出时的回调
-    cancel: () => {
-    },
-    //是否允许点击遮障层退出
-    autoCancel: false,
-    alignment: DialogAlignment.Center,
-    offset: { dx: 0, dy: 0 },
-    //弹窗宽度占栅格宽度的个数。默认为按照窗口大小自适应，异常值按默认值处理，最大栅格数为系统最大栅格数
-    gridCount: 2,
-    //弹窗容器样式是否自定义。默认值：false，弹窗容器的宽度根据栅格系统自适应，不跟随子节点；高度自适应子节点，最大为窗口高度的90%；圆角为24vp。
-    customStyle: false
-  })
 
   @State username: string = ""
 
@@ -32,7 +15,9 @@ struct Register {
 
   @State repassword: string = ""
 
-  viewModel = new IndexViewModel()
+  viewModel = new LoginViewModel()
+
+  private loadingHelper = new LoadingDialogHelper('正在注册...')
 
   build() {
     Navigation() {
@@ -95,18 +80,23 @@ struct Register {
           .fontSize(20)
           .onClick(async () => {
               if (this.password === this.repassword) {
-                this.loadingDialogController.open()
-                let result = await this.viewModel.register({ username: this.username, password: this.password, repassword: this.repassword })
-                this.loadingDialogController.close()
-                if (result) {
-                  let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-                  let userInfo = response.data.data
-                  if (response.data.errorCode == 0) {
-                    Router.backWithParams("", userInfo)
-                  } else {
+                try {
+                  const result: RegisterResult = await this.loadingHelper.wrap(
+                    this.viewModel.registerWithUserInfo({
+                      username: this.username,
+                      password: this.password,
+                      repassword: this.repassword
+                    })
+                  )
+
+                  if (result && result.success && result.userInfo) {
+                    Router.backWithParams("", result.userInfo)
+                  } else if (result && result.errorCode != null) {
                     ToastUtil.showToast($r('app.string.get_user_info_failed'))
+                  } else {
+                    ToastUtil.showToast($r('app.string.register_failed'))
                   }
-                } else {
+                } catch (error) {
                   ToastUtil.showToast($r('app.string.register_failed'))
                 }
               } else {
@@ -127,7 +117,7 @@ struct Register {
   }
 
   aboutToDisappear(): void {
-    this.loadingDialogController.close()
+    this.loadingHelper.destroy()
   }
 
   mockBackToRoot() {

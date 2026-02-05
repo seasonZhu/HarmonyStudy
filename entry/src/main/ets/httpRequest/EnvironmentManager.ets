@@ -1,6 +1,7 @@
 import preferences from '@ohos.data.preferences'
 import { Environment } from './Environment'
 import { Context } from '@kit.AbilityKit'
+import { LogUtil } from '@pura/harmony-utils'
 
 /**
  * 环境管理器 - 负责环境的持久化存储和获取
@@ -28,7 +29,7 @@ export class EnvironmentManager {
     try {
       this.preferences = await preferences.getPreferences(context, this.STORE_NAME)
     } catch (error) {
-      console.error('EnvironmentManager: 初始化失败', JSON.stringify(error))
+      LogUtil.error('EnvironmentManager: 初始化失败', JSON.stringify(error))
     }
   }
 
@@ -37,7 +38,7 @@ export class EnvironmentManager {
    */
   async getCurrentEnvironment(): Promise<Environment> {
     if (!this.preferences) {
-      console.warn('EnvironmentManager: preferences未初始化，返回默认环境')
+      LogUtil.warn('EnvironmentManager: preferences未初始化，返回默认环境')
       return Environment.PROD
     }
 
@@ -45,7 +46,7 @@ export class EnvironmentManager {
       const envValue = await this.preferences.get(this.KEY_ENV, Environment.PROD)
       return envValue as Environment
     } catch (error) {
-      console.error('EnvironmentManager: 获取环境失败', JSON.stringify(error))
+      LogUtil.error('EnvironmentManager: 获取环境失败', JSON.stringify(error))
       return Environment.PROD
     }
   }
@@ -55,16 +56,16 @@ export class EnvironmentManager {
    */
   async setCurrentEnvironment(env: Environment): Promise<void> {
     if (!this.preferences) {
-      console.error('EnvironmentManager: preferences未初始化')
+      LogUtil.error('EnvironmentManager: preferences未初始化')
       return
     }
 
     try {
       await this.preferences.put(this.KEY_ENV, env)
       await this.preferences.flush()
-      console.info('EnvironmentManager: 环境已切换为', env)
+      LogUtil.info('EnvironmentManager: 环境已切换为', env)
     } catch (error) {
-      console.error('EnvironmentManager: 设置环境失败', JSON.stringify(error))
+      LogUtil.error('EnvironmentManager: 设置环境失败', JSON.stringify(error))
     }
   }
 

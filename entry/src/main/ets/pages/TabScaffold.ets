@@ -8,7 +8,7 @@ import { StringUtils } from '../utils/StringUtils';
 import { TabsDetail } from './TabsDetail';
 import { ContentType, getTitle } from '../enum/ContentType';
 import { LogUtil } from '@pura/harmony-utils';
-import { LoadingDialog } from '../httpRequest/LoadingDialog';
+import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 
 @Entry
 @Component
@@ -26,16 +26,7 @@ struct TabScaffold {
 
   private tabsController = new TabsController()
 
-  private loadingDialogController: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({ text: '加载中...' }),
-    cancel: () => {
-    },
-    autoCancel: false,
-    alignment: DialogAlignment.Center,
-    offset: { dx: 0, dy: 0 },
-    gridCount: 2,
-    customStyle: false
-  })
+  private loadingHelper = new LoadingDialogHelper('加载中...')
 
   build() {
 
@@ -85,24 +76,27 @@ struct TabScaffold {
   async aboutToAppear(): Promise<void> {
     this.viewModel = new TabScaffoldViewModel(this.contentType)
 
-    this.loadingDialogController.open()
+    try {
+      let response: AxiosResponse<BaseResponse<TabModel[]>> = await this.loadingHelper.wrap(
+        this.viewModel.getTabs()
+      )
 
-    let response: AxiosResponse<BaseResponse<TabModel[]>> = await this.viewModel.getTabs()
+      this.datas = response.data.data
+      LogUtil.debug(this.datas.length.toString())
 
-    this.loadingDialogController.close()
-
-    this.datas = response.data.data
-    LogUtil.debug(this.datas.length.toString())
-
-    if (response.data.errorCode == 0) {
-      this.status = ViewStatus.success
-    } else {
+      if (response.data.errorCode == 0) {
+        this.status = ViewStatus.success
+      } else {
+        this.status = ViewStatus.error
+      }
+    } catch (error) {
+      LogUtil.debug("加载Tab失败: " + JSON.stringify(error))
       this.status = ViewStatus.error
     }
   }
 
   aboutToDisappear(): void {
-    this.loadingDialogController.close()
+    this.loadingHelper.destroy()
   }
 }
 

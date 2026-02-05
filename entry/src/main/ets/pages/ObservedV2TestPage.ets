@@ -1,7 +1,8 @@
 // [Harmony 状态管理神器 @ObservedV2](https://juejin.cn/post/7391704406327164982)
 import { openUniMP,isExistsUniMP, releaseWgtToRunPath } from '@dcloudio/uni-app-runtime';
-import { FileUtil } from '@pura/harmony-utils';
+import { FileUtil, LogUtil } from '@pura/harmony-utils';
 import { Router } from '../router/Router';
+import { PagesConstant } from '../router/PagesConstant';
 
 @ObservedV2
 class Person {
@@ -227,7 +228,7 @@ struct ObservedV2TestPage {
             .borderRadius(8)
             .margin({ top: 12 })
             .onClick(() => {
-              Router.push('network/examples/pages/NetworkExamplePage')
+              Router.push(PagesConstant.NetworkExample)
             })
         }
         .width('100%')
@@ -287,19 +288,20 @@ struct ObservedV2TestPage {
     let fileName = "__UNI__98AF8A0.wgt"//"__UNI__DF9D7DE.wgt"//
 
     getContext(this).resourceManager.getRawFileContent(fileName, (error, value) => {
-      console.debug(`${"UniApp#"}[${"wgt File"}] ${"getRawFile:__UNI__.wgt"}`)
+      LogUtil.debug(`${"UniApp#"}[${"wgt File"}] ${"getRawFile:__UNI__.wgt"}`)
       if (error != null) {
-        console.error("error is " + error.message)
+        LogUtil.error("error is " + error.message)
         return
       }
       let filePath = fileDir + "/" + fileName
       let file = FileUtil.openSync(filePath)
       FileUtil.writeSync(file.fd, value.buffer)
       FileUtil.closeSync(file.fd) //关闭文件
-      console.debug(`${"UniApp#"}[${"wgt File"}] ${"filePath:" + filePath}`)
+      LogUtil.debug(`${"UniApp#"}[${"wgt File"}] ${"filePath:" + filePath}`)
     })
   }
 
+  /// https://ohpm.openharmony.cn/#/cn/detail/@dcloudio%2Funi-app-runtime
   private async openLocalUniApp() {
     const mpId = "__UNI__98AF8A0"//"__UNI__DF9D7DE"//
 
@@ -307,14 +309,14 @@ struct ObservedV2TestPage {
       try {
         // 判断应用是否已释放到运行目录
         let isExists = isExistsUniMP(mpId)
-        console.log("isExists:"+isExists)
+        LogUtil.debug("isExists:"+isExists)
 
         let fileDir: string = getContext(this).filesDir
         // 拼接wgt包路径
         let path = fileDir + "/"+mpId+".wgt"
         // 释放 wgt 包到运行目录
         releaseWgtToRunPath(mpId, path, (code:number, error: Error|null)=>{
-          console.log(JSON.stringify({code, error}))
+          LogUtil.debug(JSON.stringify({code, error}))
           resolve()
           // 启动小程序
           const mp = openUniMP(mpId, {
@@ -330,23 +332,23 @@ struct ObservedV2TestPage {
             ]
           })
           mp.on('close',()=>{
-            console.log('UniMP-close')
+            LogUtil.debug('UniMP-close')
           })
           mp.on('show',()=>{
-            console.log('UniMP-show')
+            LogUtil.debug('UniMP-show')
           })
           mp.on('hide',()=>{
-            console.log('UniMP-hide')
+            LogUtil.debug('UniMP-hide')
           })
           mp.on('menuItemClick', (id: string) => {
-            console.log('menuItemClick', id)
+            LogUtil.debug('menuItemClick', id)
 
             // 宿主向小程序发送消息
             mp.sendUniMPEvent("NativeEvent", {msg: "native message"})
           })
 
           mp.on('uniMPEvent', (event: string, data: ESObject, notify: (result: string) => void) => {
-            console.log(`宿主收到小程序消息，事件：${event}，消息：${JSON.stringify(data)}`);
+            LogUtil.debug(`宿主收到小程序消息，事件：${event}，消息：${JSON.stringify(data)}`);
             notify('宿主成功接收小程序消息')
           })
         })

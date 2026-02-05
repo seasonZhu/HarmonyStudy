@@ -10,6 +10,15 @@ import { ScrollActionType } from '../enum/ScrollActionType';
 import httpClient from '../httpRequest/Provider';
 import { LogUtil } from '@pura/harmony-utils';
 
+/**
+ * 网络请求响应联合类型
+ * 明确定义所有可能的响应类型，增强类型安全
+ */
+type HomeNetworkResponseType =
+  | AxiosResponse<BaseResponse<Banner[]>>
+  | AxiosResponse<BaseResponse<Article[]>>
+  | AxiosResponse<BaseResponse<PageModel<Article>>>
+
 export class HomeViewModel {
 
   private pageNum = 1
@@ -28,14 +37,22 @@ export class HomeViewModel {
     return httpClient.get(api)
   }
 
-  /// 这个地方的返回值写了很久，另外大写的Object与object是两个东西
-  public networkRequest(type: ScrollActionType): Promise<AxiosResponse<Object>[]>  {
+  /**
+   * 网络请求 - 使用明确的联合类型保证类型安全
+   * @param type 滚动操作类型
+   * @returns 响应数组，类型明确
+   */
+  public networkRequest(type: ScrollActionType): Promise<HomeNetworkResponseType[]>  {
     if (type == ScrollActionType.refresh) {
       this.pageNum = 1
-      return Promise.all<AxiosResponse>([this.getBanner(), this.getHotArticle(), this.getNormalArticle(this.pageNum)])
+      return Promise.all<HomeNetworkResponseType>([
+        this.getBanner(),
+        this.getHotArticle(),
+        this.getNormalArticle(this.pageNum)
+      ])
     } else {
       this.pageNum = this.pageNum + 1
-      return Promise.all<AxiosResponse>([this.getNormalArticle(this.pageNum)])
+      return Promise.all<HomeNetworkResponseType>([this.getNormalArticle(this.pageNum)])
     }
   }
 

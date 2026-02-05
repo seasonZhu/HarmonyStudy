@@ -3,6 +3,7 @@ import { environmentManager } from '../httpRequest/EnvironmentManager'
 import { common } from '@kit.AbilityKit'
 import { LogUtil } from '@pura/harmony-utils';
 import { RouterName } from '../router/RouterName'
+import { ErrorHandler } from '../utils/ErrorHandler'
 
 @Entry({routeName: RouterName.EnvironmentSwitch})
 @Component
@@ -33,7 +34,7 @@ struct EnvironmentSwitch {
           duration: 2000
         })
       } catch (error) {
-        // TODO: Implement error handling.
+        ErrorHandler.handle(error, '提示显示失败', false)
       }
       return
     }
@@ -76,8 +77,8 @@ struct EnvironmentSwitch {
    */
   exitApp(): void {
     const context = getContext(this) as common.UIAbilityContext
-    context.terminateSelf().catch(() => {
-      // TODO: Implement error handling.
+    context.terminateSelf().catch((error: Error) => {
+      ErrorHandler.handle(error, '应用退出失败', false)
     })
   }
 

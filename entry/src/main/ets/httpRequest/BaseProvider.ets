@@ -4,6 +4,8 @@ import { AxiosClientRequestInterceptor } from './interceptors/AxiosClientRequest
 import { AxiosClientResponseInterceptor } from './interceptors/AxiosClientResponseInterceptor';
 import { ConfigurationAxiosClient } from './configuration/ConfigurationAxiosClient'
 import { BaseResponse } from '../model/BaseResponse';
+import { ErrorHandler } from '../utils/ErrorHandler';
+import { LogUtil } from '@pura/harmony-utils';
 
 export abstract class BaseProvider {
 
@@ -21,7 +23,7 @@ export abstract class BaseProvider {
         this.instance.interceptors.request.use(interceptor.onFulfilled, interceptor.onRejected)
       })
     } catch (error) {
-      // TODO: Implement error handling.
+      ErrorHandler.handle(error, '请求拦截器配置失败')
     }
 
     // 配置响应拦截器
@@ -30,7 +32,7 @@ export abstract class BaseProvider {
         this.instance.interceptors.response.use(interceptor.onFulfilled, interceptor.onRejected)
       })
     } catch (error) {
-      // TODO: Implement error handling.
+      ErrorHandler.handle(error, '响应拦截器配置失败')
     }
 
   }

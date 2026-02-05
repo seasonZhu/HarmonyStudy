@@ -50,10 +50,11 @@
 | ArkTS | - | HarmonyOS 官方推荐的开发语言 |
 | ArkUI | - | 声明式 UI 框架 |
 | @ohos/axios | ^2.2.7 | HTTP 网络请求 |
-| @ohos/pulltorefresh | ^2.0.5 | 下拉刷新组件 |
-| @ohos/imageknife | ^3.1.0 | 图片加载缓存 |
+| @ohos/pulltorefresh | ^3.0.0 | 下拉刷新组件 |
+| @ohos/imageknife | ^3.2.8 | 图片加载缓存 |
 | @pura/harmony-utils | ^1.4.0 | 工具类库 |
-| @dcloudio/uni-app-runtime | ^2.3.14 | UniApp 运行时（支持 Vue3） |
+| @jxt/xt_hud | ^3.4.0 | Loading/Toast 弹窗组件 |
+| @dcloudio/uni-app-runtime | ^4.84.2025110301 | UniApp 运行时（支持 Vue3） |
 
 ### 项目结构
 
@@ -103,7 +104,8 @@ HarmonyStudy/
 |----------|------|
 | **ListDataProcessor** | 统一处理分页列表数据，支持刷新/加载更多 |
 | **StatusWeight** | 页面状态管理（loading/error/empty/success） |
-| **LoadingDialog** | 统一的 Loading 弹窗组件 |
+| **LoadingDialogHelper** | 基于 @jxt/xt_hud 的加载弹窗工具类（支持静态/实例方法） |
+| **ErrorHandler** | 统一的错误处理和日志记录工具类 |
 | **Router** | 路由管理，支持页面跳转和参数传递 |
 | **AccountManager** | 用户账户管理，支持自动登录 |
 
@@ -187,13 +189,26 @@ ListDataProcessor.processPagedListData(
 
 **弹窗式 Loading**（登录/网络请求）：
 ```typescript
-private loadingDialogController: CustomDialogController = new CustomDialogController({
-  builder: LoadingDialog({ text: '加载中...' }),
-  autoCancel: false,
-  alignment: DialogAlignment.Center,
-  gridCount: 2,
-  customStyle: false
-})
+// 推荐：使用静态方法
+import { LoadingDialogHelper } from '../utils/LoadingDialogHelper'
+
+// 方式1：手动控制
+LoadingDialogHelper.show('加载中...')
+try {
+  await someApi()
+} finally {
+  LoadingDialogHelper.hide()
+}
+
+// 方式2：自动包装（推荐）
+const result = await LoadingDialogHelper.wrap(
+  someApi(),
+  '加载中...'
+)
+
+// 兼容：使用实例方法（旧代码无需修改）
+private loadingHelper = new LoadingDialogHelper('加载中...')
+await this.loadingHelper.wrap(someApi())
 ```
 
 **页面式 Loading**（列表页面）：
@@ -242,13 +257,23 @@ StatusWeight({
 
 ## 📝 更新日志
 
-### v1.4.0 (最新)
+### v2.0.0 (最新)
+- 🎉 重大升级：LoadingDialogHelper 基于 @jxt/xt_hud 重写
+- ✅ 解决 CustomDialogController 弹窗无法显示的问题
+- ✨ 新增静态方法 API（show/hide/wrap）
+- ✨ 保留实例方法兼容性，现有代码无需修改
+- 📚 新增完整的迁移文档（docs/LOADING_DIALOG_MIGRATION.md）
+- 🔧 在 EntryAbility 中添加全局 UIContext 初始化
+- ⬆️ 升级 @ohos/pulltorefresh 至 3.0.0
+- ⬆️ 升级 @ohos/imageknife 至 3.2.8
+
+### v1.4.0
 - ✨ 新增完整的国际化支持（中英文）
 - ✨ 新增 ListDataProcessor 统一列表数据处理
 - ✨ 新增 StatusWeight 状态管理组件
+- ✨ 新增 ErrorHandler 统一错误处理
 - 🎨 优化 Loading 弹窗样式统一
-- 🐛 修复 CustomDialogController 显示问题
-- 🔧 重构代码结构，移除冗余工具类
+- 🔧 重构代码结构，移除冗余工具类（BaseViewModel）
 
 ## 👨‍💻 作者
 

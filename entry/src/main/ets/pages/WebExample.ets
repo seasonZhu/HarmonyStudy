@@ -6,6 +6,7 @@ import axios from '@ohos/axios'
 import { AxiosResponse } from '@ohos/axios';
 import { AxiosError } from '@ohos/axios';
 import { RouterName } from '../router/RouterName'
+import { ErrorHandler } from '../utils/ErrorHandler'
 
 /*
  * https://ohpm.openharmony.cn/#/cn/detail/@hzw%2Fohos-dsbridge
@@ -103,7 +104,7 @@ struct WebExample {
           let javaScriptCallbackResult = await this.webviewController.runJavaScript(`harmonyOSCallJS()`)
           ToastUtil.showToast(javaScriptCallbackResult)
         } catch (error) {
-          // TODO: Implement error handling.
+          ErrorHandler.handle(error, 'JavaScript 执行失败', false)
         }
       })
   }

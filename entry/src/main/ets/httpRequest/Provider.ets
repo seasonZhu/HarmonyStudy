@@ -10,6 +10,7 @@ import { LoadingDialog } from './LoadingDialog';
 import { LoadingOpenInterceptor, LoadingCloseInterceptor } from './interceptors/LoadingInterceptor';
 import { Environment, EnvConfig } from './Environment';
 import { environmentManager } from './EnvironmentManager';
+import { LogUtil } from '@pura/harmony-utils';
 
 export class Provider extends BaseProvider {
   private static currentEnv: Environment = Environment.PROD
@@ -37,10 +38,10 @@ export class Provider extends BaseProvider {
     try {
       Provider.currentEnv = await environmentManager.getCurrentEnvironment()
       Provider.currentConfig = EnvConfig.getConfig(Provider.currentEnv)
-      console.info('Provider: 当前环境已初始化为 ' + Provider.currentEnv)
-      console.info('Provider: BaseURL = ' + Provider.currentConfig.baseUrl)
+      LogUtil.info('Provider: 当前环境已初始化为 ' + Provider.currentEnv)
+      LogUtil.info('Provider: BaseURL = ' + Provider.currentConfig.baseUrl)
     } catch (error) {
-      console.error('Provider: 初始化环境失败，使用默认环境')
+      LogUtil.error('Provider: 初始化环境失败，使用默认环境')
     }
   }
 
