@@ -207,6 +207,14 @@
     {
       "name": "requesting",
       "value": "请求中..."
+    },
+    {
+      "name": "retry",
+      "value": "重试"
+    },
+    {
+      "name": "go_add",
+      "value": "去添加"
     }
   ]
 }

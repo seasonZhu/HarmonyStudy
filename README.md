@@ -54,7 +54,7 @@
 | @ohos/imageknife | ^3.2.8 | 图片加载缓存 |
 | @pura/harmony-utils | ^1.4.0 | 工具类库 |
 | @jxt/xt_hud | ^3.4.0 | Loading/Toast 弹窗组件 |
-| @dcloudio/uni-app-runtime | ^4.84.2025110301 | UniApp 运行时（支持 Vue3） |
+| @dcloudio/uni-app-runtime | 5.0.2026020301 | UniApp 运行时（支持 Vue3） |
 
 ### 项目结构
 

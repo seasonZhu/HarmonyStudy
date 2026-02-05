@@ -128,9 +128,17 @@ struct WebPage {
         .onClick( async () => {
           LogUtil.debug("点击了收藏按钮" + this.getRealCollectId())
           let type = this.isCollected() ? CollectActionType.cancel : CollectActionType.collect
-          let result = await this.viewModel.collectAction(this.getRealCollectId(), type)
-          if (result) {
-            this.collectIds = AccountManager.shared().loginModel?.collectIds!
+          let actionText = type === CollectActionType.collect ? '收藏中...' : '取消收藏...'
+          try {
+            let result = await LoadingDialogHelper.wrap(
+              this.viewModel.collectAction(this.getRealCollectId(), type),
+              actionText
+            )
+            if (result) {
+              this.collectIds = AccountManager.shared().loginModel?.collectIds!
+            }
+          } catch (error) {
+            ErrorHandler.handle(error, '收藏操作失败')
           }
         })
     }

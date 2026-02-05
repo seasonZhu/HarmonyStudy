@@ -207,6 +207,14 @@
     {
       "name": "requesting",
       "value": "Requesting..."
+    },
+    {
+      "name": "retry",
+      "value": "Retry"
+    },
+    {
+      "name": "go_add",
+      "value": "Add"
     }
   ]
 }
