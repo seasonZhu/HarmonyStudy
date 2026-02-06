@@ -7,6 +7,8 @@ import { environmentManager } from '../httpRequest/EnvironmentManager'
 import { Provider } from '../httpRequest/Provider'
 import { NetworkProvider } from '../network/examples/NetworkProvider'
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper'
+import { registerAllNativeComponents } from '../native/HarmonyNativeComponents'
+import { registerSimpleTestComponents } from '../native/SimpleNativeTest'
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -39,6 +41,10 @@ export default class EntryAbility extends UIAbility {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
 
     init(this, windowStage, { debug: true })
+
+    // 注册测试组件和原有组件
+    registerSimpleTestComponents()
+    registerAllNativeComponents()
 
     windowStage.loadContent('pages/Index', (err) => {
       if (err.code) {
