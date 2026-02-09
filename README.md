@@ -1,66 +1,82 @@
 # HarmonyStudy
 
-> 使用 ArkTS 与 ArkUI 编写的 HarmonyOS WanAndroid 客户端
+> 使用 ArkTS 与 ArkUI 构建的生产级 HarmonyOS 客户端
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![HarmonyOS](https://img.shields.io/badge/HarmonyOS-API%2010%2B-blue.svg)](https://developer.huawei.com/consumer/cn/harmonyos/)
 [![ArkTS](https://img.shields.io/badge/language-ArkTS-orange.svg)](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/arkts-get-started-V5)
 
-## 📖 简介
+## 📖 项目简介
 
-本项目是基于 [WanAndroid 开放 API](https://www.wanandroid.com/) 开发的 HarmonyOS 原生客户端，采用**响应式编程**架构设计，遵循 HarmonyOS 最佳实践。
+本项目是基于 [WanAndroid 开放 API](https://www.wanandroid.com/) 开发的 HarmonyOS 原生客户端，采用**响应式编程**架构设计，严格遵循 HarmonyOS 最佳实践。
 
-项目架构与其他平台的 WanAndroid 客户端（[Swift版](https://github.com/seasonZhu/RxStudy)、[Flutter版](https://github.com/seasonZhu/GetXStudy)）一脉相承，体现了跨平台架构设计的一致性。
+### 与其他平台架构一脉相承
 
-### 技术特点
+| 平台 | 项目地址 | 架构模式 |
+|:----:|:---------|:---------|
+| **iOS** | [RxStudy](https://github.com/seasonZhu/RxStudy) | RxSwift + MVVM |
+| **Android** | [GetXStudy](https://github.com/seasonZhu/GetXStudy) | GetX + MVC |
+| **跨平台** | [UniAppPlayAndroid](https://github.com/seasonZhu/UniAppPlayAndroid) | Vue3 + UniApp |
+| **HarmonyOS** | [HarmonyStudy](https://github.com/seasonZhu/HarmonyStudy) | ArkTS + MVVM |
 
-- 🎯 **纯原生开发**：UI 和组件全部使用 HarmonyOS 原生框架
-- 📦 **轻量依赖**：仅引入必要的第三方库，保持项目简洁
-- 🏗️ **分层架构**：清晰的 MVVM 架构，易于维护和扩展
-- 🌍 **国际化支持**：完整的中英文资源管理
-- 🔄 **统一数据处理**：ListDataProcessor 统一处理列表数据逻辑
+### 核心设计原则
+
+- 🎯 **纯原生开发**：UI 和组件全部使用 HarmonyOS 原生框架，无 WebView 混合
+- 📦 **最小依赖**：仅引入必要的第三方库，保持项目轻量可控
+- 🏗️ **清晰分层**：MVVM 架构，职责明确，易于维护和扩展
+- 🌍 **国际化优先**：完整的中英文资源管理体系
+- 🔄 **统一抽象**：ListDataProcessor 统一处理分页列表逻辑
+- ✅ **测试覆盖**：单元测试与 UI 测试并行保障质量
 
 ## 🚀 功能特性
 
-### 核心功能
+### 核心业务功能
 
-- ✅ **五大模块**：首页、项目、公众号、体系、我的
-- ✅ **用户系统**：登录、注册、自动登录
-- ✅ **搜索功能**：热门搜索、实时搜索
-- ✅ **文章系统**：文章列表、WebView 详情页
-- ✅ **交互体验**：下拉刷新、上拉加载更多
-- ✅ **轮播图**：自动轮播的 Banner 展示
-- ✅ **Tab 切换**：多标签页滑动切换
-- ✅ **收藏管理**：文章收藏/取消收藏
-- ✅ **积分排名**：积分排行榜查看
+| 功能模块 | 说明 |
+|:--------|:-----|
+| **用户系统** | 登录、注册、自动登录、积分排名 |
+| **内容浏览** | 首页、项目、公众号、体系四大模块 |
+| **文章系统** | 文章列表、WebView 详情页、收藏管理 |
+| **搜索功能** | 热门搜索、实时搜索、历史记录 |
+| **交互体验** | 下拉刷新、上拉加载更多、轮播图 |
+| **多标签页** | 支持滑动切换的 Tab 布局 |
 
 ### UI/UX 特性
 
-- 🎨 统一的 Loading 状态管理
+- 🎨 统一的 Loading 状态管理（弹窗式 + 页面式）
 - 🌐 完整的中英文国际化支持
-- 📱 响应式布局适配
-- 🎭 自定义状态页面（加载中、错误、空数据）
+- 📱 响应式布局适配不同屏幕
+- 🎭 自定义状态页面（加载中、错误、空数据、成功）
+- 🖼️ 图片加载缓存与占位处理
+- 🔔 Toast 消息提示
+
+### 最新特性 (v2.0+)
+
+- ✨ **原生组件集成**：支持在 UniApp 中调用 HarmonyOS 原生组件
+- ✨ **网络模块封装**：独立的 network 模块，支持拦截器和配置管理
+- ✨ **Toast 工具类**：统一的 Toast 消息管理
+- ✨ **LoadingDialogHelper 重构**：基于 @jxt/xt_hud，支持静态/实例双模式
 
 ## 🏗️ 项目架构
 
 ### 技术栈
 
-| 技术 | 版本 | 说明 |
-|------|------|------|
-| ArkTS | - | HarmonyOS 官方推荐的开发语言 |
-| ArkUI | - | 声明式 UI 框架 |
-| @ohos/axios | ^2.2.7 | HTTP 网络请求 |
-| @ohos/pulltorefresh | ^3.0.0 | 下拉刷新组件 |
-| @ohos/imageknife | ^3.2.8 | 图片加载缓存 |
-| @pura/harmony-utils | ^1.4.0 | 工具类库 |
-| @jxt/xt_hud | ^3.4.0 | Loading/Toast 弹窗组件 |
-| @dcloudio/uni-app-runtime | 5.0.2026020301 | UniApp 运行时（支持 Vue3） |
+| 技术 | 版本 | 用途 |
+|:----|:-----|:-----|
+| **ArkTS** | - | HarmonyOS 官方推荐的开发语言 |
+| **ArkUI** | - | 声明式 UI 框架 |
+| **@ohos/axios** | ^2.2.7 | HTTP 网络请求 |
+| **@ohos/pulltorefresh** | ^3.0.0 | 下拉刷新组件 |
+| **@ohos/imageknife** | ^3.2.8 | 图片加载缓存 |
+| **@pura/harmony-utils** | ^1.4.0 | 工具类库 |
+| **@jxt/xt_hud** | ^3.4.0 | Loading/Toast 弹窗组件 |
+| **@dcloudio/uni-app-runtime** | 5.x | UniApp 运行时（支持 Vue3） |
 
-### 项目结构
+### 模块结构
 
 ```
 HarmonyStudy/
-├── entry/                      # 主模块
+├── entry/                      # 主应用模块
 │   └── src/main/
 │       ├── ets/
 │       │   ├── accountManager/ # 账户管理
@@ -70,49 +86,63 @@ HarmonyStudy/
 │       │   ├── httpRequest/    # 网络请求封装
 │       │   │   ├── configuration/  # 网络配置
 │       │   │   └── interceptors/   # 拦截器
+│       │   ├── native/         # 原生组件（UniApp 调用入口）
 │       │   ├── model/          # 数据模型
 │       │   ├── pages/          # 页面组件
 │       │   ├── router/         # 路由管理
 │       │   ├── utils/          # 工具类
+│       │   │   ├── LoadingDialogHelper.ets
+│       │   │   └── ToastUtil.ets
 │       │   ├── views/          # 自定义视图组件
 │       │   └── viewModel/      # 视图模型
 │       └── resources/          # 资源文件
 │           ├── base/element/   # 通用资源
 │           ├── zh_CN/element/  # 中文资源
 │           └── en_US/element/  # 英文资源
-├── network/                    # 网络模块（HarmonyOS 网络）
-└── Utils/                      # 工具模块（UniApp 相关）
+├── network/                    # 网络模块（独立封装）
+├── librarySDK/                 # 工具库模块（共享组件）
+├── examples/                   # 示例代码
+├── docs/                       # 项目文档
+└── ScreenShots/                # 界面截图
 ```
 
-### 架构设计
+### 分层架构
 
 ```
 ┌─────────────────────────────────────┐
-│            Pages (UI层)              │
+│         Pages (UI 表现层)             │
 ├─────────────────────────────────────┤
-│         ViewModels (业务层)          │
+│      ViewModels (业务逻辑层)          │
 ├─────────────────────────────────────┤
-│   Models / Network (数据/网络层)     │
+│    Models / Network (数据/网络层)     │
 ├─────────────────────────────────────┤
-│        Utils / Constants (工具层)    │
+│     Utils / Constants (基础设施层)    │
 └─────────────────────────────────────┘
 ```
 
-### 核心组件说明
+### 核心组件
 
-| 组件/工具 | 说明 |
-|----------|------|
-| **ListDataProcessor** | 统一处理分页列表数据，支持刷新/加载更多 |
-| **StatusWeight** | 页面状态管理（loading/error/empty/success） |
-| **LoadingDialogHelper** | 基于 @jxt/xt_hud 的加载弹窗工具类（支持静态/实例方法） |
-| **ErrorHandler** | 统一的错误处理和日志记录工具类 |
-| **Router** | 路由管理，支持页面跳转和参数传递 |
-| **AccountManager** | 用户账户管理，支持自动登录 |
+| 组件/工具 | 文件位置 | 说明 |
+|:---------|:---------|:-----|
+| **ListDataProcessor** | `entry/src/main/ets/utils/` | 统一处理分页列表数据 |
+| **StatusWeight** | `entry/src/main/ets/views/` | 页面状态管理组件 |
+| **LoadingDialogHelper** | `entry/src/main/ets/utils/` | Loading 弹窗工具 |
+| **ToastUtil** | `entry/src/main/ets/utils/` | Toast 消息工具 |
+| **ErrorHandler** | `entry/src/main/ets/utils/` | 统一错误处理 |
+| **Router** | `entry/src/main/ets/router/` | 路由管理 |
+| **AccountManager** | `entry/src/main/ets/accountManager/` | 账户管理 |
 
 ## 🎬 界面预览
 
-| ![](ScreenShots/1.jpeg) | ![](ScreenShots/2.jpeg) | ![](ScreenShots/3.jpeg) | ![](ScreenShots/4.jpeg) | ![](ScreenShots/5.jpeg) |
-|:----------------------:|:----------------------:|:----------------------:|:----------------------:|:----------------------:|
+| 首页 | 项目 | 公众号 |
+|:----:|:----:|:----:|
+| ![](ScreenShots/1.jpeg) | ![](ScreenShots/2.jpeg) | ![](ScreenShots/3.jpeg) |
+| *首页 Banner 轮播与文章列表* | *项目分类与文章列表* | *公众号文章浏览* |
+
+| 体系 | 我的 |
+|:----:|:----:|
+| ![](ScreenShots/4.jpeg) | ![](ScreenShots/5.jpeg) |
+| *知识体系树形展示* | *用户中心与积分排行* |
 
 ## 📦 快速开始
 
@@ -187,9 +217,8 @@ ListDataProcessor.processPagedListData(
 
 ### Loading 状态管理
 
-**弹窗式 Loading**（登录/网络请求）：
+**弹窗式 Loading**（适用于登录/网络请求）：
 ```typescript
-// 推荐：使用静态方法
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper'
 
 // 方式1：手动控制
@@ -206,27 +235,74 @@ const result = await LoadingDialogHelper.wrap(
   '加载中...'
 )
 
-// 兼容：使用实例方法（旧代码无需修改）
+// 方式3：实例方法（兼容旧代码）
 private loadingHelper = new LoadingDialogHelper('加载中...')
 await this.loadingHelper.wrap(someApi())
 ```
 
-**页面式 Loading**（列表页面）：
+**页面式 Loading**（适用于列表页面）：
 ```typescript
 StatusWeight({
   status: this.status,
-  contentBuilder: () => { this.getContentView() }
+  contentBuilder: () => this.getContentView()
 })
+```
+
+### Toast 消息提示
+
+```typescript
+import { ToastUtil } from '../utils/ToastUtil'
+
+// 显示 Toast
+ToastUtil.showToast('操作成功')
+
+// 自定义时长
+ToastUtil.showToast('请稍候...', 2000)
 ```
 
 ## 🔗 相关项目
 
-| 平台 | 项目地址 | 架构 |
-|------|---------|------|
-| **Swift** | [RxStudy](https://github.com/seasonZhu/RxStudy) | RxSwift + MVVM |
-| **Flutter** | [GetXStudy](https://github.com/seasonZhu/GetXStudy) | GetX + MVC |
-| **UniApp** | [UniAppPlayAndroid](https://github.com/seasonZhu/UniAppPlayAndroid) | Vue3 + UniApp |
-| **HarmonyOS** | [HarmonyStudy](https://github.com/seasonZhu/HarmonyStudy) | ArkTS + MVVM |
+跨平台架构系列项目：
+
+| 平台 | 技术栈 | 仓库地址 |
+|:----:|:------|:---------|
+| **iOS** | RxSwift + MVVM | [RxStudy](https://github.com/seasonZhu/RxStudy) |
+| **Android** | GetX + MVC | [GetXStudy](https://github.com/seasonZhu/GetXStudy) |
+| **跨平台** | Vue3 + UniApp | [UniAppPlayAndroid](https://github.com/seasonZhu/UniAppPlayAndroid) |
+| **HarmonyOS** | ArkTS + MVVM | [HarmonyStudy](https://github.com/seasonZhu/HarmonyStudy) |
+
+## 📚 文档导航
+
+| 文档 | 说明 |
+|:-----|:-----|
+| [快速开始指南](docs/QUICK_START.md) | 项目入门与基本配置 |
+| [网络模块使用](docs/NETWORK_USAGE.md) | 网络请求封装与拦截器 |
+| [原生组件集成](docs/NATIVE_COMPONENTS_GUIDE.md) | UniApp 调用原生组件指南 |
+| [Loading 迁移指南](docs/LOADING_DIALOG_MIGRATION.md) | LoadingDialogHelper v2.0 迁移文档 |
+| [API 迁移指南](docs/API_MIGRATION_GUIDE.md) | API 替换与迁移记录 |
+| [简单测试指南](docs/SIMPLE_TEST_GUIDE.md) | 单元测试快速入门 |
+
+## ✅ 测试
+
+```bash
+# 运行所有测试
+npm test
+
+# 运行单元测试
+npm run test:unit
+
+# 运行 UI 测试
+npm run test:ohos
+
+# 生成测试覆盖率报告
+npm run test:coverage
+```
+
+### 测试覆盖
+
+- ✅ 单元测试：工具类、ViewModel、数据处理
+- ✅ UI 测试：页面交互、路由跳转
+- ✅ 集成测试：网络请求、数据流
 
 ## 📚 学习资源
 
@@ -258,22 +334,37 @@ StatusWeight({
 ## 📝 更新日志
 
 ### v2.0.0 (最新)
-- 🎉 重大升级：LoadingDialogHelper 基于 @jxt/xt_hud 重写
+
+**重大升级**
+- 🎉 LoadingDialogHelper 基于 @jxt/xt_hud 重写
 - ✅ 解决 CustomDialogController 弹窗无法显示的问题
 - ✨ 新增静态方法 API（show/hide/wrap）
 - ✨ 保留实例方法兼容性，现有代码无需修改
-- 📚 新增完整的迁移文档（docs/LOADING_DIALOG_MIGRATION.md）
-- 🔧 在 EntryAbility 中添加全局 UIContext 初始化
-- ⬆️ 升级 @ohos/pulltorefresh 至 3.0.0
-- ⬆️ 升级 @ohos/imageknife 至 3.2.8
+
+**新增功能**
+- ✨ 原生组件集成支持（UniApp 调用）
+- ✨ ToastUtil 统一消息管理
+- ✨ 网络模块独立封装
+
+**文档完善**
+- 📚 新增完整的迁移文档
+- 📚 新增快速开始指南
+- 📚 新增原生组件集成文档
+
+**依赖升级**
+- ⬆️ @ohos/pulltorefresh 至 3.0.0
+- ⬆️ @ohos/imageknife 至 3.2.8
 
 ### v1.4.0
+
 - ✨ 新增完整的国际化支持（中英文）
 - ✨ 新增 ListDataProcessor 统一列表数据处理
 - ✨ 新增 StatusWeight 状态管理组件
 - ✨ 新增 ErrorHandler 统一错误处理
 - 🎨 优化 Loading 弹窗样式统一
-- 🔧 重构代码结构，移除冗余工具类（BaseViewModel）
+- 🔧 重构代码结构，移除冗余工具类
+
+更多更新记录请查看 [CHANGELOG.md](CHANGELOG.md)
 
 ## 👨‍💻 作者
 

@@ -10,7 +10,15 @@
 
 import { NativeEmbedBuilderOptions, defineNativeEmbed } from '@dcloudio/uni-app-runtime';
 import { LogUtil } from '@pura/harmony-utils';
-import { promptAction } from '@kit.ArkUI';
+import { ToastUtil } from '../utils/ToastUtil';
+import {
+  HarmonyNativeApi,
+  SelectImageResult,
+  LocationResult,
+  ScanCodeResult,
+  SystemInfoResult,
+  SystemInfoData
+} from './HarmonyNativeApi';
 
 // ==================== 1. 原生按钮组件 ====================
 
@@ -79,7 +87,7 @@ export struct NativeButtonComponent {
         }
 
         // 触觉反馈
-        promptAction.showToast({ message: `点击了${this.text}`, duration: 1000 });
+        ToastUtil.success(`点击了${this.text}`);
       });
   }
 
@@ -148,22 +156,10 @@ export struct NativeCameraComponent {
     LogUtil.debug('NativeCamera: 开始选择图片');
 
     try {
-      // TODO: 调用 HarmonyOS 系统相册 API
-      await new Promise<void>((resolve: Function) => {
-        setTimeout((): void => {
-          resolve();
-        }, 1000);
-      });
+      // 调用真实的 HarmonyOS API
+      const result = await HarmonyNativeApi.selectImage(this.quality);
 
-      const result: NativeCameraResult = {
-        success: true,
-        uri: 'mock_image_uri.jpg',
-        width: 1920,
-        height: 1080,
-        size: 1024 * 1024
-      };
-
-      LogUtil.debug('NativeCamera: 选择成功', JSON.stringify(result));
+      LogUtil.debug('NativeCamera: 选择结果', JSON.stringify(result));
 
       if (this.onCameraResult) {
         this.onCameraResult({
@@ -171,7 +167,11 @@ export struct NativeCameraComponent {
         });
       }
 
-      promptAction.showToast({ message: '图片选择成功' });
+      if (result.success) {
+        ToastUtil.success('图片选择成功');
+      } else {
+        ToastUtil.error(result.errorMessage ?? '图片选择失败');
+      }
     } catch (error) {
       LogUtil.error('NativeCamera: 选择失败', JSON.stringify(error));
 
@@ -186,7 +186,7 @@ export struct NativeCameraComponent {
         });
       }
 
-      promptAction.showToast({ message: '图片选择失败' });
+      ToastUtil.error('图片选择失败');
     }
   }
 
@@ -265,21 +265,14 @@ export struct NativeLocationComponent {
     LogUtil.debug('NativeLocation: 开始获取位置');
 
     try {
-      // TODO: 调用 HarmonyOS 位置服务
-      await new Promise<void>((resolve: Function) => {
-        setTimeout((): void => {
-          resolve();
-        }, 1000);
-      });
+      // 调用 HarmonyOS API（当前为模拟实现）
+      const accuracyParam: 'low' | 'medium' | 'high' =
+        this.accuracy === 'low' || this.accuracy === 'medium' || this.accuracy === 'high'
+          ? this.accuracy
+          : 'medium';
+      const result = await HarmonyNativeApi.getLocation(accuracyParam, this.timeout);
 
-      const result: NativeLocationResult = {
-        success: true,
-        latitude: 39.9042 + Math.random() * 0.01,
-        longitude: 116.4074 + Math.random() * 0.01,
-        address: '北京市朝阳区'
-      };
-
-      LogUtil.debug('NativeLocation: 定位成功', JSON.stringify(result));
+      LogUtil.debug('NativeLocation: 定位结果', JSON.stringify(result));
 
       if (this.onLocationResult) {
         this.onLocationResult({
@@ -287,7 +280,11 @@ export struct NativeLocationComponent {
         });
       }
 
-      promptAction.showToast({ message: '定位成功' });
+      if (result.success) {
+        ToastUtil.success('定位成功');
+      } else {
+        ToastUtil.error(result.errorMessage ?? '定位失败');
+      }
     } catch (error) {
       LogUtil.error('NativeLocation: 定位失败', JSON.stringify(error));
 
@@ -302,7 +299,7 @@ export struct NativeLocationComponent {
         });
       }
 
-      promptAction.showToast({ message: '定位失败' });
+      ToastUtil.error('定位失败');
     } finally {
       this.isLoading = false;
     }
@@ -384,20 +381,11 @@ export struct NativeScannerComponent {
     LogUtil.debug('NativeScanner: 开始扫码');
 
     try {
-      // TODO: 调用 HarmonyOS 扫码 API
-      await new Promise<void>((resolve: Function) => {
-        setTimeout((): void => {
-          resolve();
-        }, 1500);
-      });
+      // 调用 HarmonyOS API（当前为模拟实现）
+      const scanTypes: Array<string> = ['QR_CODE', 'BARCODE'];
+      const result = await HarmonyNativeApi.scanCode(scanTypes);
 
-      const result: NativeScannerResult = {
-        success: true,
-        code: 'https://example.com/product/123456',
-        format: 'QR_CODE'
-      };
-
-      LogUtil.debug('NativeScanner: 扫码成功', JSON.stringify(result));
+      LogUtil.debug('NativeScanner: 扫码结果', JSON.stringify(result));
 
       if (this.onScannerResult) {
         this.onScannerResult({
@@ -405,7 +393,11 @@ export struct NativeScannerComponent {
         });
       }
 
-      promptAction.showToast({ message: '扫码成功' });
+      if (result.success) {
+        ToastUtil.success('扫码成功');
+      } else {
+        ToastUtil.error(result.errorMessage ?? '扫码失败');
+      }
     } catch (error) {
       LogUtil.error('NativeScanner: 扫码失败', JSON.stringify(error));
 
@@ -420,7 +412,7 @@ export struct NativeScannerComponent {
         });
       }
 
-      promptAction.showToast({ message: '扫码失败' });
+      ToastUtil.error('扫码失败');
     }
   }
 
@@ -466,22 +458,16 @@ export interface NativeSystemInfoOptions extends NativeEmbedBuilderOptions {
 }
 
 /**
- * 系统信息详情接口
+ * 网络信息数据
  */
-export interface SystemInfoData {
-  brand: string;
-  model: string;
-  platform: string;
-  system: string;
-  version: string;
-  SDKVersion: string;
-}
-
 export interface NetworkInfoData {
   isConnected: boolean;
   type: string;
 }
 
+/**
+ * 存储信息数据
+ */
 export interface StorageInfoData {
   total: number;
   used: number;
@@ -518,49 +504,43 @@ export struct NativeSystemInfoComponent {
     LogUtil.debug('NativeSystemInfo: 开始获取系统信息');
 
     try {
-      // TODO: 调用 HarmonyOS 系统信息 API
-      await new Promise<void>((resolve: Function) => {
-        setTimeout((): void => {
-          resolve();
-        }, 800);
-      });
+      // 调用真实的 HarmonyOS API
+      const apiResult = await HarmonyNativeApi.getSystemInfo();
 
-      const systemInfo: SystemInfoData = {
-        brand: 'HarmonyOS',
-        model: 'Next',
-        platform: 'ohos',
-        system: 'HarmonyOS NEXT',
-        version: '5.0',
-        SDKVersion: 'API 12'
-      };
+      LogUtil.debug('NativeSystemInfo: 获取结果', JSON.stringify(apiResult));
 
-      const networkInfo: NetworkInfoData = {
-        isConnected: true,
-        type: 'wifi'
-      };
+      if (apiResult.success && apiResult.systemInfo) {
+        const systemInfo: SystemInfoData = apiResult.systemInfo;
 
-      const storageInfo: StorageInfoData = {
-        total: 128 * 1024 * 1024 * 1024,
-        used: 32 * 1024 * 1024 * 1024,
-        available: 96 * 1024 * 1024 * 1024
-      };
+        // 模拟获取网络和存储信息
+        const networkInfo: NetworkInfoData = {
+          isConnected: true,
+          type: 'wifi'
+        };
 
-      const result: NativeSystemInfoResult = {
-        success: true,
-        systemInfo: systemInfo,
-        networkInfo: networkInfo,
-        storageInfo: storageInfo
-      };
+        const storageInfo: StorageInfoData = {
+          total: 128 * 1024 * 1024 * 1024,
+          used: 32 * 1024 * 1024 * 1024,
+          available: 96 * 1024 * 1024 * 1024
+        };
 
-      LogUtil.debug('NativeSystemInfo: 获取成功', JSON.stringify(result));
+        const result: NativeSystemInfoResult = {
+          success: true,
+          systemInfo: systemInfo,
+          networkInfo: networkInfo,
+          storageInfo: storageInfo
+        };
 
-      if (this.onSystemInfoResult) {
-        this.onSystemInfoResult({
-          detail: result
-        });
+        if (this.onSystemInfoResult) {
+          this.onSystemInfoResult({
+            detail: result
+          });
+        }
+
+        ToastUtil.success('获取成功');
+      } else {
+        ToastUtil.error(apiResult.errorMessage ?? '获取失败');
       }
-
-      promptAction.showToast({ message: '获取成功' });
     } catch (error) {
       LogUtil.error('NativeSystemInfo: 获取失败', JSON.stringify(error));
 
@@ -575,7 +555,7 @@ export struct NativeSystemInfoComponent {
         });
       }
 
-      promptAction.showToast({ message: '获取失败' });
+      ToastUtil.error('获取失败');
     } finally {
       this.isLoading = false;
     }

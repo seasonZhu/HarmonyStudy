@@ -60,11 +60,11 @@ export default {
 
 .tip {
   font-size: 28rpx;
-  color: #ffffff;
+  color: #ffffff;5, 0.2);
+  border-radius: 12rpx;
   text-align: center;
   padding: 20rpx;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 12rpx;
+  background: rgba(255, 255, 25
   margin-top: 40rpx;
 }
 

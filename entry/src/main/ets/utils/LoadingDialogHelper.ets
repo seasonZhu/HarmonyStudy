@@ -1,5 +1,6 @@
 import { XTPromptHUD } from '@jxt/xt_hud'
 import { window } from '@kit.ArkUI'
+import { LogUtil } from '@pura/harmony-utils'
 
 /**
  * LoadingDialogHelper - 基于 @jxt/xt_hud 封装的加载对话框工具类
@@ -140,7 +141,7 @@ export class LoadingDialogHelper {
       return await task
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : JSON.stringify(error)
-      console.error(`${LoadingDialogHelper.TAG}: wrap error`, errorMsg)
+      LogUtil.error(`${LoadingDialogHelper.TAG}: wrap error`, errorMsg)
       throw new Error(errorMsg)
     } finally {
       LoadingDialogHelper.hide()
@@ -152,7 +153,7 @@ export class LoadingDialogHelper {
    */
   private static ensureInitialized(): void {
     if (!LoadingDialogHelper.initialized) {
-      console.warn(`${LoadingDialogHelper.TAG}: 未调用 init() 进行初始化，Loading 可能无法正常显示`)
+      LogUtil.warn(`${LoadingDialogHelper.TAG}: 未调用 init() 进行初始化，Loading 可能无法正常显示`)
     }
   }
 
@@ -163,7 +164,7 @@ export class LoadingDialogHelper {
 
   constructor(defaultText: string = '加载中...') {
     this.instanceText = defaultText
-    console.warn(`${LoadingDialogHelper.TAG}: 建议使用静态方法 LoadingDialogHelper.show()/hide()/wrap()`)
+    LogUtil.warn(`${LoadingDialogHelper.TAG}: 建议使用静态方法 LoadingDialogHelper.show()/hide()/wrap()`)
   }
 
   show(text?: string): void {
