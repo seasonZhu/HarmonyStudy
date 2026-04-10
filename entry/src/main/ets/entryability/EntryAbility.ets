@@ -1,6 +1,6 @@
 import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import { window } from '@kit.ArkUI';
+import { AppStorageV2, window } from '@kit.ArkUI';
 import { AppUtil } from '@pura/harmony-utils';
 import { init } from '@dcloudio/uni-app-runtime'
 import { environmentManager } from '../httpRequest/EnvironmentManager'
@@ -9,10 +9,12 @@ import { NetworkProvider } from '../network/examples/NetworkProvider'
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper'
 import { registerAllNativeComponents } from '../native/HarmonyNativeComponents'
 import { registerSimpleTestComponents } from '../native/SimpleNativeTest'
+import { fullScreen, SavedContext, statusBar } from 'utils';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+    AppStorageV2.connect(SavedContext, () => new SavedContext(this.context))
     // 初始化 NetworkProvider
     NetworkProvider.init(this.context)
 
@@ -45,6 +47,9 @@ export default class EntryAbility extends UIAbility {
     // 注册测试组件和原有组件
     registerSimpleTestComponents()
     registerAllNativeComponents()
+
+    // 将来窗口加载页面之前, 就设置默认启动沉浸式
+    fullScreen.disable()
 
     windowStage.loadContent('pages/Index', (err) => {
       if (err.code) {

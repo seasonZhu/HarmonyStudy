@@ -7,6 +7,7 @@
   "license": "",
   "dependencies": {
     "librarySDK": "file:../librarySDK",
+    "utils": "file:../Utils",
     "network": "file:../network",
     "@jxt/xt_hud": "^3.4.0"
   },
