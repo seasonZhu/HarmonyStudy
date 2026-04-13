@@ -9,13 +9,14 @@ import { ToastUtil, LogUtil } from '@pura/harmony-utils';
 import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { KeywordInfo } from '../entity/KeywordInfo';
+import { CaptureTool } from 'utils';
 
 @Entry({routeName: RouterName.Hotkey})
-@Component
+@ComponentV2
 struct HotKey {
-  @State dataSource: BaseListDataSource<HotKeyModel> = new BaseListDataSource<HotKeyModel>()
+  @Local dataSource: BaseListDataSource<HotKeyModel> = new BaseListDataSource<HotKeyModel>()
 
-  @State status: ViewStatus = ViewStatus.loading
+  @Local status: ViewStatus = ViewStatus.loading
 
   viewModel = new HotKeyViewModel()
 
@@ -63,6 +64,22 @@ struct HotKey {
                 Router.toSearchResult(keywordInfo)
               })
           })
+
+          SaveButton({
+            icon: SaveIconStyle.FULL_FILLED, // 图标的风格, 填充
+            text: SaveDescription.SAVE_IMAGE,
+            buttonType: ButtonType.Normal
+          })
+            .fontColor(Color.White)
+            .backgroundColor("#2C86EF")
+            .borderRadius(4)
+            .fontSize(16)
+            .padding(8)
+            .onClick((event, result) => {
+              if (result === SaveButtonOnClickResult.SUCCESS) {
+                CaptureTool.saveImage("HotKey")
+              }
+            })
         }
       }
       .alignSelf(ItemAlign.Start)
@@ -70,6 +87,7 @@ struct HotKey {
     }
     .height('100%')
     .padding({ top: 8 })
+    .id("HotKey")
   }
 
   @Builder

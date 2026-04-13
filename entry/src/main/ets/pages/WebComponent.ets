@@ -4,12 +4,12 @@ import { LogUtil } from '@pura/harmony-utils';
 import { RouterName } from '../router/RouterName'
 
 @Entry({routeName: RouterName.WebComponent})
-@Component
+@ComponentV2
 struct WebComponent {
   controller: webview.WebviewController = new webview.WebviewController();
   ports: webview.WebMessagePort[] = [];
-  @State sendFromEts: string = 'Send this message from ets to HTML';
-  @State receivedFromHtml: string = 'Display received message send from HTML';
+  @Local sendFromEts: string = 'Send this message from ets to HTML';
+  @Local receivedFromHtml: string = 'Display received message send from HTML';
 
   build() {
     Navigation() {

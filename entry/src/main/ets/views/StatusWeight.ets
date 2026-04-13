@@ -29,9 +29,9 @@ import { LogUtil } from '@pura/harmony-utils'
  * @author StatusWeight
  * @version 2.0.0
  */
-@Component
+@ComponentV2
 export struct StatusWeight {
-  @Prop status: ViewStatus
+  @Param status: ViewStatus = ViewStatus.loading
 
   /** 内容构建器（success 状态显示） */
   @BuilderParam contentBuilder: () => void
@@ -46,34 +46,34 @@ export struct StatusWeight {
   @BuilderParam emptyBuilder?: () => void
 
   /** 错误提示文字 */
-  @Prop errorText: ResourceStr = $r('app.string.request_failed_retry')
+  @Param errorText: ResourceStr = $r('app.string.request_failed_retry')
 
   /** 空状态提示文字 */
-  @Prop emptyText: ResourceStr = $r('app.string.no_data')
+  @Param emptyText: ResourceStr = $r('app.string.no_data')
 
   /** 加载提示文字 */
-  @Prop loadingText: ResourceStr = $r('app.string.loading_request')
+  @Param loadingText: ResourceStr = $r('app.string.loading_request')
 
   /** 错误图标 */
-  @Prop errorIcon: ResourceStr = $r('app.media.ic_error1')
+  @Param errorIcon: ResourceStr = $r('app.media.ic_error1')
 
   /** 空状态图标 */
-  @Prop emptyIcon: ResourceStr = $r('app.media.pic_no_data')
+  @Param emptyIcon: ResourceStr = $r('app.media.pic_no_data')
 
   /** 图标大小 */
-  @Prop iconSize: number = 160
+  @Param iconSize: number = 160
 
   /** 文字大小 */
-  @Prop textSize: number = 18
+  @Param textSize: number = 18
 
   /** 图标与文字间距 */
-  @Prop textMarginTop: number = 48
+  @Param textMarginTop: number = 48
 
   /** 重试回调（仅 error 状态） */
-  onRetry?: () => void
+  @Param onRetry: (() => void) | undefined = undefined
 
   /** 空状态操作回调 */
-  onEmptyAction?: () => void
+  @Param onEmptyAction: (() => void) | undefined = undefined
 
   build() {
     Column() {

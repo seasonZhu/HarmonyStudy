@@ -4,13 +4,13 @@ import { StringUtils } from '../utils/StringUtils'
  * 文章标题组件
  * 支持高亮文本显示
  */
-@Component
+@ComponentV2
 export struct ArticleTitle {
-  @Prop title: string
-  @Prop maxLines: number = 2
-  @Prop fontSize: number = 18
-  @Prop highlightColor: Resource = $r('app.color.app_blue')
-  @Prop titlePadding: number | string = 8
+  @Param title: string = ''
+  @Param maxLines: number = 2
+  @Param fontSize: number = 18
+  @Param highlightColor: Resource = $r('app.color.app_blue')
+  @Param titlePadding: number | string = 8
 
   private titleParts: string[] = []
 

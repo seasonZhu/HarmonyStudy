@@ -3,9 +3,9 @@
 /// 不能，目前切图1260*2720
 
 @Entry
-@Component
+@ComponentV2
 struct Splash {
-  @State message: string = 'Hello World';
+  @Local message: string = 'Hello World';
 
   build() {
     RelativeContainer() {

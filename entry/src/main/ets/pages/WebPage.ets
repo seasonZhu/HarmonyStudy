@@ -13,17 +13,17 @@ import { uniformTypeDescriptor as utd } from '@kit.ArkData';
 import { ErrorHandler } from '../utils/ErrorHandler'
 
 @Entry({routeName: RouterName.Web})
-@Component
+@ComponentV2
 struct WebPage {
   private controller: webview.WebviewController = new webview.WebviewController()
 
-  @State private loadingProgress: number = 0
+  @Local private loadingProgress: number = 0
 
-  @State private showLoadingProgress: boolean = true
+  @Local private showLoadingProgress: boolean = true
 
-  @State private title: string = '加载中...'
+  @Local private title: string = '加载中...'
 
-  @State private collectIds: number[] = AccountManager.shared().loginModel?.collectIds ?? []
+  @Local private collectIds: number[] = []
 
   private webLink = Router.getParams() as WebLink
 

@@ -55,11 +55,11 @@ class JavaScriptInterface {
  * https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/web-in-page-app-function-invoking-V5
  * */
 @Entry({routeName: RouterName.WebExample})
-@Component
+@ComponentV2
 struct WebExample {
   webviewController: webview.WebviewController = new webview.WebviewController();
   // 声明需要注册的对象
-  @State javaScriptObject: JavaScriptInterface = new JavaScriptInterface();
+  @Local javaScriptObject: JavaScriptInterface = new JavaScriptInterface();
 
   build() {
     Navigation() {

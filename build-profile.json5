@@ -7,11 +7,11 @@
         "material": {
           "certpath": "/Users/dy/.ohos/config/default_HarmonyStudy_1rRmeFsNVNAIdv1MMblm1buJ6VcaXULJTUR_cxJA1AA=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001A8F27DD95B0B9347E439C8499D6161CDB401DCD10DE8C595C080B2651C81B6DB89AB59B652BA6",
+          "keyPassword": "0000001AD77D824372DFA36B4FDA6723B11FF05A67A409340309C178EADA8FC6FCD098E13C1C7FE7043A",
           "profile": "/Users/dy/.ohos/config/default_HarmonyStudy_1rRmeFsNVNAIdv1MMblm1buJ6VcaXULJTUR_cxJA1AA=.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "/Users/dy/.ohos/config/default_HarmonyStudy_1rRmeFsNVNAIdv1MMblm1buJ6VcaXULJTUR_cxJA1AA=.p12",
-          "storePassword": "0000001AA9A8A6C21326AEDDBA307354C5D6880F5CDBB216ED6BB338D3DBCE420073329E6689CA4504F0"
+          "storePassword": "0000001A17C9EC811162AF9BA19CE12B098CAE96077D9AB90BFC007E79ACB7200C009419E9D14F11DA4E"
         }
       }
     ],
@@ -31,7 +31,7 @@
     ],
     "buildModeSet": [
       {
-        "name": "debug",
+        "name": "debug"
       },
       {
         "name": "release"

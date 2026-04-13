@@ -6,14 +6,14 @@ import { UserInfoModel } from '../model/UserInfoModel';
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 
 @Entry({routeName: RouterName.Register})
-@Component
+@ComponentV2
 struct Register {
 
-  @State username: string = ""
+  @Local username: string = ""
 
-  @State password: string = ""
+  @Local password: string = ""
 
-  @State repassword: string = ""
+  @Local repassword: string = ""
 
   viewModel = new LoginViewModel()
 

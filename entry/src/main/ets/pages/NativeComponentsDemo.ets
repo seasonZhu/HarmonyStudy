@@ -14,13 +14,13 @@ import { RouterName } from '../router/RouterName'
 import { LogUtil } from '@pura/harmony-utils'
 
 @Entry({routeName: RouterName.NativeComponentsDemo})
-@Component
+@ComponentV2
 struct NativeComponentsDemo {
-  @State buttonResult: string = ''
-  @State cameraResult: string = ''
-  @State locationResult: string = ''
-  @State scannerResult: string = ''
-  @State systemInfoResult: string = ''
+  @Local buttonResult: string = ''
+  @Local cameraResult: string = ''
+  @Local locationResult: string = ''
+  @Local scannerResult: string = ''
+  @Local systemInfoResult: string = ''
 
   build() {
     Navigation() {

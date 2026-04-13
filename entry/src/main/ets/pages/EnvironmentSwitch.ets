@@ -6,9 +6,9 @@ import { RouterName } from '../router/RouterName'
 import { ErrorHandler } from '../utils/ErrorHandler'
 
 @Entry({routeName: RouterName.EnvironmentSwitch})
-@Component
+@ComponentV2
 struct EnvironmentSwitch {
-  @State currentEnvironment: Environment = Environment.PROD
+  @Local currentEnvironment: Environment = Environment.PROD
 
   private environments: Environment[] = [
     Environment.DEV,

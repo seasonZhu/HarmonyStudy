@@ -6,12 +6,12 @@ import { UserInfoModel } from '../model/UserInfoModel';
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 
 @Entry({routeName: RouterName.Login})
-@Component
+@ComponentV2
 struct Login {
 
-  @State username: string = ""
+  @Local username: string = ""
 
-  @State password: string = ""
+  @Local password: string = ""
 
   viewModel = new LoginViewModel()
 
