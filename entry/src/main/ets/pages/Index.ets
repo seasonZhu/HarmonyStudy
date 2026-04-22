@@ -31,21 +31,19 @@ struct Index {
   private viewModel = new IndexViewModel()
   
   build() {
-    Navigation(navPathStack) {
-      Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
-        ForEach(allTabTypeCases, (type: TabType) => {
-          this.getPage(type)
-        })
-      }
-      .scrollable(false)
-      .vertical(false)
-      .barWidth('100%')
-      .barHeight(56)
-      .barMode(BarMode.Fixed)
-      .onChange((index: number) => {
-        this.currentIndex = index;
+    Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
+      ForEach(allTabTypeCases, (type: TabType) => {
+        this.getPage(type)
       })
     }
+    .scrollable(false)
+    .vertical(false)
+    .barWidth('100%')
+    .barHeight(56)
+    .barMode(BarMode.Fixed)
+    .onChange((index: number) => {
+      this.currentIndex = index;
+    })
   }
 
   @Builder
@@ -53,7 +51,7 @@ struct Index {
     Column({space:4}) {
       Image(this.currentIndex == model.index ? model.selectedImage : model.normalImage)
         .height(24)
-        .objectFit(ImageFit.Contain)
+        .aspectRatio(1)
       Text(model.title)
         .fontColor(this.currentIndex == model.index ? '#1698CE' : '#6B6B6B')
         .fontSize(12)
@@ -66,32 +64,20 @@ struct Index {
 
   @Builder
   getPage(type: TabType) {
-    if (type == TabType.home) {
-      TabContent() {
+    TabContent() {
+      if (type == TabType.home) {
         Home()
-      }
-      .tabBar(this.tabBarItem(getTabModel(type)))
-    } else if (type == TabType.project) {
-      TabContent() {
+      } else if (type == TabType.project) {
         TabScaffold({contentType: ContentType.project})
-      }
-      .tabBar(this.tabBarItem(getTabModel(type)))
-    } else if (type == TabType.publicNumber) {
-      TabContent() {
+      } else if (type == TabType.publicNumber) {
         TabScaffold({contentType: ContentType.publicNumber})
-      }
-      .tabBar(this.tabBarItem(getTabModel(type)))
-    } else if (type == TabType.tree) {
-      TabContent() {
+      } else if (type == TabType.tree) {
         Tree()
-      }
-      .tabBar(this.tabBarItem(getTabModel(type)))
-    } else {
-      TabContent() {
+      } else {
         My()
       }
-      .tabBar(this.tabBarItem(getTabModel(type)))
     }
+    .tabBar(this.tabBarItem(getTabModel(type)))
   }
 
   async aboutToAppear(): Promise<void> {
