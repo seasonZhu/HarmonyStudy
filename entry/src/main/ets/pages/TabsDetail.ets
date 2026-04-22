@@ -144,4 +144,9 @@ struct TabsDetail {
   }
 }
 
+@Builder
+export function TabsDetailBuilder() {
+  TabsDetail()
+}
+
 export { TabsDetail }

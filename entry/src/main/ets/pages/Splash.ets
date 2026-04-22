@@ -22,3 +22,8 @@ struct Splash {
     .width('100%')
   }
 }
+
+@Builder
+export function SplashBuilder() {
+  Splash()
+}

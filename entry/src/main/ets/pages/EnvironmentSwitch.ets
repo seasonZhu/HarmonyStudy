@@ -183,3 +183,8 @@ struct EnvironmentSwitch {
     .titleMode(NavigationTitleMode.Mini)
   }
 }
+
+@Builder
+export function EnvironmentSwitchBuilder() {
+  EnvironmentSwitch()
+}

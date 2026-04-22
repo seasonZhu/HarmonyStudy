@@ -185,3 +185,8 @@ struct MyCollect {
       });
   }
 }
+
+@Builder
+export function MyCollectBuilder() {
+  MyCollect()
+}

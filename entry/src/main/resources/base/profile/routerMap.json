@@ -1,0 +1,94 @@
+{
+  "routerMap": [
+    {
+      "name": "Splash",
+      "pageSourceFile": "src/main/ets/pages/Splash.ets",
+      "buildFunction": "SplashBuilder"
+    },
+    {
+      "name": "Index",
+      "pageSourceFile": "src/main/ets/pages/Index.ets",
+      "buildFunction": "IndexBuilder"
+    },
+    {
+      "name": "Login",
+      "pageSourceFile": "src/main/ets/pages/Login.ets",
+      "buildFunction": "LoginBuilder"
+    },
+    {
+      "name": "Register",
+      "pageSourceFile": "src/main/ets/pages/Register.ets",
+      "buildFunction": "RegisterBuilder"
+    },
+    {
+      "name": "HotKey",
+      "pageSourceFile": "src/main/ets/pages/HotKey.ets",
+      "buildFunction": "HotKeyBuilder"
+    },
+    {
+      "name": "WebPage",
+      "pageSourceFile": "src/main/ets/pages/WebPage.ets",
+      "buildFunction": "WebPageBuilder"
+    },
+    {
+      "name": "TreeDetail",
+      "pageSourceFile": "src/main/ets/pages/TreeDetail.ets",
+      "buildFunction": "TreeDetailBuilder"
+    },
+    {
+      "name": "SearchResult",
+      "pageSourceFile": "src/main/ets/pages/SearchResult.ets",
+      "buildFunction": "SearchResultBuilder"
+    },
+    {
+      "name": "Rank",
+      "pageSourceFile": "src/main/ets/pages/Rank.ets",
+      "buildFunction": "RankBuilder"
+    },
+    {
+      "name": "MyCoin",
+      "pageSourceFile": "src/main/ets/pages/MyCoin.ets",
+      "buildFunction": "MyCoinBuilder"
+    },
+    {
+      "name": "MyCollect",
+      "pageSourceFile": "src/main/ets/pages/MyCollect.ets",
+      "buildFunction": "MyCollectBuilder"
+    },
+    {
+      "name": "Setting",
+      "pageSourceFile": "src/main/ets/pages/Setting.ets",
+      "buildFunction": "SettingBuilder"
+    },
+    {
+      "name": "WebExample",
+      "pageSourceFile": "src/main/ets/pages/WebExample.ets",
+      "buildFunction": "WebExampleBuilder"
+    },
+    {
+      "name": "WebComponent",
+      "pageSourceFile": "src/main/ets/pages/WebComponent.ets",
+      "buildFunction": "WebComponentBuilder"
+    },
+    {
+      "name": "ObservedV2TestPage",
+      "pageSourceFile": "src/main/ets/pages/ObservedV2TestPage.ets",
+      "buildFunction": "ObservedV2TestPageBuilder"
+    },
+    {
+      "name": "EnvironmentSwitch",
+      "pageSourceFile": "src/main/ets/pages/EnvironmentSwitch.ets",
+      "buildFunction": "EnvironmentSwitchBuilder"
+    },
+    {
+      "name": "NativeComponentsDemo",
+      "pageSourceFile": "src/main/ets/pages/NativeComponentsDemo.ets",
+      "buildFunction": "NativeComponentsDemoBuilder"
+    },
+    {
+      "name": "NetworkExamplePage",
+      "pageSourceFile": "src/main/ets/network/examples/pages/NetworkExamplePage.ets",
+      "buildFunction": "NetworkExamplePageBuilder"
+    }
+  ]
+}

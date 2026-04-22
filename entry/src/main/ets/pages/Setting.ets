@@ -95,3 +95,8 @@ struct Setting {
     }
   }
 }
+
+@Builder
+export function SettingBuilder() {
+  Setting()
+}

@@ -127,4 +127,9 @@ struct Tree {
   }
 }
 
+@Builder
+export function TreeBuilder() {
+  Tree()
+}
+
 export { Tree }

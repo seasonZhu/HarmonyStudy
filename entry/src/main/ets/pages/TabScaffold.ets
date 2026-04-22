@@ -100,4 +100,9 @@ struct TabScaffold {
   }
 }
 
+@Builder
+export function TabScaffoldBuilder() {
+  TabScaffold()
+}
+
 export { TabScaffold }

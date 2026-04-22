@@ -19,3 +19,8 @@ struct TreeDetail {
     .width('100%')
   }
 }
+
+@Builder
+export function TreeDetailBuilder() {
+  TreeDetail()
+}

@@ -122,3 +122,8 @@ struct Login {
   }
 
 }
+
+@Builder
+export function LoginBuilder() {
+  Login()
+}

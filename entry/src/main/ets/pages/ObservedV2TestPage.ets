@@ -361,4 +361,9 @@ struct ObservedV2TestPage {
   }
 }
 
+@Builder
+export function ObservedV2TestPageBuilder() {
+  ObservedV2TestPage()
+}
+
 export { ObservedV2TestPage }

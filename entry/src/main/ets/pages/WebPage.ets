@@ -229,3 +229,8 @@ struct WebPage {
     });
   }
 }
+
+@Builder
+export function WebPageBuilder() {
+  WebPage()
+}

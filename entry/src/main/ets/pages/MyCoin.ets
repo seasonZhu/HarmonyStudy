@@ -136,3 +136,8 @@ struct MyCoin {
 
   }
 }
+
+@Builder
+export function MyCoinBuilder() {
+  MyCoin()
+}

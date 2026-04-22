@@ -14,6 +14,8 @@ import { RouterName } from '../router/RouterName'
 import { importHeadFile } from 'librarySDK';
 import { router } from '@kit.ArkUI';
 import  { HttpClient } from 'network'
+import { navPathStack } from '../router/navPathStack';
+
 @Preview
 @Entry({routeName: RouterName.Index})
 @Component
@@ -29,19 +31,21 @@ struct Index {
   private viewModel = new IndexViewModel()
   
   build() {
-    Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
-      ForEach(allTabTypeCases, (type: TabType) => {
-        this.getPage(type)
+    Navigation(navPathStack) {
+      Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
+        ForEach(allTabTypeCases, (type: TabType) => {
+          this.getPage(type)
+        })
+      }
+      .scrollable(false)
+      .vertical(false)
+      .barWidth('100%')
+      .barHeight(56)
+      .barMode(BarMode.Fixed)
+      .onChange((index: number) => {
+        this.currentIndex = index;
       })
     }
-    .scrollable(false)
-    .vertical(false)
-    .barWidth('100%')
-    .barHeight(56)
-    .barMode(BarMode.Fixed)
-    .onChange((index: number) => {
-      this.currentIndex = index;
-    })
   }
 
   @Builder
@@ -119,4 +123,9 @@ struct Index {
       this.tabsController.changeIndex(index)
     }
   }
+}
+
+@Builder
+export function IndexBuilder() {
+  Index()
 }

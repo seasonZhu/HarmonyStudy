@@ -76,3 +76,8 @@ struct WebComponent {
     .width('100%')
   }
 }
+
+@Builder
+export function WebComponentBuilder() {
+  WebComponent()
+}

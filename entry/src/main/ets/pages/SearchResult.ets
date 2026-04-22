@@ -144,3 +144,8 @@ struct SearchResult {
 
   }
 }
+
+@Builder
+export function SearchResultBuilder() {
+  SearchResult()
+}

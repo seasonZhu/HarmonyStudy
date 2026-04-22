@@ -1,7 +1,7 @@
 {
   "app": {
     "bundleName": "com.wandroid.harmonyStudy",
-    "patchVersionCode": 2000004,
+    "patchVersionCode": 2000005,
     "versionCode": 1000000
   },
   "module": {

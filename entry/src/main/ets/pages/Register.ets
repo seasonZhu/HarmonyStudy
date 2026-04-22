@@ -125,3 +125,8 @@ struct Register {
     Router.backWithParams("", params)
   }
 }
+
+@Builder
+export function RegisterBuilder() {
+  Register()
+}

@@ -448,4 +448,9 @@ struct NativeComponentsDemo {
   }
 }
 
+@Builder
+export function NativeComponentsDemoBuilder() {
+  NativeComponentsDemo()
+}
+
 export { NativeComponentsDemo }

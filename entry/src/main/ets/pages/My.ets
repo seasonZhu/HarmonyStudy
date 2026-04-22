@@ -89,4 +89,9 @@ struct My {
   }
 }
 
+@Builder
+export function MyBuilder() {
+  My()
+}
+
 export { My }

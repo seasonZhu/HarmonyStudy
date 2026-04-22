@@ -536,4 +536,9 @@ struct NetworkExamplePage {
   }
 }
 
+@Builder
+export function NetworkExamplePageBuilder() {
+  NetworkExamplePage()
+}
+
 export { NetworkExamplePage }

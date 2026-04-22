@@ -110,4 +110,9 @@ struct WebExample {
   }
 }
 
+@Builder
+export function WebExampleBuilder() {
+  WebExample()
+}
+
 export { WebExample }

@@ -199,3 +199,8 @@ struct SearchIcon {
     }
   }
 }
+
+@Builder
+export function HomeBuilder() {
+  Home()
+}

@@ -130,3 +130,8 @@ struct HotKey {
     this.inputController.stopEditing()
   }
 }
+
+@Builder
+export function HotKeyBuilder() {
+  HotKey()
+}
