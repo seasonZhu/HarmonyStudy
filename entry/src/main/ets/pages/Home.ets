@@ -11,13 +11,13 @@ import { HomeViewModel } from '../viewModel/HomeViewModel';
 import { ScrollActionType } from '../enum/ScrollActionType';
 import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
-import { Router } from '../router/Router';
 import { ViewStatus } from '../enum/ViewStatus';
 import { LogUtil } from '@pura/harmony-utils';
 import { immersion } from '../utils/Immersion';
 import { WebLink } from '../entity/WebLink';
 import { ListDataProcessor } from '../utils/ListDataProcessor';
 import { ListConfig } from '../constants/StyleConstants';
+import { navPathStack } from '../router/navPathStack';
 
 @Entry
 @Component
@@ -127,7 +127,7 @@ struct Home {
             LogUtil.debug($r('app.string.click_banner'))
             LogUtil.debug(item.url)
             const webLink: WebLink = { id: item.id, title: item.title, link: item.url, originId: null }
-            Router.toWebPage(webLink)
+            navPathStack.pushPath({ name: 'WebPage', param: webLink })
           }})
       }
       LazyForEach(this.listDataSource, (item: Article) => {
@@ -187,7 +187,7 @@ struct SearchIcon {
       .height(60)
       .padding(16)
       .onClick(() => {
-        Router.toHotkey()
+        navPathStack.pushPath({ name: 'HotKey' })
       })
   }
   /// 沉浸式开与关

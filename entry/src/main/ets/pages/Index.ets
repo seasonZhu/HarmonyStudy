@@ -20,7 +20,7 @@ import { navPathStack } from '../router/navPathStack';
 @Entry({routeName: RouterName.Index})
 @Component
 struct Index {
-  @State currentIndex: number = 0
+  @State activeIndex: number = 0
 
   @State userInfo: UserInfoModel = {}
 
@@ -29,35 +29,38 @@ struct Index {
   private tabsController = new TabsController()
 
   private viewModel = new IndexViewModel()
-  
+
   build() {
-    Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
-      ForEach(allTabTypeCases, (type: TabType) => {
-        this.getPage(type)
+    Navigation(navPathStack) {
+      Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
+        ForEach(allTabTypeCases, (type: TabType) => {
+          this.getPage(type)
+        })
+      }
+      .scrollable(false)
+      .vertical(false)
+      .barWidth('100%')
+      .barHeight(56)
+      .barMode(BarMode.Fixed)
+      .onChange((index: number) => {
+        this.activeIndex = index;
       })
     }
-    .scrollable(false)
-    .vertical(false)
-    .barWidth('100%')
-    .barHeight(56)
-    .barMode(BarMode.Fixed)
-    .onChange((index: number) => {
-      this.currentIndex = index;
-    })
+    .hideTitleBar(true)
   }
 
   @Builder
   tabBarItem(model: TabTypeModel) {
     Column({space:4}) {
-      Image(this.currentIndex == model.index ? model.selectedImage : model.normalImage)
+      Image(this.activeIndex == model.index ? model.selectedImage : model.normalImage)
         .height(24)
         .aspectRatio(1)
       Text(model.title)
-        .fontColor(this.currentIndex == model.index ? '#1698CE' : '#6B6B6B')
+        .fontColor(this.activeIndex == model.index ? '#1698CE' : '#6B6B6B')
         .fontSize(12)
     }
     .onClick(() => {
-      this.currentIndex = model.index;
+      this.activeIndex = model.index;
       this.tabsController.changeIndex(model.index);
     })
   }
@@ -96,17 +99,14 @@ struct Index {
   }
 
   onPageShow(): void {
-    let userInfo = Router.getParams() as UserInfoModel
-    if (userInfo) {
-      this.loginSuccessUserInfo = userInfo
-    }
-
     /// 从模块传参过App侧
-    let params = Router.getParams() as object
-    let index: number = params?.['index']
-    if (index != null) {
-      this.currentIndex = index;
-      this.tabsController.changeIndex(index)
+    let params: number[] = navPathStack.getParamByName('Index') as number[]
+    if (params && params.length > 0) {
+      let index: number = params[0]
+      if (index != null) {
+        this.activeIndex = index;
+        this.tabsController.changeIndex(index)
+      }
     }
   }
 }

@@ -28,14 +28,14 @@ struct SearchResult {
 
   @State refreshing: boolean = false
 
+  @State keywordInfo: KeywordInfo = { k: '' }
+
   private scroller = new Scroller()
 
   private viewModel = new SearchResultViewModel()
 
-  private keywordInfo = (Router.getParams() as KeywordInfo)
-
   build() {
-      Navigation() {
+      NavDestination() {
         StatusWeight({
           status: this.status,
           contentBuilder: () => {
@@ -47,10 +47,15 @@ struct SearchResult {
         })
       }
       .title(this.keywordInfo.k)
-      .mode(NavigationMode.Auto)
-      .titleMode(NavigationTitleMode.Mini)
-      .height('100%')
-      .width('100%')
+      .onReady((context: NavDestinationContext) => {
+        // 获取参数
+        let params: KeywordInfo[] = context.pathStack.getParamByName('SearchResult') as KeywordInfo[]
+        if (params && params.length > 0) {
+          this.keywordInfo = params[0]
+          // 参数获取后请求数据
+          this.loadData()
+        }
+      })
   }
 
   @Builder
@@ -126,6 +131,10 @@ struct SearchResult {
   }
 
   async aboutToAppear(): Promise<void> {
+    // 数据加载在 onReady 中调用
+  }
+
+  private loadData(): void {
     this.viewModel.postSearchResultList(ScrollActionType.refresh, this.keywordInfo)
       .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
         ListDataProcessor.processPagedListData(
@@ -141,7 +150,6 @@ struct SearchResult {
         LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
-
   }
 }
 

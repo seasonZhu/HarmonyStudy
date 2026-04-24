@@ -10,6 +10,7 @@ import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { KeywordInfo } from '../entity/KeywordInfo';
 import { CaptureTool } from 'utils';
+import { navPathStack } from '../router/navPathStack';
 
 @Entry({routeName: RouterName.Hotkey})
 @ComponentV2
@@ -23,7 +24,7 @@ struct HotKey {
   inputController = new TextInputController()
 
   build() {
-    Navigation() {
+    NavDestination() {
       StatusWeight({
         status: this.status,
         contentBuilder: () => {
@@ -35,10 +36,6 @@ struct HotKey {
       })
     }
     .title(this.getTextInput())
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
   }
 
   @Builder
@@ -61,7 +58,7 @@ struct HotKey {
                 let keywordInfo: KeywordInfo = {
                   k: item.name
                 }
-                Router.toSearchResult(keywordInfo)
+                navPathStack.pushPath({ name: 'SearchResult', param: keywordInfo })
               })
           })
 
@@ -101,7 +98,7 @@ struct HotKey {
           let keywordInfo: KeywordInfo = {
             k: keyword
           }
-          Router.toSearchResult(keywordInfo)
+          navPathStack.pushPath({ name: 'SearchResult', param: keywordInfo })
         } else {
           ToastUtil.showToast($r('app.string.search_keyword_empty'))
         }
