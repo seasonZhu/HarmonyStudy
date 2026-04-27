@@ -15,19 +15,19 @@ export class EnvConfig {
     switch(env) {
       case Environment.DEV:
         // 开发环境 - 使用开发服务器地址
-        config.baseUrl = "https://www.wanandroid.com/"
+        config.baseUrl = "https://wanandroid.com"
         config.timeout = 30000
         config.enableLog = true
         break
       case Environment.TEST:
         // 测试环境 - 使用测试服务器地址
-        config.baseUrl = "https://www.wanandroid.com/"
+        config.baseUrl = "https://wanandroid.com"
         config.timeout = 60000
         config.enableLog = true
         break
       case Environment.PROD:
         // 生产环境 - 使用正式服务器地址
-        config.baseUrl = "https://www.wanandroid.com/"
+        config.baseUrl = "https://wanandroid.com"
         config.timeout = 30000
         config.enableLog = false
         break
