@@ -4,14 +4,34 @@ import { UserInfoModel } from '../model/UserInfoModel'
 import { navPathStack } from '../router/navPathStack'
 import { MyHeader } from '../views/MyHeader'
 import { LogUtil } from '@pura/harmony-utils'
+import { loginEventManager } from '../event/LoginEventManager'
+import { emitter } from '@kit.BasicServicesKit'
 
-@Entry
+@Entry({routeName: 'My'})
 @Component
 struct My {
 
-  @Consume
-  loginSuccessUserInfo: UserInfoModel
+  @Consume loginSuccessUserInfo: UserInfoModel = {}
 
+  aboutToAppear(): void {
+    LogUtil.debug("My Appear")
+    // 订阅登录成功事件
+    this.subscribeLoginEvent()
+  }
+
+  onPageShow(): void {
+    LogUtil.debug("My onPageShow")
+  }
+
+  private subscribeLoginEvent(): void {
+    loginEventManager.emitLoginCallback((eventData: emitter.EventData) => {
+      if (eventData.data != null) {
+        let data = eventData.data!["userInfo"] as UserInfoModel
+        this.loginSuccessUserInfo = data
+      }
+
+    })
+  }
 
   build() {
     NavDestination() {
@@ -47,6 +67,8 @@ struct My {
           })
         })
       }
+      .width('100%')
+      .height('100%')
     }
     .title($r('app.string.my'))
     .hideBackButton(true)
