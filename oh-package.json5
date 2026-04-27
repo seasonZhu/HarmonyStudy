@@ -8,7 +8,7 @@
   "license": "",
   "dependencies": {
     "@ohos/axios": "2.2.7",
-    "@ohos/imageknife": "3.2.8",
+    "@ohos/imageknife": "3.2.7",
     "@ohos/pulltorefresh": "3.0.0",
     "@pura/harmony-utils": "1.4.0",
     "@dcloudio/uni-app-runtime": "5.0.2026020301"

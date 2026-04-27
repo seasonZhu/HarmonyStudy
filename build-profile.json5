@@ -19,14 +19,14 @@
       {
         "name": "default",
         "signingConfig": "default",
-        "compatibleSdkVersion": "6.0.0(20)",
+        "compatibleSdkVersion": "5.0.5(17)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
           "strictMode": {
             "useNormalizedOHMUrl": true
           }
         },
-        "targetSdkVersion": "6.0.0(20)"
+        "targetSdkVersion": "5.0.5(17)"
       }
     ],
     "buildModeSet": [
