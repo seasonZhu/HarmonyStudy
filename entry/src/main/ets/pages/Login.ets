@@ -4,8 +4,9 @@ import { RouterName } from '../router/RouterName'
 import { UserInfoModel } from '../model/UserInfoModel';
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 import { navPathStack } from '../router/navPathStack';
-import { } from '@kit.ArkUI';
-import { loginEventManager } from '../event/LoginEventManager';
+import { emitter } from '@kit.BasicServicesKit';
+
+export const LOGIN_SUCCESS_EVENT = "LOGIN_SUCCESS_EVENT"
 
 @Entry({routeName: RouterName.Login})
 @ComponentV2
@@ -91,8 +92,7 @@ struct Login {
 
               if (result && result.success && result.userInfo) {
                 ToastUtil.showToast($r('app.string.login_success'))
-                // 通过事件总线通知登录成功
-                loginEventManager.emitLoginSuccess(result.userInfo)
+                emitter.emit(LOGIN_SUCCESS_EVENT, { data: { userInfo: result.userInfo } })
                 navPathStack.pop()
               } else {
                 ToastUtil.showToast($r('app.string.login_failed'))
