@@ -1,9 +1,9 @@
 import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil'
 import { LoginViewModel, RegisterResult } from '../viewModel/LoginViewModel'
-import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { UserInfoModel } from '../model/UserInfoModel';
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
+import { navPathStack } from '../router/navPathStack';
 
 @Entry({routeName: RouterName.Register})
 @ComponentV2
@@ -20,7 +20,7 @@ struct Register {
   private loadingHelper = new LoadingDialogHelper('正在注册...')
 
   build() {
-    Navigation() {
+    NavDestination() {
       Column() {
         TextInput({ text: this.username, placeholder: '请输入手机号' })
           .type(InputType.PhoneNumber)
@@ -90,7 +90,7 @@ struct Register {
                   )
 
                   if (result && result.success && result.userInfo) {
-                    Router.backWithParams("", result.userInfo)
+                    navPathStack.pop(result.userInfo)
                   } else if (result && result.errorCode != null) {
                     ToastUtil.showToast($r('app.string.get_user_info_failed'))
                   } else {
@@ -110,10 +110,6 @@ struct Register {
 
     }
     .title($r('app.string.register'))
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
   }
 
   aboutToDisappear(): void {
@@ -122,7 +118,7 @@ struct Register {
 
   mockBackToRoot() {
     let params: UserInfoModel = { coinCount: 1000, level: 1000, nickname: "nickname", rank: "1000", userId: 1000, username: "1000" }
-    Router.backWithParams("", params)
+    navPathStack.pop(params)
   }
 }
 

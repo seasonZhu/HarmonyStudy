@@ -1,7 +1,7 @@
 import { getTitleByMyType, MyType } from '../enum/MyType'
 import { allMyTypeCases } from '../enum/MyType'
 import { UserInfoModel } from '../model/UserInfoModel'
-import { Router } from '../router/Router'
+import { navPathStack } from '../router/navPathStack'
 import { MyHeader } from '../views/MyHeader'
 import { LogUtil } from '@pura/harmony-utils'
 
@@ -14,7 +14,7 @@ struct My {
 
 
   build() {
-    Navigation() {
+    NavDestination() {
       List() {
         ForEach(allMyTypeCases, (type: MyType) => {
           ListItem() {
@@ -49,10 +49,6 @@ struct My {
       }
     }
     .title($r('app.string.my'))
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
     .hideBackButton(true)
   }
 
@@ -61,29 +57,29 @@ struct My {
       case MyType.header:
         break
       case MyType.ranking:
-        Router.toRank()
+        navPathStack.pushPath({ name: 'Rank' })
         break
       case MyType.myCoin:
-        Router.toMyCoin()
+        navPathStack.pushPath({ name: 'MyCoin' })
         break
       case MyType.myCollect:
-        Router.toCollect()
+        navPathStack.pushPath({ name: 'MyCollect' })
         break
       case MyType.webExample:
-        Router.toWebExample()
+        navPathStack.pushPath({ name: 'WebExample' })
         break
       case MyType.webComponent:
-        Router.toWebComponent()
+        navPathStack.pushPath({ name: 'WebComponent' })
         break
       case MyType.uniApp:
-        Router.toObservedV2TestPage()
+        navPathStack.pushPath({ name: 'ObservedV2TestPage' })
         break
       case MyType.environmentSwitch:
         LogUtil.debug("点击了切换环境")
-        Router.toEnvironmentSwitch()
+        navPathStack.pushPath({ name: 'EnvironmentSwitch' })
         break
       case MyType.setting:
-        Router.toSetting()
+        navPathStack.pushPath({ name: 'Setting' })
         break
     }
   }

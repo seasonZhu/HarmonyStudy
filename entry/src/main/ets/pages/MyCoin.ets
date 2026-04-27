@@ -10,7 +10,6 @@ import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { MyCoinViewModel } from '../viewModel/MyCoinViewModel';
 import { LogUtil } from '@pura/harmony-utils';
-import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { ListDataProcessor } from '../utils/ListDataProcessor';
 import { ListConfig } from '../constants/StyleConstants';
@@ -33,7 +32,7 @@ struct MyCoin {
   private viewModel = new MyCoinViewModel()
 
   build() {
-    Navigation() {
+    NavDestination() {
       StatusWeight({
         status: this.status,
         contentBuilder: () => {
@@ -45,10 +44,6 @@ struct MyCoin {
       })
     }
     .title($r('app.string.my_coin'))
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
   }
 
   @Builder

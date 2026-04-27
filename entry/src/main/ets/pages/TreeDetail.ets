@@ -1,22 +1,31 @@
 import { TreeDetailInfo } from '../entity/TreeDetailInfo';
-import { Router } from '../router/Router';
 import { TabsDetail } from './TabsDetail';
+import { navPathStack } from '../router/navPathStack';
 
 @Entry
 @Component
 struct TreeDetail {
 
-  treeDetailInfo = Router.getParams() as TreeDetailInfo
+  treeDetailInfo: TreeDetailInfo = { tab: { id: 0, name: '' }, contentType: 0 }
+
+  aboutToAppear(): void {
+    let params = navPathStack.getParamByName('TreeDetail') as TreeDetailInfo[]
+    if (params && params.length > 0) {
+      this.treeDetailInfo = params[0]
+    }
+  }
 
   build() {
-    Navigation() {
+    NavDestination() {
       TabsDetail({contentType: this.treeDetailInfo.contentType, tab: this.treeDetailInfo.tab})
     }
     .title(this.treeDetailInfo.tab.name)
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
+    .onReady((context: NavDestinationContext) => {
+      let params = context.pathStack.getParamByName('TreeDetail') as TreeDetailInfo[]
+      if (params && params.length > 0) {
+        this.treeDetailInfo = params[0]
+      }
+    })
   }
 }
 

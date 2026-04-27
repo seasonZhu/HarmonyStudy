@@ -12,7 +12,6 @@ import { RankViewModel } from '../viewModel/RankViewModel';
 import { LogUtil } from '@pura/harmony-utils';
 import { ListDataProcessor } from '../utils/ListDataProcessor';
 import { ListConfig } from '../constants/StyleConstants';
-import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 
 @Entry({routeName: RouterName.Rank})
@@ -31,7 +30,7 @@ struct Rank {
   private viewModel = new RankViewModel()
 
   build() {
-    Navigation() {
+    NavDestination() {
       StatusWeight({
         status: this.status,
         contentBuilder: () => {
@@ -43,10 +42,6 @@ struct Rank {
       })
     }
     .title("积分排名")
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
   }
 
   @Builder

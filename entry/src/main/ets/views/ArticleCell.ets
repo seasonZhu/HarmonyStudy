@@ -1,6 +1,6 @@
 import { Article } from '../model/Article'
 import { WebLink } from '../entity/WebLink'
-import { Router } from '../router/Router'
+import { navPathStack } from '../router/navPathStack'
 import { ArticleMetaRow } from './ArticleMetaRow'
 import { ArticleTitle } from './ArticleTitle'
 import { CollectButton } from './CollectButton'
@@ -61,7 +61,7 @@ export struct ArticleCell {
       if (this.onItemClick) {
         this.onItemClick(this.article)
       }
-      Router.toWebPage((this.article as WebLink))
+      navPathStack.pushPath({ name: 'WebPage', param: this.article as WebLink })
     })
     .gesture(
       LongPressGesture({ repeat: false })

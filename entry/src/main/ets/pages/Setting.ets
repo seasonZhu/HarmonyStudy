@@ -1,6 +1,5 @@
 import { DialogUtil, LogUtil, ToastUtil } from '@pura/harmony-utils';
 import { UserInfoModel } from '../model/UserInfoModel';
-import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { LoginViewModel } from '../viewModel/LoginViewModel';
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
@@ -8,6 +7,7 @@ import { MainPage } from 'librarySDK/src/main/ets/components/MainPage';
 import { SDKTools } from 'librarySDK/src/main/ets/components/SDKTools';
 import { router } from '@kit.ArkUI';
 import { RouteConstant } from 'librarySDK';
+import { navPathStack } from '../router/navPathStack';
 
 @Entry({routeName: RouterName.Setting})
 @Component
@@ -18,7 +18,7 @@ struct Setting {
   private loadingHelper = new LoadingDialogHelper('正在登出...')
 
   build() {
-    Navigation() {
+    NavDestination() {
       Column() {
         Image($r('app.media.pic_harmoney_logo_new'))// 直接加载网络地址，请填写一个具体的网络图片地址
           .objectFit(ImageFit.Auto)
@@ -51,10 +51,6 @@ struct Setting {
       .height('100%')
     }
     .title($r('app.string.settings'))
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
   }
 
   aboutToDisappear(): void {
@@ -86,7 +82,7 @@ struct Setting {
       if (result) {
         ToastUtil.showToast($r('app.string.logout_success'))
         let userInfo: UserInfoModel = {}
-        Router.backWithParams("", userInfo)
+        navPathStack.pop(userInfo)
       } else {
         ToastUtil.showToast($r('app.string.logout_failed'))
       }

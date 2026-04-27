@@ -83,7 +83,7 @@ struct EnvironmentSwitch {
   }
 
   build() {
-    Navigation() {
+    NavDestination() {
       Column() {
         // 当前环境卡片
         Column() {
@@ -179,8 +179,6 @@ struct EnvironmentSwitch {
       .backgroundColor('#F8F8F8')
     }
     .title('环境切换')
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
   }
 }
 

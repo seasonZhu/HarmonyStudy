@@ -15,7 +15,6 @@ import { CollectActionType } from '../enum/CollectActionType';
 import { LogUtil } from '@pura/harmony-utils';
 import { ListDataProcessor } from '../utils/ListDataProcessor';
 import { ListConfig } from '../constants/StyleConstants';
-import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 
 @Entry({routeName: RouterName.MyCollect})
@@ -34,7 +33,7 @@ struct MyCollect {
   private viewModel = new MyCollectViewModel()
 
   build() {
-    Navigation() {
+    NavDestination() {
       StatusWeight({
         status: this.status,
         contentBuilder: () => {
@@ -46,10 +45,6 @@ struct MyCollect {
       })
     }
     .title($r('app.string.my_collect'))
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
   }
 
   @Builder

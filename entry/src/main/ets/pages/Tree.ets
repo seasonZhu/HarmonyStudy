@@ -31,7 +31,7 @@ struct Tree {
   private viewModel: TabScaffoldViewModel | null = null
 
   build() {
-    Navigation() {
+    NavDestination() {
       StatusWeight({
         status: this.status,
         contentBuilder: () => {
@@ -51,10 +51,6 @@ struct Tree {
       })
     }
     .title("体系")
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
     .hideBackButton(true)
   }
 

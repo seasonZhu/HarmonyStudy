@@ -62,7 +62,7 @@ struct WebExample {
   @Local javaScriptObject: JavaScriptInterface = new JavaScriptInterface();
 
   build() {
-    Navigation() {
+    NavDestination() {
       Column() {
         // Web组件加载本地index.html页面
         Web({ src: $rawfile('index.html'), controller: this.webviewController})
@@ -79,10 +79,6 @@ struct WebExample {
       }
     }
     .title("Web与鸿蒙原生交互")
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
     .menus(this.getButton())
   }
 

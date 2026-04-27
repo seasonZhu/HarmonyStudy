@@ -9,7 +9,6 @@
  * @version 1.0.0
  */
 
-import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { LogUtil } from '@pura/harmony-utils'
 
@@ -23,7 +22,7 @@ struct NativeComponentsDemo {
   @Local systemInfoResult: string = ''
 
   build() {
-    Navigation() {
+    NavDestination() {
       Scroll() {
         Column() {
           // 页面标题
@@ -63,8 +62,6 @@ struct NativeComponentsDemo {
       .edgeEffect(EdgeEffect.Spring)
     }
     .title('原生组件演示')
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
   }
 
   @Builder

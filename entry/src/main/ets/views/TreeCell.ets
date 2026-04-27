@@ -1,7 +1,8 @@
 import { RandomUtil } from '@pura/harmony-utils'
 import { ContentType } from '../enum/ContentType'
 import { TabModel } from '../model/TabModel'
-import { Router } from '../router/Router'
+import { navPathStack } from '../router/navPathStack'
+import { TreeDetailInfo } from '../entity/TreeDetailInfo';
 
 @Component
 export struct TreeCell {
@@ -28,7 +29,7 @@ export struct TreeCell {
                 // 内间距
               .padding(8)
               .onClick(() => {
-                Router.toTreeDetail({tab: item, contentType: ContentType.tree})
+                navPathStack.pushPath({ name: 'TreeDetail', param: { tab: item, contentType: ContentType.tree } as TreeDetailInfo })
               })
           })
         }

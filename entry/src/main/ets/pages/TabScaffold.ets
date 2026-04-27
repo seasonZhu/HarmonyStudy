@@ -29,8 +29,7 @@ struct TabScaffold {
   private loadingHelper = new LoadingDialogHelper('加载中...')
 
   build() {
-
-    Navigation() {
+    NavDestination() {
       Tabs({ barPosition: BarPosition.Start, index: this.currentIndex, controller: this.tabsController }) {
         ForEach(this.datas, (item: TabModel) => {
           this.getPage(item)
@@ -51,10 +50,6 @@ struct TabScaffold {
       })
     }
     .title(getTitle(this.contentType))
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
     .hideBackButton(true)
   }
 

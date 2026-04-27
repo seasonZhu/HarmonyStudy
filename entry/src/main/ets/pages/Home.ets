@@ -42,7 +42,7 @@ struct Home {
   viewModel = new HomeViewModel()
 
   build() {
-    Navigation() {
+    NavDestination() {
       StatusWeight({
         status: this.status,
         contentBuilder: () => {
@@ -54,10 +54,6 @@ struct Home {
       })
     }
     .title($r('app.string.home'))
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
     .hideBackButton(true)
     .menus(this.getIcon())
   }

@@ -1,8 +1,7 @@
 // [Harmony 状态管理神器 @ObservedV2](https://juejin.cn/post/7391704406327164982)
 import { openUniMP,isExistsUniMP, releaseWgtToRunPath } from '@dcloudio/uni-app-runtime';
 import { FileUtil, LogUtil } from '@pura/harmony-utils';
-import { Router } from '../router/Router';
-import { PagesConstant } from '../router/PagesConstant';
+import { navPathStack } from '../router/navPathStack';
 
 @ObservedV2
 class Person {
@@ -24,7 +23,7 @@ struct ObservedV2TestPage {
   person = new Person()
 
   build() {
-    Navigation() {
+    NavDestination() {
       Scroll() {
         Column() {
           // 标题说明卡片
@@ -228,7 +227,7 @@ struct ObservedV2TestPage {
             .borderRadius(8)
             .margin({ top: 12 })
             .onClick(() => {
-              Router.push(PagesConstant.NetworkExample)
+              navPathStack.pushPath({ name: 'NetworkExample' })
             })
         }
         .width('100%')
@@ -279,8 +278,6 @@ struct ObservedV2TestPage {
       .edgeEffect(EdgeEffect.Spring)
     }
     .title('状态管理测试')
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
   }
 
   aboutToAppear(): void {

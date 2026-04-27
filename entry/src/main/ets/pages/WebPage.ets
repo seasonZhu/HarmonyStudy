@@ -1,5 +1,4 @@
 import { webview } from '@kit.ArkWeb'
-import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 import { WebLink } from '../entity/WebLink';
@@ -11,6 +10,7 @@ import { common } from '@kit.AbilityKit';
 import { systemShare } from '@kit.ShareKit';
 import { uniformTypeDescriptor as utd } from '@kit.ArkData';
 import { ErrorHandler } from '../utils/ErrorHandler'
+import { navPathStack } from '../router/navPathStack';
 
 @Entry({routeName: RouterName.Web})
 @ComponentV2
@@ -25,14 +25,22 @@ struct WebPage {
 
   @Local private collectIds: number[] = []
 
-  private webLink = Router.getParams() as WebLink
+  private webLink: WebLink = { id: null, title: null, link: null, originId: null }
 
   private viewModel = new MyCollectViewModel()
 
   private loadingHelper = new LoadingDialogHelper('加载中...')
 
+  aboutToAppear(): void {
+    let params = navPathStack.getParamByName('WebPage') as WebLink[]
+    if (params && params.length > 0) {
+      LogUtil.debug(params[0])
+      this.webLink = params[0]
+    }
+  }
+
   build() {
-    Navigation() {
+    NavDestination() {
       Stack() {
         Web({ src: this.webLink.link, controller: this.controller })
           .mixedMode(MixedMode.All)
@@ -95,11 +103,13 @@ struct WebPage {
       .alignContent(Alignment.Top)
     }
     .title(this.getTitle())
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
     .menus(this.getRightItems())
+    .onReady((context: NavDestinationContext) => {
+      let params = context.pathStack.getParamByName('WebPage') as WebLink[]
+      if (params && params.length > 0) {
+        this.webLink = params[0]
+      }
+    })
   }
 
   @Builder
@@ -161,10 +171,6 @@ struct WebPage {
 
   aboutToDisappear(): void {
     this.loadingHelper.destroy()
-  }
-
-  aboutToAppear(): void {
-
   }
 
   isCollected(): boolean {

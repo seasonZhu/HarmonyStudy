@@ -12,7 +12,7 @@ struct WebComponent {
   @Local receivedFromHtml: string = 'Display received message send from HTML';
 
   build() {
-    Navigation() {
+    NavDestination() {
       Column() {
         // 展示接收到的来自HTML的内容
         Text(this.receivedFromHtml)
@@ -70,10 +70,6 @@ struct WebComponent {
       }
     }
     .title("Web与鸿蒙通过Port交互")
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
   }
 }
 
