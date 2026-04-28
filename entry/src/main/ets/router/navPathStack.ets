@@ -23,7 +23,6 @@ navPathStack.setInterception({
     if (typeof to === 'string') {
       return
     }
-
     // 防御性检查
     const pageName = to.pathInfo?.name
     if (!pageName) {

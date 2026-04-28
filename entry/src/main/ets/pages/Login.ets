@@ -5,6 +5,7 @@ import { UserInfoModel } from '../model/UserInfoModel';
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 import { navPathStack } from '../router/navPathStack';
 import { emitter } from '@kit.BasicServicesKit';
+import { LogUtil } from '@pura/harmony-utils';
 
 export const LOGIN_SUCCESS_EVENT = "LOGIN_SUCCESS_EVENT"
 
@@ -109,10 +110,15 @@ struct Login {
     }
     .title($r('app.string.login'))
     .onReady((context: NavDestinationContext) => {
-      // let params = context.pathStack.getParamByName('Login') as UserInfoModel[]
-      // if (params && params.length > 0) {
-      //   context.pathStack.pop(params[0])
-      // }
+      /// 就算什么都不传,params里面也不为空，里面
+      let params = context.pathStack.getParamByName('Login') as UserInfoModel[]
+      LogUtil.debug(`params: ${params}`)
+      if (params && params.length > 0) {
+        let some = params[0]!
+        if (some === undefined) {
+          LogUtil.debug("some is undefined")
+        }
+      }
     })
   }
 

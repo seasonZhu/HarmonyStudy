@@ -21,6 +21,10 @@ struct My {
     })
   }
 
+  aboutToDisappear(): void {
+    emitter.off(LOGIN_SUCCESS_EVENT)
+  }
+
   build() {
     NavDestination() {
       List() {
