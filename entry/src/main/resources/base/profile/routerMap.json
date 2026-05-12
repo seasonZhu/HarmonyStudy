@@ -86,6 +86,11 @@
       "buildFunction": "NativeComponentsDemoBuilder"
     },
     {
+      "name": "NavPathStackTestPage",
+      "pageSourceFile": "src/main/ets/pages/NavPathStackTestPage.ets",
+      "buildFunction": "NavPathStackTestPageBuilder"
+    },
+    {
       "name": "NetworkExamplePage",
       "pageSourceFile": "src/main/ets/network/examples/pages/NetworkExamplePage.ets",
       "buildFunction": "NetworkExamplePageBuilder"

@@ -20,6 +20,7 @@
     "pages/WebComponent",
     "pages/ObservedV2TestPage",
     "pages/EnvironmentSwitch",
-    "network/examples/pages/NetworkExamplePage"
+    "network/examples/pages/NetworkExamplePage",
+    "pages/NavPathStackTestPage"
   ]
 }

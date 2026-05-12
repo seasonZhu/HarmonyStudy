@@ -24,7 +24,7 @@ struct NetworkExamplePage {
   }
 
   build() {
-    Navigation() {
+    NavDestination() {
       Scroll() {
         Column() {
           // 页面标题
@@ -61,8 +61,6 @@ struct NetworkExamplePage {
       .edgeEffect(EdgeEffect.Spring)
     }
     .title('网络请求示例')
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
   }
 
   /**

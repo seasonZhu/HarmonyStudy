@@ -227,7 +227,7 @@ struct ObservedV2TestPage {
             .borderRadius(8)
             .margin({ top: 12 })
             .onClick(() => {
-              navPathStack.pushPath({ name: 'NetworkExample' })
+              navPathStack.pushPath({ name: 'NetworkExamplePage' })
             })
         }
         .width('100%')
@@ -235,6 +235,57 @@ struct ObservedV2TestPage {
         .backgroundColor('#F8F8F8')
         .borderRadius(12)
         .margin({ left: 16, right: 16, top: 16 })
+
+        // NavPathStack 测试卡片
+        Column() {
+          Row() {
+            Column() {
+              Text('NavPathStack 双向传值')
+                .fontSize(16)
+                .fontWeight(FontWeight.Medium)
+                .fontColor('#333333')
+
+              Text('顺传 + 逆传示例')
+                .fontSize(12)
+                .fontColor('#999999')
+                .margin({ top: 4 })
+            }
+            .alignItems(HorizontalAlign.Start)
+            .layoutWeight(1)
+
+            Text('测试')
+              .fontSize(14)
+              .fontColor('#FFFFFF')
+              .backgroundColor('#FF9800')
+              .padding({ left: 8, right: 8, top: 4, bottom: 4 })
+              .borderRadius(4)
+          }
+          .width('100%')
+          .height(80)
+          .padding({ left: 16, right: 16 })
+          .backgroundColor('#FFFFFF')
+          .borderRadius(12)
+
+          Button('Go to NavPathStackTest')
+            .width('100%')
+            .height(44)
+            .fontSize(16)
+            .backgroundColor('#FF9800')
+            .borderRadius(8)
+            .margin({ top: 12 })
+            .onClick(() => {
+              // 顺传：传递 person.age 作为参数
+              navPathStack.pushPathByName('NavPathStackTestPage', this.person.age, (popInfo) => {
+                // 逆传：接收返回值
+                LogUtil.debug(`NavPathStackTest 返回值: ${popInfo.result}`)
+              })
+            })
+        }
+        .width('100%')
+        .padding(16)
+        .backgroundColor('#F8F8F8')
+        .borderRadius(12)
+        .margin({ left: 16, right: 16, top: 16, bottom: 16 })
 
         // 说明区域
         Column() {
@@ -277,7 +328,17 @@ struct ObservedV2TestPage {
       .scrollBar(BarState.Auto)
       .edgeEffect(EdgeEffect.Spring)
     }
+    .onReady((context: NavDestinationContext) => {
+      let result = context.pathStack.getParamByName('NavPathStackTestPage') as number[]
+      LogUtil.debug(`onReady result: ${result}`)
+    })
     .title('状态管理测试')
+  }
+
+  onPageShow(): void {
+    LogUtil.debug(`onPageShow`)
+    let result = navPathStack.getParamByName("NavPathStackTestPage") as number[]
+    LogUtil.debug(`onPageShow result 返回值: ${result}`)
   }
 
   aboutToAppear(): void {
@@ -296,6 +357,9 @@ struct ObservedV2TestPage {
       FileUtil.closeSync(file.fd) //关闭文件
       LogUtil.debug(`${"UniApp#"}[${"wgt File"}] ${"filePath:" + filePath}`)
     })
+
+    let result = navPathStack.getParamByName("NavPathStackTestPage") as number[]
+    LogUtil.debug(`aboutToAppear result 返回值: ${result}`)
   }
 
   /// https://ohpm.openharmony.cn/#/cn/detail/@dcloudio%2Funi-app-runtime
