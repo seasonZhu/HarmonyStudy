@@ -73,10 +73,17 @@ export struct ProjectCell {
 
       // 底部TAG以及收藏
       Row() {
-        Text(this.article.superChapterName + '-' + this.article.chapterName)
-          .fontSize(12)
-          .padding(8)
-          .fontColor($r('app.color.sf_Green'))
+        if (this.article.superChapterName != null) {
+          Text(this.article.superChapterName + '-' + this.article.chapterName)
+            .fontSize(12)
+            .padding(8)
+            .fontColor($r('app.color.sf_Green'))
+        } else {
+          Text(this.article.chapterName)
+            .fontSize(12)
+            .padding(8)
+            .fontColor($r('app.color.sf_Green'))
+        }
 
         Blank()
 

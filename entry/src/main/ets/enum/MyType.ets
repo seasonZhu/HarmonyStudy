@@ -52,7 +52,7 @@ export function getTitleByMyType(type: MyType): string {
     case MyType.webComponent:
       return "Web与鸿蒙通过Port交互"
     case MyType.uniApp:
-      return "跳转UniApp"
+      return "用例演示"
     case MyType.environmentSwitch:
       return "环境切换"
     case MyType.setting:

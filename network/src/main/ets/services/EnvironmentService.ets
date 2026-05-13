@@ -69,7 +69,7 @@ export const environmentConfigs: Record<Environment, EnvironmentConfig> = {
   [Environment.DEV]: {
     name: '开发环境',
     description: '开发环境 - 用于日常开发调试',
-    baseURL: 'https://www.wanandroid.com/',
+    baseURL: 'https://wanandroid.com/',
     timeout: 30000,
     enableLog: true,
     debugMode: true
@@ -78,7 +78,7 @@ export const environmentConfigs: Record<Environment, EnvironmentConfig> = {
   [Environment.TEST]: {
     name: '测试环境',
     description: '测试环境 - 用于功能测试验证',
-    baseURL: 'https://www.wanandroid.com/',
+    baseURL: 'https://wanandroid.com/',
     timeout: 15000,
     enableLog: true,
     debugMode: true
@@ -87,7 +87,7 @@ export const environmentConfigs: Record<Environment, EnvironmentConfig> = {
   [Environment.STAGING]: {
     name: '预发布环境',
     description: '预发布环境 - 用于上线前验证',
-    baseURL: 'https://www.wanandroid.com/',
+    baseURL: 'https://wanandroid.com/',
     timeout: 15000,
     enableLog: true,
     debugMode: false
@@ -96,7 +96,7 @@ export const environmentConfigs: Record<Environment, EnvironmentConfig> = {
   [Environment.PROD]: {
     name: '生产环境',
     description: '生产环境 - 正式对外发布环境',
-    baseURL: 'https://www.wanandroid.com/',
+    baseURL: 'https://wanandroid.com/',
     timeout: 15000,
     enableLog: true,
     debugMode: false

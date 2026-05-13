@@ -279,7 +279,8 @@ export class LoggingInterceptor {
 
     // 基本信息
     logs.push(`${this.config.logPrefix} Request:`)
-    logs.push(`  ${config.method?.toUpperCase()} ${config.url}`)
+    logs.push(` BaseURL: ${config.baseURL} `)
+    logs.push(` ${config.method?.toUpperCase()} ${config.url}`)
 
     // 查询参数
     if (config.params && Object.keys(config.params).length > 0) {

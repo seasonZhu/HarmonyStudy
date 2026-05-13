@@ -521,7 +521,7 @@ struct NetworkExamplePage {
         .fontColor('#666666')
         .margin({ top: 4 })
 
-      Text('• BaseURL: https://www.wanandroid.com/')
+      Text('• BaseURL: https://wanandroid.com/')
         .fontSize(12)
         .fontColor('#2C86EF')
         .margin({ top: 4 })

@@ -16,6 +16,9 @@ import { LogUtil } from '@pura/harmony-utils';
 import { ListDataProcessor } from '../utils/ListDataProcessor';
 import { ListConfig } from '../constants/StyleConstants';
 import { RouterName } from '../router/RouterName'
+import { ProjectCell } from '../views/ProjectCell';
+import { ArticleCell } from '../views/ArticleCell';
+import { Skeleton, SkeletonItem } from 'utils';
 
 @Entry({routeName: RouterName.MyCollect})
 @Component
@@ -38,6 +41,9 @@ struct MyCollect {
         status: this.status,
         contentBuilder: () => {
           this.getRefreshView()
+        },
+        loadingBuilder: () => {
+          this.getLoadingView()
         },
         onRetry: () => {
           LogUtil.debug("点击了重试按钮")
@@ -100,7 +106,7 @@ struct MyCollect {
     List({ space: ListConfig.SPACE, scroller: this.scroller }) {
       LazyForEach(this.listDataSource, (item: Article) => {
         ListItem() {
-          InfoCell({
+          ProjectCell({
             article: item,
             onItemClick: (article: Article) => {
               LogUtil.debug("点击了cell " + article.link)
@@ -160,6 +166,33 @@ struct MyCollect {
     }
     .padding("4vp")
     .justifyContent(FlexAlign.SpaceEvenly)
+  }
+
+  @Builder
+  getLoadingView() {
+    Skeleton() {
+      Column() {
+        Row({ space: 15 }) {
+          SkeletonItem({ widthValue: 60 })
+          SkeletonItem({ widthValue: 100 })
+          SkeletonItem({ widthValue: 80 })
+          SkeletonItem({ widthValue: 40 })
+        }
+        .padding(10)
+        .width('100%')
+
+        ForEach([1,2,3,4,5,6], () => {
+          Column({ space: 20 }) {
+            SkeletonItem()
+            SkeletonItem({ widthValue: 200 })
+          }
+          .alignItems(HorizontalAlign.Start)
+          .height(90)
+          .padding(10)
+        })
+      }
+      .padding(16)
+    }
   }
 
   async aboutToAppear(): Promise<void> {
