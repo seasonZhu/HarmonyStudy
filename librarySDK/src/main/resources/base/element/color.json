@@ -1,0 +1,24 @@
+{
+  "color": [
+    {
+      "name": "white",
+      "value": "#FFFFFFFF"
+    },
+    {
+      "name": "mainBlue",
+      "value": "#2096F3"
+    },
+    {
+      "name": "text_primary",
+      "value": "#333333"
+    },
+    {
+      "name": "text_secondary",
+      "value": "#6B6B6B"
+    },
+    {
+      "name": "bg_grey",
+      "value": "#F5F5F5"
+    }
+  ]
+}

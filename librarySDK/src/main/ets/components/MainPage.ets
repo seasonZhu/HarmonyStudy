@@ -16,18 +16,12 @@ export struct MainPage {
   build() {
     Navigation() {
       Column() {
-        // 顶部空白区域
-        Blank()
-          .width('100%')
-          .layoutWeight(1)
-
         // 中间内容区域
         Column() {
-          // Logo/图标
-          Image($r('app.media.pic_harmoney_logo_new'))
-            .width(120)
-            .height(120)
-            .objectFit(ImageFit.Contain)
+          Image($r('app.media.pic_harmoney_logo_new'))// 直接加载网络地址，请填写一个具体的网络图片地址
+            .objectFit(ImageFit.Auto)
+            .width("100%")
+            .backgroundColor(Color.Black)
             .margin({ bottom: 24 })
 
           // 标题
