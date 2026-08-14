@@ -5,6 +5,7 @@ import { ScrollActionType } from '../enum/ScrollActionType';
 import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
 import { KeywordInfo } from '../entity/KeywordInfo';
+import { ApiConstants } from '../constants/ApiConstants';
 
 export class SearchResultViewModel {
   private pageNum = 0
@@ -16,9 +17,7 @@ export class SearchResultViewModel {
       this.pageNum = this.pageNum + 1
     }
 
-    let api = "article/query/" + this.pageNum.toString() + "/json"
-    /// 奇葩的post入参
     let params = `k=${keywordInfo.k}`
-    return httpClient.post(api, params)
+    return httpClient.post(ApiConstants.articleQuery(this.pageNum), params)
   }
 }

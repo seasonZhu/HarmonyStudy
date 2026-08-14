@@ -41,20 +41,15 @@ struct SearchResult {
           contentBuilder: () => {
             this.getRefreshView()
           },
-          onRetry: () => {
-            LogUtil.debug("点击了重试按钮")
-          },
+        onRetry: () => {
+          this.loadData()
+        },
         })
       }
       .title(this.keywordInfo.k)
       .onReady((context: NavDestinationContext) => {
-        // 获取参数
-        let params: KeywordInfo[] = context.pathStack.getParamByName('SearchResult') as KeywordInfo[]
-        if (params && params.length > 0) {
-          this.keywordInfo = params[0]
-          // 参数获取后请求数据
-          this.loadData()
-        }
+        this.keywordInfo = context.pathInfo.param as KeywordInfo
+        this.loadData()
       })
   }
 
@@ -99,7 +94,8 @@ struct SearchResult {
               resolve('上拉完成');
             })
             .catch((error: AxiosError) => {
-              resolve('上拉失败');
+              LogUtil.debug("loadMore error: " + JSON.stringify(error))
+              reject(error)
             });
         });
       },

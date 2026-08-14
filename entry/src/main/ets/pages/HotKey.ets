@@ -31,7 +31,7 @@ struct HotKey {
           this.getHotkeyView()
         },
         onRetry: () => {
-          LogUtil.debug("点击了重试按钮")
+          this.reloadData()
         },
       })
     }
@@ -46,7 +46,7 @@ struct HotKey {
           ForEach(this.dataSource.originData, (item: HotKeyModel) => {
             Text(item.name)
               .fontColor(Color.White)
-              .backgroundColor("#2C86EF")
+              .backgroundColor($r('app.color.app_blue'))
               .borderRadius(4)
               .fontSize(16)
               .textAlign(TextAlign.Center)
@@ -106,19 +106,28 @@ struct HotKey {
   }
 
   async aboutToAppear(): Promise<void> {
-    let response: AxiosResponse<BaseResponse<HotKeyModel[]>> = await this.viewModel.getHotKey()
+    await this.reloadData()
+  }
 
-    response.data.data.forEach((item) => {
-      this.dataSource.addData(item)
-    })
+  private async reloadData(): Promise<void> {
+    try {
+      let response: AxiosResponse<BaseResponse<HotKeyModel[]>> = await this.viewModel.getHotKey()
 
-    if (response.data.errorCode == 0) {
-      if (response.data.data.length == 0) {
-        this.status = ViewStatus.empty
+      response.data.data.forEach((item) => {
+        this.dataSource.addData(item)
+      })
+
+      if (response.data.errorCode == 0) {
+        if (response.data.data.length == 0) {
+          this.status = ViewStatus.empty
+        } else {
+          this.status = ViewStatus.success
+        }
       } else {
-        this.status = ViewStatus.success
+        this.status = ViewStatus.error
       }
-    } else {
+    } catch (error) {
+      LogUtil.debug("HotKey load error: " + JSON.stringify(error))
       this.status = ViewStatus.error
     }
   }

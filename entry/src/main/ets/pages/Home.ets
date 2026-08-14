@@ -7,8 +7,7 @@ import { BaseListDataSource } from '../model/BaseListDataSource';
 import { BannerView } from '../views/BannerView';
 import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
-import { HomeViewModel } from '../viewModel/HomeViewModel';
-import { ScrollActionType } from '../enum/ScrollActionType';
+import { HomeViewModel, HomeRefreshResult } from '../viewModel/HomeViewModel';
 import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
@@ -72,12 +71,13 @@ struct Home {
       },
       // 可选项，下拉刷新回调
       onRefresh: async () => {
-        let results: AxiosResponse[] = await this.viewModel.networkRequest(ScrollActionType.refresh)
-        ListDataProcessor.processMixedData(
+        const result: HomeRefreshResult = await this.viewModel.refreshRequest()
+        ListDataProcessor.processMixedRefresh(
           this.dataSource,
           this.listDataSource,
-          results,
-          ScrollActionType.refresh,
+          result.bannerResponse,
+          result.hotArticleResponse,
+          result.normalArticleResponse,
           (status: ViewStatus) => {
             this.status = status
           },
@@ -88,13 +88,11 @@ struct Home {
       // 可选项，上拉加载更多回调
       onLoadMore: () => {
         return new Promise<string>((resolve, reject) => {
-          this.viewModel.networkRequest(ScrollActionType.loadMore)
-            .then((results: AxiosResponse[]) => {
-              ListDataProcessor.processMixedData(
-                this.dataSource,
+          this.viewModel.loadMoreRequest()
+            .then((normalArticleResponse: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
+              ListDataProcessor.processMixedLoadMore(
                 this.listDataSource,
-                results,
-                ScrollActionType.loadMore,
+                normalArticleResponse,
                 (status: ViewStatus) => {
                   this.status = status
                 }
@@ -102,7 +100,7 @@ struct Home {
               resolve('上拉完成');
             })
             .catch((error: AxiosError) => {
-              resolve('上拉失败');
+              reject(error);
             });
         });
       },
@@ -148,13 +146,14 @@ struct Home {
   }
 
   async aboutToAppear(): Promise<void> {
-    this.viewModel.networkRequest(ScrollActionType.refresh)
-      .then((results: AxiosResponse[]) => {
-        ListDataProcessor.processMixedData(
+    this.viewModel.refreshRequest()
+      .then((result: HomeRefreshResult) => {
+        ListDataProcessor.processMixedRefresh(
           this.dataSource,
           this.listDataSource,
-          results,
-          ScrollActionType.refresh,
+          result.bannerResponse,
+          result.hotArticleResponse,
+          result.normalArticleResponse,
           (status: ViewStatus) => {
             this.status = status
           },

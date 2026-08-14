@@ -3,9 +3,10 @@ import { LoginViewModel } from './LoginViewModel'
 import { AxiosResponse } from '@ohos/axios';
 import { BaseResponse } from '../model/BaseResponse';
 import httpClient from '../httpRequest/Provider';
+import { ApiConstants } from '../constants/ApiConstants';
 
-export class IndexViewModel extends LoginViewModel {
+export class IndexViewModel {
   getUserInfo = (): Promise<AxiosResponse<BaseResponse<UserInfoModel>>> => {
-    return httpClient.get("lg/coin/userinfo/json")
+    return httpClient.get(ApiConstants.USER_INFO)
   }
 }

@@ -329,7 +329,7 @@ struct ObservedV2TestPage {
       .edgeEffect(EdgeEffect.Spring)
     }
     .onReady((context: NavDestinationContext) => {
-      let result = context.pathStack.getParamByName('NavPathStackTestPage') as number[]
+      let result = context.pathInfo.param as number
       LogUtil.debug(`onReady result: ${result}`)
     })
     .title('状态管理测试')
@@ -337,8 +337,6 @@ struct ObservedV2TestPage {
 
   onPageShow(): void {
     LogUtil.debug(`onPageShow`)
-    let result = navPathStack.getParamByName("NavPathStackTestPage") as number[]
-    LogUtil.debug(`onPageShow result 返回值: ${result}`)
   }
 
   aboutToAppear(): void {
@@ -354,12 +352,9 @@ struct ObservedV2TestPage {
       let filePath = fileDir + "/" + fileName
       let file = FileUtil.openSync(filePath)
       FileUtil.writeSync(file.fd, value.buffer)
-      FileUtil.closeSync(file.fd) //关闭文件
+      FileUtil.closeSync(file.fd)
       LogUtil.debug(`${"UniApp#"}[${"wgt File"}] ${"filePath:" + filePath}`)
     })
-
-    let result = navPathStack.getParamByName("NavPathStackTestPage") as number[]
-    LogUtil.debug(`aboutToAppear result 返回值: ${result}`)
   }
 
   /// https://ohpm.openharmony.cn/#/cn/detail/@dcloudio%2Funi-app-runtime

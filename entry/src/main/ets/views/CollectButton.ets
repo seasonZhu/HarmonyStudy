@@ -28,7 +28,7 @@ export struct CollectButton {
               this.onCollectToggle(false)
             }
           })
-          .visibility(Visibility.Hidden)
+          .visibility(Visibility.Visible)
       } else {
         Image($r('app.media.ic_uncollect'))
           .width(26)
@@ -40,7 +40,7 @@ export struct CollectButton {
               this.onCollectToggle(true)
             }
           })
-          .visibility(Visibility.Hidden)
+          .visibility(Visibility.Visible)
       }
     }
   }

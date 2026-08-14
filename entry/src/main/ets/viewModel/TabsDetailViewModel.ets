@@ -6,6 +6,7 @@ import httpClient from '../httpRequest/Provider';
 import { ContentType } from '../enum/ContentType';
 import { ScrollActionType } from '../enum/ScrollActionType';
 import { TabModel } from '../model/TabModel';
+import { ApiConstants } from '../constants/ApiConstants';
 
 export class TabsDetailViewModel {
 
@@ -23,7 +24,6 @@ export class TabsDetailViewModel {
   getTabsDetailList = (type: ScrollActionType): Promise<AxiosResponse<BaseResponse<PageModel<Article>>>> => {
     if (type == ScrollActionType.refresh) {
       if (this.contentType == ContentType.tree) {
-        /// 体系的接口pageNum是从0开始的
         this.pageNum = 0
       } else {
         this.pageNum = 1
@@ -32,17 +32,16 @@ export class TabsDetailViewModel {
       this.pageNum = this.pageNum + 1
     }
 
-    let pageString = this.pageNum.toString()
     let api: string
     switch (this.contentType) {
       case ContentType.project:
-        api = "project/list/" + pageString + "/json" + "?cid=" + this.tab.id?.toString()
+        api = ApiConstants.projectList(this.pageNum, this.tab.id ?? 0)
         break
       case ContentType.publicNumber:
-        api = "wxarticle/list/" + this.tab.id?.toString() + "/" + pageString + "/json"
+        api = ApiConstants.wxArticleList(this.tab.id ?? 0, this.pageNum)
         break
       case ContentType.tree:
-        api = "article/list/" + pageString + "/json" + "?cid=" + this.tab.id?.toString()
+        api = ApiConstants.treeDetailList(this.pageNum, this.tab.id ?? 0)
         break
     }
     return httpClient.get(api)

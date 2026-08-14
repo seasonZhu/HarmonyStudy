@@ -37,7 +37,7 @@ struct Rank {
           this.getRefreshView()
         },
         onRetry: () => {
-          LogUtil.debug("点击了重试按钮")
+          this.reloadData()
         },
       })
     }
@@ -85,7 +85,8 @@ struct Rank {
               resolve('上拉完成');
             })
             .catch((error: AxiosError) => {
-              resolve('上拉失败');
+              LogUtil.debug("loadMore error: " + JSON.stringify(error))
+              reject(error)
             });
         });
       },
@@ -118,6 +119,10 @@ struct Rank {
   }
 
   async aboutToAppear(): Promise<void> {
+    await this.reloadData()
+  }
+
+  private async reloadData(): Promise<void> {
     this.viewModel.getRankList(ScrollActionType.refresh)
       .then((result: AxiosResponse<BaseResponse<PageModel<RankModel>>>) => {
         ListDataProcessor.processPagedListData(
@@ -133,7 +138,6 @@ struct Rank {
         LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
-
   }
 }
 

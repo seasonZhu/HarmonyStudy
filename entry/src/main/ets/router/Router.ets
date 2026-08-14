@@ -11,7 +11,7 @@ import { PagesConstant } from './PagesConstant';
  */
 interface NamedRouteOptions {
   url: string
-  params?: object
+  params?: Record<string, Object>
 }
 
 /**
@@ -45,7 +45,7 @@ export class Router {
    * @param url 页面路径
    * @param params 页面参数（可选，支持泛型）
    */
-  static push<T = object>(url: string, params?: T): void {
+  static push<T = Record<string, Object>>(url: string, params?: T): void {
     try {
       router.push({ url, params })
       LogUtil.debug(`${Router.TAG}: 跳转到 ${url}`)
@@ -62,7 +62,7 @@ export class Router {
    * @param url 页面路径
    * @param params 页面参数（可选）
    */
-  static replace<T = object>(url: string, params?: T): void {
+  static replace<T = Record<string, Object>>(url: string, params?: T): void {
     try {
       router.replace({ url, params })
       LogUtil.debug(`${Router.TAG}: 替换到 ${url}`)
@@ -91,7 +91,7 @@ export class Router {
    * @template T 参数类型
    * @returns 页面参数，如果不存在返回 null
    */
-  static getParams<T = object>(): T | null {
+  static getParams<T = Record<string, Object>>(): T | null {
     try {
       const params = router.getParams()
       return params ? (params as T) : null
@@ -120,7 +120,7 @@ export class Router {
    * @param url 页面路径
    * @param params 页面参数
    */
-  static pushWithLogin<T = object>(url: string, params?: T): void {
+  static pushWithLogin<T = Record<string, Object>>(url: string, params?: T): void {
     if (AccountManager.shared().isLogin()) {
       Router.push<T>(url, params)
     } else {
@@ -249,7 +249,7 @@ export class Router {
    * @deprecated 请使用 back() 替代
    * 保留此方法仅用于向后兼容
    */
-  static backWithParams(url: string, params?: object): void {
+  static backWithParams(url: string, params?: Record<string, Object>): void {
     try {
       router.back({ url, params })
       LogUtil.debug(`${Router.TAG}: 返回到 ${url}`)

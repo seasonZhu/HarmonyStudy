@@ -110,14 +110,9 @@ struct Login {
     }
     .title($r('app.string.login'))
     .onReady((context: NavDestinationContext) => {
-      /// 就算什么都不传,params里面也不为空，里面
-      let params = context.pathStack.getParamByName('Login') as UserInfoModel[]
-      LogUtil.debug(`params: ${params}`)
-      if (params && params.length > 0) {
-        let some = params[0]!
-        if (some === undefined) {
-          LogUtil.debug("some is undefined")
-        }
+      const param = context.pathInfo.param as UserInfoModel
+      if (param) {
+        LogUtil.debug(`params: ${param}`)
       }
     })
   }

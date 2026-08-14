@@ -6,68 +6,58 @@ import { LoginModel } from '../model/LoginModel';
 import AccountManager from '../accountManager/AccountManager';
 import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
-import { ScrollActionType } from '../enum/ScrollActionType';
 import httpClient from '../httpRequest/Provider';
 import { LogUtil } from '@pura/harmony-utils';
+import { ApiConstants } from '../constants/ApiConstants';
 
-/**
- * 网络请求响应联合类型
- * 明确定义所有可能的响应类型，增强类型安全
- */
-type HomeNetworkResponseType =
-  | AxiosResponse<BaseResponse<Banner[]>>
-  | AxiosResponse<BaseResponse<Article[]>>
-  | AxiosResponse<BaseResponse<PageModel<Article>>>
+export interface HomeRefreshResult {
+  bannerResponse: AxiosResponse<BaseResponse<Banner[]>>
+  hotArticleResponse: AxiosResponse<BaseResponse<Article[]>>
+  normalArticleResponse: AxiosResponse<BaseResponse<PageModel<Article>>>
+}
 
 export class HomeViewModel {
 
   private pageNum = 1
 
   getBanner = (): Promise<AxiosResponse<BaseResponse<Banner[]>>> => {
-    return httpClient.get('banner/json')
+    return httpClient.get(ApiConstants.BANNER)
   }
 
   getHotArticle = (): Promise<AxiosResponse<BaseResponse<Article[]>>> => {
-    return httpClient.get('article/top/json')
+    return httpClient.get(ApiConstants.ARTICLE_TOP)
   }
 
   getNormalArticle = (page: number): Promise<AxiosResponse<BaseResponse<PageModel<Article>>>> => {
-    let pageString = page.toString()
-    let api = 'article/list/' + pageString + '/json'
-    return httpClient.get(api)
+    return httpClient.get(ApiConstants.articleList(page))
   }
 
-  /**
-   * 网络请求 - 使用明确的联合类型保证类型安全
-   * @param type 滚动操作类型
-   * @returns 响应数组，类型明确
-   */
-  public networkRequest(type: ScrollActionType): Promise<HomeNetworkResponseType[]>  {
-    if (type == ScrollActionType.refresh) {
-      this.pageNum = 1
-      return Promise.all<HomeNetworkResponseType>([
-        this.getBanner(),
-        this.getHotArticle(),
-        this.getNormalArticle(this.pageNum)
-      ])
-    } else {
-      this.pageNum = this.pageNum + 1
-      return Promise.all<HomeNetworkResponseType>([this.getNormalArticle(this.pageNum)])
+  public async refreshRequest(): Promise<HomeRefreshResult> {
+    this.pageNum = 1
+    const bannerResponse: AxiosResponse<BaseResponse<Banner[]>> = await this.getBanner()
+    const hotArticleResponse: AxiosResponse<BaseResponse<Article[]>> = await this.getHotArticle()
+    const normalArticleResponse: AxiosResponse<BaseResponse<PageModel<Article>>> = await this.getNormalArticle(this.pageNum)
+    return {
+      bannerResponse: bannerResponse,
+      hotArticleResponse: hotArticleResponse,
+      normalArticleResponse: normalArticleResponse
     }
+  }
+
+  public async loadMoreRequest(): Promise<AxiosResponse<BaseResponse<PageModel<Article>>>> {
+    this.pageNum = this.pageNum + 1
+    return this.getNormalArticle(this.pageNum)
   }
 
   public loginAction(username: string, password: string) {
     LogUtil.debug("按钮点击了，准备进行做登录")
-    let api = 'user/login?username=' + username + '&password=' + password
-    httpClient.post<BaseResponse<LoginModel>>(api)
+    httpClient.post<BaseResponse<LoginModel>>(ApiConstants.userLogin(username, password))
       .then((response: AxiosResponse<BaseResponse<LoginModel>>)=> {
-        // 处理成功情况
         LogUtil.debug("loginModel" + response.data.data)
         response.data.data.password = password
-        AccountManager.shared().loginModel = response.data.data
+        AccountManager.shared().saveLoginModel(response.data.data)
       })
       .catch((error: AxiosError)=> {
-        // 处理错误情况
         LogUtil.debug(JSON.stringify(error))
       })
   }

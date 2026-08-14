@@ -46,7 +46,7 @@ struct MyCollect {
           this.getLoadingView()
         },
         onRetry: () => {
-          LogUtil.debug("点击了重试按钮")
+          this.reloadData()
         },
       })
     }
@@ -94,7 +94,8 @@ struct MyCollect {
               resolve('上拉完成');
             })
             .catch((error: AxiosError) => {
-              resolve('上拉失败');
+              LogUtil.debug("loadMore error: " + JSON.stringify(error))
+              reject(error)
             });
         });
       },
@@ -196,6 +197,10 @@ struct MyCollect {
   }
 
   async aboutToAppear(): Promise<void> {
+    await this.reloadData()
+  }
+
+  private async reloadData(): Promise<void> {
     this.viewModel.getMyCollectList(ScrollActionType.refresh)
       .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
         ListDataProcessor.processPagedListData(

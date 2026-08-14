@@ -10,7 +10,6 @@ import { common } from '@kit.AbilityKit';
 import { systemShare } from '@kit.ShareKit';
 import { uniformTypeDescriptor as utd } from '@kit.ArkData';
 import { ErrorHandler } from '../utils/ErrorHandler'
-import { navPathStack } from '../router/navPathStack';
 
 @Entry({routeName: RouterName.Web})
 @ComponentV2
@@ -32,11 +31,6 @@ struct WebPage {
   private loadingHelper = new LoadingDialogHelper('加载中...')
 
   aboutToAppear(): void {
-    let params = navPathStack.getParamByName('WebPage') as WebLink[]
-    if (params && params.length > 0) {
-      LogUtil.debug(params[0])
-      this.webLink = params[0]
-    }
   }
 
   build() {
@@ -105,10 +99,7 @@ struct WebPage {
     .title(this.getTitle())
     .menus(this.getRightItems())
     .onReady((context: NavDestinationContext) => {
-      let params = context.pathStack.getParamByName('WebPage') as WebLink[]
-      if (params && params.length > 0) {
-        this.webLink = params[0]
-      }
+      this.webLink = context.pathInfo.param as WebLink
     })
   }
 
@@ -145,7 +136,7 @@ struct WebPage {
               actionText
             )
             if (result) {
-              this.collectIds = AccountManager.shared().loginModel?.collectIds!
+              this.collectIds = AccountManager.shared().loginModel?.collectIds ?? []
             }
           } catch (error) {
             ErrorHandler.handle(error, '收藏操作失败')
@@ -199,7 +190,7 @@ struct WebPage {
     if (collectId == null && id != null) {
       return id
     } else {
-      return collectId!
+      return collectId ?? 0
     }
   }
 

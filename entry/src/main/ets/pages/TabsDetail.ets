@@ -44,7 +44,7 @@ struct TabsDetail {
           this.getRefreshView()
         },
         onRetry: () => {
-          LogUtil.debug("点击了重试按钮")
+          this.reloadData()
         },
       })
     }
@@ -91,7 +91,8 @@ struct TabsDetail {
               resolve('上拉完成');
             })
             .catch((error: AxiosError) => {
-              resolve('上拉失败');
+              LogUtil.debug("loadMore error: " + JSON.stringify(error))
+              reject(error)
             });
         });
       },
@@ -124,7 +125,10 @@ struct TabsDetail {
 
   async aboutToAppear(): Promise<void> {
     this.viewModel = new TabsDetailViewModel(this.contentType, this.tab)
+    await this.reloadData()
+  }
 
+  private async reloadData(): Promise<void> {
     this.viewModel.getTabsDetailList(ScrollActionType.refresh)
       .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
         ListDataProcessor.processPagedListData(
@@ -140,7 +144,6 @@ struct TabsDetail {
         LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
-
   }
 }
 

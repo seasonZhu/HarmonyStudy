@@ -3,6 +3,7 @@ import { BaseResponse } from '../model/BaseResponse';
 import httpClient from '../httpRequest/Provider';
 import { TabModel } from '../model/TabModel';
 import { ContentType } from '../enum/ContentType';
+import { ApiConstants } from '../constants/ApiConstants';
 
 export class TabScaffoldViewModel {
 
@@ -16,13 +17,13 @@ export class TabScaffoldViewModel {
     let api: string
     switch (this.contentType) {
       case ContentType.project:
-        api = "project/tree/json"
+        api = ApiConstants.PROJECT_TREE
         break
       case ContentType.publicNumber:
-        api = "wxarticle/chapters/json"
+        api = ApiConstants.WX_ARTICLE_CHAPTERS
         break
       case ContentType.tree:
-        api = "tree/json"
+        api = ApiConstants.TREE
         break
     }
 

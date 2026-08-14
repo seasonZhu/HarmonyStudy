@@ -39,7 +39,7 @@ struct MyCoin {
           this.getRefreshView()
         },
         onRetry: () => {
-          LogUtil.debug("点击了重试按钮")
+          this.reloadData()
         },
       })
     }
@@ -81,7 +81,8 @@ struct MyCoin {
               resolve('上拉完成');
             })
             .catch((error: AxiosError) => {
-              resolve('上拉失败');
+              LogUtil.debug("loadMore error: " + JSON.stringify(error))
+              reject(error)
             });
         });
       },
@@ -113,6 +114,10 @@ struct MyCoin {
   }
 
   async aboutToAppear(): Promise<void> {
+    await this.reloadData()
+  }
+
+  private async reloadData(): Promise<void> {
     this.viewModel.getMyCoinList(ScrollActionType.refresh)
       .then((result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>) => {
         ListDataProcessor.processPagedListData(
@@ -128,7 +133,6 @@ struct MyCoin {
         LogUtil.debug("http error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
-
   }
 }
 

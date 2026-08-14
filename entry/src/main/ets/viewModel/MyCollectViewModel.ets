@@ -8,6 +8,7 @@ import { UserInfoModel } from '../model/UserInfoModel';
 import { CollectActionType } from '../enum/CollectActionType';
 import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil';
 import AccountManager from '../accountManager/AccountManager';
+import { ApiConstants } from '../constants/ApiConstants';
 
 export class MyCollectViewModel {
   private pageNum = 0
@@ -19,20 +20,17 @@ export class MyCollectViewModel {
       this.pageNum = this.pageNum + 1
     }
 
-    let api = "lg/collect/list/" + this.pageNum.toString() + "/json"
-    return httpClient.get(api)
+    return httpClient.get(ApiConstants.collectList(this.pageNum))
   }
 
   getUserInfo = (): Promise<AxiosResponse<BaseResponse<UserInfoModel>>> => {
-    return httpClient.get("lg/coin/userinfo/json")
+    return httpClient.get(ApiConstants.USER_INFO)
   }
 
   async collectAction(id: number, type: CollectActionType): Promise<boolean> {
-    let api: string
     switch(type) {
       case CollectActionType.collect:
-        api = "lg/collect/" + id + "/json"
-        let collectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post(api)
+        let collectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post(ApiConstants.collectAdd(id))
         if (collectResponse.data.errorCode == 0) {
           ToastUtil.showToast($r('app.string.collect_success'))
           if (AccountManager.shared().loginModel && AccountManager.shared().loginModel?.collectIds) {
@@ -40,7 +38,7 @@ export class MyCollectViewModel {
             let collectIds = AccountManager.shared().loginModel?.collectIds!
             collectIds.push(id)
             newLoginModel.collectIds = collectIds
-            AccountManager.shared().loginModel = newLoginModel
+            AccountManager.shared().saveLoginModel(newLoginModel)
           }
           return true
         } else {
@@ -48,18 +46,17 @@ export class MyCollectViewModel {
           return false
         }
       case CollectActionType.cancel:
-        api = "lg/uncollect_originId/" + id + "/json"
-        let cancelCollectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post(api)
+        let cancelCollectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post(ApiConstants.collectCancel(id))
         if (cancelCollectResponse.data.errorCode == 0) {
           ToastUtil.showToast($r('app.string.uncollect_success'))
           if (AccountManager.shared().loginModel && AccountManager.shared().loginModel?.collectIds) {
             let newLoginModel = AccountManager.shared().loginModel!
             let collectIds = AccountManager.shared().loginModel?.collectIds!
             let index = collectIds.indexOf(id)
-            if (index) {
+            if (index >= 0) {
               collectIds.splice(index, 1)
               newLoginModel.collectIds = collectIds
-              AccountManager.shared().loginModel = newLoginModel
+              AccountManager.shared().saveLoginModel(newLoginModel)
             }
           }
           return true

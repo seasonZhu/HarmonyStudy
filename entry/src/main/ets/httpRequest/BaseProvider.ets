@@ -78,7 +78,7 @@ export abstract class BaseProvider {
    * @param config
    * @returns
    */
-  protected post<T>(path: string, data?: object, config?: AxiosRequestConfig): Promise<AxiosResponse<BaseResponse<T>, AxiosError>> {
+  protected post<T>(path: string, data?: Record<string, Object>, config?: AxiosRequestConfig): Promise<AxiosResponse<BaseResponse<T>, AxiosError>> {
     return this.instance.post<BaseResponse<T>>(path, data, config)
   }
 }

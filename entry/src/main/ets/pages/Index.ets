@@ -8,13 +8,11 @@ import { IndexViewModel } from '../viewModel/IndexViewModel';
 import { UserInfoModel } from '../model/UserInfoModel';
 import { BaseResponse } from '../model/BaseResponse';
 import { AxiosResponse } from '@ohos/axios';
-import { PreferencesUtil, ToastUtil } from '@pura/harmony-utils'
-import { Router } from '../router/Router'
+import { ToastUtil, LogUtil } from '@pura/harmony-utils'
 import { RouterName } from '../router/RouterName'
 import { importHeadFile } from 'librarySDK';
-import { router } from '@kit.ArkUI';
-import  { HttpClient } from 'network'
 import { navPathStack } from '../router/navPathStack';
+import AccountManager from '../accountManager/AccountManager';
 
 @Preview
 @Entry({routeName: RouterName.Index})
@@ -56,7 +54,7 @@ struct Index {
         .height(24)
         .aspectRatio(1)
       Text(model.title)
-        .fontColor(this.activeIndex == model.index ? '#1698CE' : '#6B6B6B')
+        .fontColor(this.activeIndex == model.index ? $r('app.color.app_blue') : $r('app.color.text_secondary'))
         .fontSize(12)
     }
     .onClick(() => {
@@ -84,16 +82,17 @@ struct Index {
   }
 
   async aboutToAppear(): Promise<void> {
-    let username = await PreferencesUtil.get("username", "") as string
-    let password = await PreferencesUtil.get("password", "") as string
-
-    if (username.length != 0 && password.length != 0) {
+    let loginModel = await AccountManager.shared().restoreLoginModel()
+    if (loginModel) {
       ToastUtil.showToast($r('app.string.auto_login'))
-      let result = await this.viewModel.login({username: username, password: password})
-      if (result) {
+      try {
         let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-        this.userInfo = response.data.data
-        this.loginSuccessUserInfo = response.data.data
+        if (response.data.errorCode == 0) {
+          this.userInfo = response.data.data
+          this.loginSuccessUserInfo = response.data.data
+        }
+      } catch (_error) {
+        LogUtil.debug("auto login restore failed")
       }
     }
   }

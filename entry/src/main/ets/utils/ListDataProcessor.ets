@@ -89,50 +89,53 @@ export class ListDataProcessor {
    * @param updateStatusCallback 状态更新回调
    * @param mergeArticlesCallback 合并文章数据的回调（可选）
    */
-  static processMixedData<TBanner, TArticle>(
+  static processMixedRefresh<TBanner, TArticle>(
     bannerDataSource: BaseListDataSource<TBanner>,
     listDataSource: BaseListDataSource<TArticle>,
-    results: AxiosResponse[],
-    scrollActionType: ScrollActionType,
+    bannerResponse: AxiosResponse<BaseResponse<TBanner[]>>,
+    hotArticleResponse: AxiosResponse<BaseResponse<TArticle[]>>,
+    normalArticleResponse: AxiosResponse<BaseResponse<PageModel<TArticle>>>,
     updateStatusCallback: (status: ViewStatus) => void,
     mergeArticlesCallback?: (hotArticles: TArticle[], normalArticles: TArticle[]) => TArticle[]
   ): void {
-    if (scrollActionType === ScrollActionType.refresh) {
-      bannerDataSource.removeAll()
-      listDataSource.removeAll()
+    bannerDataSource.removeAll()
+    listDataSource.removeAll()
 
-      const responseBanners = results[0].data as BaseResponse<TBanner[]>
-      const responseHotArticle = results[1].data as BaseResponse<TArticle[]>
-      const responseNormalArticle = results[2].data as BaseResponse<PageModel<TArticle>>
+    const responseBanners = bannerResponse.data
+    const responseHotArticle = hotArticleResponse.data
+    const responseNormalArticle = normalArticleResponse.data
 
-      let allArticle: TArticle[]
-      if (mergeArticlesCallback) {
-        allArticle = mergeArticlesCallback(responseHotArticle.data, responseNormalArticle.data.datas)
-      } else {
-        allArticle = [...responseHotArticle.data, ...responseNormalArticle.data.datas]
-      }
-
-      responseBanners.data.forEach((item: TBanner) => {
-        bannerDataSource.addData(item)
-      })
-
-      allArticle.forEach((item: TArticle) => {
-        listDataSource.addData(item)
-      })
-
-      if (listDataSource.originData.length === 0) {
-        updateStatusCallback(ViewStatus.empty)
-      } else {
-        updateStatusCallback(ViewStatus.success)
-      }
+    let allArticle: TArticle[]
+    if (mergeArticlesCallback) {
+      allArticle = mergeArticlesCallback(responseHotArticle.data, responseNormalArticle.data.datas)
     } else {
-      const responseNormalArticle = results[0].data as BaseResponse<PageModel<TArticle>>
+      allArticle = [...responseHotArticle.data, ...responseNormalArticle.data.datas]
+    }
 
-      responseNormalArticle.data.datas.forEach((item: TArticle) => {
-        listDataSource.addData(item)
-      })
+    responseBanners.data.forEach((item: TBanner) => {
+      bannerDataSource.addData(item)
+    })
 
+    allArticle.forEach((item: TArticle) => {
+      listDataSource.addData(item)
+    })
+
+    if (listDataSource.originData.length === 0) {
+      updateStatusCallback(ViewStatus.empty)
+    } else {
       updateStatusCallback(ViewStatus.success)
     }
+  }
+
+  static processMixedLoadMore<TArticle>(
+    listDataSource: BaseListDataSource<TArticle>,
+    normalArticleResponse: AxiosResponse<BaseResponse<PageModel<TArticle>>>,
+    updateStatusCallback: (status: ViewStatus) => void
+  ): void {
+    const pageData = normalArticleResponse.data.data
+    pageData.datas.forEach((item: TArticle) => {
+      listDataSource.addData(item)
+    })
+    updateStatusCallback(ViewStatus.success)
   }
 }
