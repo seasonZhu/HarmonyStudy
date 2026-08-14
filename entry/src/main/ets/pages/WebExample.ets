@@ -2,6 +2,7 @@ import { webview } from '@kit.ArkWeb';
 import { JSONUtil, DateUtil, FileUtil, ImageUtil, LogUtil, ToastUtil } from '@pura/harmony-utils';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { image } from '@kit.ImageKit';
+import { photoAccessHelper } from '@kit.MediaLibraryKit';
 import axios from '@ohos/axios'
 import { AxiosResponse } from '@ohos/axios';
 import { AxiosError } from '@ohos/axios';
@@ -13,7 +14,11 @@ import { ErrorHandler } from '../utils/ErrorHandler'
  * 鸿蒙版本的DSBridge，三端统一
  * */
 class JavaScriptInterface {
-  constructor() {}
+  private controller: webview.WebviewController | null = null;
+
+  setController(controller: webview.WebviewController) {
+    this.controller = controller;
+  }
 
   showToast(): string {
     ToastUtil.showToast("ArkTS Hello World!")
@@ -46,6 +51,12 @@ class JavaScriptInterface {
       LogUtil.info("error:" + JSON.stringify(error));
     })
   }
+
+  runJavaScript(script: string) {
+    if (this.controller) {
+      this.controller.runJavaScript(script);
+    }
+  }
 }
 
 /*
@@ -75,6 +86,23 @@ struct WebExample {
             /// 方法名
             methodList: ["showMessage", "downloadImage"],
             controller: this.webviewController
+          })
+          .onShowFileSelector((event) => {
+            if (event) {
+              let photoSelectOptions = new photoAccessHelper.PhotoSelectOptions();
+              photoSelectOptions.MIMEType = photoAccessHelper.PhotoViewMIMETypes.IMAGE_TYPE;
+              photoSelectOptions.maxSelectNumber = 1;
+              let photoPicker = new photoAccessHelper.PhotoViewPicker();
+              photoPicker.select(photoSelectOptions).then((photoSelectResult) => {
+                if (photoSelectResult && photoSelectResult.photoUris.length > 0) {
+                  event.result.handleFileList(photoSelectResult.photoUris);
+                }
+              }).catch((err: BusinessError) => {
+                LogUtil.info("test", "选择图片失败: " + err.message);
+              });
+              return true;
+            }
+            return false;
           })
       }
     }

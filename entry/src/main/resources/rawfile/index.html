@@ -84,6 +84,33 @@
         function jsCallDownload() {
             javaScriptObject.downloadImage("https://evfile.dna-nev.com.cn/dna-app/preprod/20231129/da637ae245fa49ecb8f10c78dbdf8c88.jpg?x-oss-process=image/quality,q_80");
         }
+
+        function jsCallPickImage() {
+            javaScriptObject.pickImage();
+        }
+
+        function displayImage(imageUri) {
+            // 直接使用photo URI加载图片
+            document.getElementById("selected-image").src = imageUri;
+            document.getElementById("image-container").style.display = "block";
+        }
+
+        function handleFileSelect(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("selected-image").src = e.target.result;
+                    document.getElementById("image-container").style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 监听原生侧发出的图片选择事件
+        window.addEventListener('imageSelected', function(event) {
+            displayImage(event.detail);
+        });
     </script>
 </head>
 
@@ -92,6 +119,11 @@ Hello,Web Example!<br />
 <span id="result"></span><br />
 <button onclick="jsCallNative()">JS call Native</button><br />
 <button onclick="jsCallDownload()">JS call Download</button><br />
+<input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="handleFileSelect(event)" />
+<button onclick="document.getElementById('fileInput').click()">选择图片(原生相册)</button><br />
+<div id="image-container" style="display:none; margin-top:10px;">
+    <img id="selected-image" src="" style="max-width:100%; max-height:300px;" />
+</div>
 <p id="demo"></p>
 </body>
 </html>

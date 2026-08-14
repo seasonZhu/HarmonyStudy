@@ -97,7 +97,19 @@ export struct StatusWeight {
       }
     } else if (this.status === ViewStatus.error) {
       if (this.errorBuilder) {
+        /// 这个自定义的errorBuilder无法和入参的onRetry进行配合，需要在errorBuilder内部去定义onRetry，或者外部包裹一层组件去触发点击事件
         this.errorBuilder()
+        /*
+        Column() {
+          this.errorBuilder()
+        }
+        .onClick(() => {
+          if (this.onRetry) {
+            LogUtil.debug('StatusWeight: 点击重试按钮')
+            this.onRetry!()
+          }
+        })
+        */
       } else {
         this.error()
       }
@@ -149,7 +161,7 @@ export struct StatusWeight {
           .margin({ top: 24 })
           .onClick(() => {
             LogUtil.debug('StatusWeight: 点击重试按钮')
-            this.onRetry?.()
+            this.onRetry!()
           })
       }
     }
