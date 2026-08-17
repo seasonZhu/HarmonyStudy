@@ -19,7 +19,7 @@ interface TestResult {
   error?: string
 }
 
-@Entry
+@Entry({ routeName: 'NetworkComparisonPage' })
 @Component
 struct NetworkComparisonPage {
   @State testResults: TestResult[] = []
