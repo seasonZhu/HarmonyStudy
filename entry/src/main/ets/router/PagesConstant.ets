@@ -18,4 +18,5 @@ export abstract class PagesConstant {
   public static WebComponent =  "pages/WebComponent"
   public static ObservedV2TestPage =  "pages/ObservedV2TestPage"
   public static NetworkExample =  "network/examples/pages/NetworkExamplePage"
+  public static NetworkComparison = "pages/NetworkComparisonPage"
 }

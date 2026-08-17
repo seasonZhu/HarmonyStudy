@@ -16,6 +16,7 @@ import ("entry/ets/pages/WebComponent")
 import ("entry/ets/pages/ObservedV2TestPage")
 import ("entry/ets/network/examples/pages/NetworkExamplePage")
 import ("entry/ets/pages/NativeComponentsDemo")
+import ("entry/ets/pages/NetworkComparisonPage")
 
 
 export enum RouterName {
@@ -36,5 +37,6 @@ export enum RouterName {
   WebComponent =  "WebComponent",
   ObservedV2TestPage = "ObservedV2TestPage",
   NetworkExample = "NetworkExamplePage",
-  NativeComponentsDemo = "NativeComponentsDemo"
+  NativeComponentsDemo = "NativeComponentsDemo",
+  NetworkComparison = "NetworkComparisonPage"
 }

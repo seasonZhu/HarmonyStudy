@@ -9,10 +9,11 @@ export enum MyType {
   webComponent,
   uniApp,
   environmentSwitch,
+  networkComparison,
   setting,
 }
 
-export let allMyTypeCases = [MyType.header, MyType.ranking, MyType.myCoin, MyType.myCollect, MyType.webExample, MyType.webComponent, MyType.uniApp, MyType.environmentSwitch, MyType.setting]
+export let allMyTypeCases = [MyType.header, MyType.ranking, MyType.myCoin, MyType.myCollect, MyType.webExample, MyType.webComponent, MyType.uniApp, MyType.environmentSwitch, MyType.networkComparison, MyType.setting]
 
 export function getPathByMyType(type: MyType): PagesConstant {
   switch (type) {
@@ -32,6 +33,8 @@ export function getPathByMyType(type: MyType): PagesConstant {
       return PagesConstant.ObservedV2TestPage
     case MyType.environmentSwitch:
       return PagesConstant.EnvironmentSwitch
+    case MyType.networkComparison:
+      return PagesConstant.NetworkComparison
     case MyType.setting:
       return PagesConstant.Setting
   }
@@ -55,6 +58,8 @@ export function getTitleByMyType(type: MyType): string {
       return "用例演示"
     case MyType.environmentSwitch:
       return "环境切换"
+    case MyType.networkComparison:
+      return "网络层对比测试"
     case MyType.setting:
       return "设置"
   }
@@ -78,6 +83,8 @@ export function getIconByMyType(type: MyType): Resource {
       return $r('sys.symbol.square_grid_2x2')
     case MyType.environmentSwitch:
       return $r('sys.symbol.arrow_clockwise')
+    case MyType.networkComparison:
+      return $r('sys.symbol.checkmark_circle')
     case MyType.setting:
       return $r('sys.symbol.gearshape_fill')
   }

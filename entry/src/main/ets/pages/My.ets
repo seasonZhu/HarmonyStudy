@@ -96,6 +96,10 @@ struct My {
         LogUtil.debug("点击了切换环境")
         navPathStack.pushPath({ name: 'EnvironmentSwitch' })
         break
+      case MyType.networkComparison:
+        LogUtil.debug("点击了网络对比测试")
+        navPathStack.pushPath({ name: 'NetworkComparisonPage' })
+        break
       case MyType.setting:
         navPathStack.pushPath({ name: 'Setting' })
         break

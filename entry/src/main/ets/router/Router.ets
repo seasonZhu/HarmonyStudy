@@ -230,6 +230,13 @@ export class Router {
     Router.push(PagesConstant.NetworkExample)
   }
 
+  /**
+   * 跳转到网络对比测试页
+   */
+  static toNetworkComparison(): void {
+    Router.push(PagesConstant.NetworkComparison)
+  }
+
   // ==================== 兼容性方法（已废弃，保持向后兼容）====================
 
   /**
