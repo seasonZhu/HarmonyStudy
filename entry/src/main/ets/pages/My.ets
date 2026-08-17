@@ -6,6 +6,8 @@ import { MyHeader } from '../views/MyHeader'
 import { LogUtil } from '@pura/harmony-utils'
 import { emitter } from '@kit.BasicServicesKit'
 import { LOGIN_SUCCESS_EVENT } from './Login'
+import { Router } from '../router/Router'
+import { PagesConstant } from '../router/PagesConstant'
 
 @Entry({routeName: 'My'})
 @Component
@@ -98,7 +100,7 @@ struct My {
         break
       case MyType.networkComparison:
         LogUtil.debug("点击了网络对比测试")
-        navPathStack.pushPath({ name: 'NetworkComparisonPage' })
+        Router.push(PagesConstant.NetworkComparison)
         break
       case MyType.setting:
         navPathStack.pushPath({ name: 'Setting' })
