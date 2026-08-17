@@ -38,5 +38,5 @@ export enum RouterName {
   ObservedV2TestPage = "ObservedV2TestPage",
   NetworkExample = "NetworkExamplePage",
   NativeComponentsDemo = "NativeComponentsDemo",
-  NetworkComparison = "NetworkComparisonPage"
+  NetworkComparison = "NetworkComparison"
 }
