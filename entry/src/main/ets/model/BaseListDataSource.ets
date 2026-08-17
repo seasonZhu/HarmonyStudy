@@ -52,6 +52,37 @@ export class BaseListDataSource<T> implements IDataSource {
     }
   }
 
+  /**
+   * 刷新数据（清空旧数据，添加新数据）
+   */
+  public refreshData(data: T[], withNotify: boolean = true) {
+    this.originData = []
+    data.forEach((item) => {
+      this.originData.push(item)
+    })
+    if (withNotify) {
+      this.notifyDataReload()
+    }
+  }
+
+  /**
+   * 加载更多数据（追加到现有数据）
+   */
+  public loadMoreData(data: T[], withNotify: boolean = true) {
+    if (data.length === 0) {
+      return
+    }
+    let oldIndex = this.originData.length - 1
+    data.forEach((item) => {
+      this.originData.push(item)
+    })
+    if (withNotify) {
+      for (let index = oldIndex; index < this.originData.length; index++) {
+        this.notifyDataAdd(index)
+      }
+    }
+  }
+
 
   registerDataChangeListener(listener: DataChangeListener): void {
     if (this.listeners.indexOf(listener) < 0) {
