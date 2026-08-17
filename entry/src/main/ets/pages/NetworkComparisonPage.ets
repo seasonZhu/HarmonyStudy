@@ -7,6 +7,7 @@ import { Article } from '../model/Article'
 import { RankModel } from '../model/RankModel'
 import { ApiConstants } from '../constants/ApiConstants'
 import { LogUtil } from '@pura/harmony-utils'
+import { RouterName } from '../router/RouterName'
 
 interface TestResult {
   testName: string
@@ -19,7 +20,7 @@ interface TestResult {
   error?: string
 }
 
-@Entry({ routeName: 'NetworkComparisonPage' })
+@Entry({ routeName: RouterName.NetworkComparison })
 @Component
 struct NetworkComparisonPage {
   @State testResults: TestResult[] = []
