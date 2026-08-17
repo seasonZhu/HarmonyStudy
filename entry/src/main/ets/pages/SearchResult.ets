@@ -122,7 +122,8 @@ struct SearchResult {
     .cachedCount(ListConfig.CACHED_COUNT)
     .width("100%")
     .backgroundColor($r('app.color.white'))
-    .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
+    .padding({ left: ListConfig.HORIZONTAL_PADDING, right: ListConfig.HORIZONTAL_PADDING })
+    //.divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
     .edgeEffect(EdgeEffect.None)
   }
 

@@ -1,4 +1,4 @@
-import { getTitleByMyType, MyType } from '../enum/MyType'
+import { getTitleByMyType, MyType, getIconByMyType } from '../enum/MyType'
 import { allMyTypeCases } from '../enum/MyType'
 import { UserInfoModel } from '../model/UserInfoModel'
 import { navPathStack } from '../router/navPathStack'
@@ -41,9 +41,13 @@ struct My {
                   .strokeWidth(0.5)
                   .width("100%")
                 Row() {
+                  SymbolGlyph(getIconByMyType(type))
+                    .fontSize(20)
+                    .fontColor([$r('app.color.text_primary')])
+                    .margin({ left: 16 })
                   Text(getTitleByMyType(type))
                     .margin({
-                      left: 32
+                      left: 8
                     })
                     .fontSize(20)
                   Blank()

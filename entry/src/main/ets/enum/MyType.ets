@@ -59,3 +59,26 @@ export function getTitleByMyType(type: MyType): string {
       return "设置"
   }
 }
+
+export function getIconByMyType(type: MyType): Resource {
+  switch (type) {
+    case MyType.header:
+      return $r('sys.symbol.chevron_right')
+    case MyType.ranking:
+      return $r('sys.symbol.list_bullet')
+    case MyType.myCoin:
+      return $r('sys.symbol.circle_fill')
+    case MyType.myCollect:
+      return $r('sys.symbol.star_fill')
+    case MyType.webExample:
+      return $r('sys.symbol.doc')
+    case MyType.webComponent:
+      return $r('sys.symbol.doc')
+    case MyType.uniApp:
+      return $r('sys.symbol.square_grid_2x2')
+    case MyType.environmentSwitch:
+      return $r('sys.symbol.arrow_clockwise')
+    case MyType.setting:
+      return $r('sys.symbol.gearshape_fill')
+  }
+}

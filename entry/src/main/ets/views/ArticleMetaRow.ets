@@ -1,9 +1,6 @@
 import { Article, ArticleTag } from '../model/Article'
+import { CardStyle } from '../constants/StyleConstants'
 
-/**
- * 文章元信息行组件
- * 显示：作者、标签、时间
- */
 @Component
 export struct ArticleMetaRow {
   @Prop article: Article
@@ -14,6 +11,7 @@ export struct ArticleMetaRow {
       if (this.showAuthor) {
         Text(this.getAuthorName())
           .fontSize(12)
+          .fontColor($r('app.color.text_primary'))
       }
 
       this.TagComponent()
@@ -22,10 +20,11 @@ export struct ArticleMetaRow {
 
       Text(this.article.niceShareDate)
         .fontSize(12)
+        .fontColor($r('app.color.text_tertiary'))
         .margin({ left: 8 })
     }
     .width('100%')
-    .padding(8)
+    .padding({ left: 4, right: 4, top: 4, bottom: 4 })
   }
 
   private getAuthorName(): string {
@@ -44,31 +43,49 @@ export struct ArticleMetaRow {
       if (this.article.type === 1) {
         Text('置顶')
           .margin({ left: 6 })
-          .padding({ left: 4, right: 4, top: 2, bottom: 2 })
+          .padding({
+            left: CardStyle.TAG_PADDING_LEFT,
+            right: CardStyle.TAG_PADDING_RIGHT,
+            top: CardStyle.TAG_PADDING_TOP,
+            bottom: CardStyle.TAG_PADDING_BOTTOM
+          })
           .textAlign(TextAlign.Center)
-          .fontColor(Color.Red)
-          .border({ color: Color.Red, radius: 6, width: 1 })
-          .fontSize(10)
+          .fontColor('#D32F2F')
+          .backgroundColor('#FFEBEE')
+          .borderRadius(CardStyle.TAG_BORDER_RADIUS)
+          .fontSize(CardStyle.TAG_FONT_SIZE)
       }
 
       if (this.article.fresh) {
         Text('新')
           .margin({ left: 6 })
-          .padding({ left: 4, right: 4, top: 2, bottom: 2 })
+          .padding({
+            left: CardStyle.TAG_PADDING_LEFT,
+            right: CardStyle.TAG_PADDING_RIGHT,
+            top: CardStyle.TAG_PADDING_TOP,
+            bottom: CardStyle.TAG_PADDING_BOTTOM
+          })
           .textAlign(TextAlign.Center)
-          .fontColor($r('app.color.purple500'))
-          .border({ color: Color.Orange, radius: 6, width: 1 })
-          .fontSize(10)
+          .fontColor('#7B1FA2')
+          .backgroundColor('#F3E5F5')
+          .borderRadius(CardStyle.TAG_BORDER_RADIUS)
+          .fontSize(CardStyle.TAG_FONT_SIZE)
       }
 
       ForEach(this.article.tags, (value: ArticleTag, index: number) => {
         Text(value.name)
           .margin({ left: 6 })
-          .padding({ left: 4, right: 4, top: 2, bottom: 2 })
+          .padding({
+            left: CardStyle.TAG_PADDING_LEFT,
+            right: CardStyle.TAG_PADDING_RIGHT,
+            top: CardStyle.TAG_PADDING_TOP,
+            bottom: CardStyle.TAG_PADDING_BOTTOM
+          })
           .textAlign(TextAlign.Center)
-          .fontColor($r('app.color.app_blue'))
-          .border({ color: $r('app.color.app_blue'), radius: 8, width: 1 })
-          .fontSize(10)
+          .fontColor('#1565C0')
+          .backgroundColor('#E3F2FD')
+          .borderRadius(CardStyle.TAG_BORDER_RADIUS)
+          .fontSize(CardStyle.TAG_FONT_SIZE)
       })
     }
   }

@@ -107,7 +107,7 @@ struct MyCollect {
     List({ space: ListConfig.SPACE, scroller: this.scroller }) {
       LazyForEach(this.listDataSource, (item: Article) => {
         ListItem() {
-          ProjectCell({
+          InfoCell({
             article: item,
             onItemClick: (article: Article) => {
               LogUtil.debug("点击了cell " + article.link)
@@ -147,7 +147,8 @@ struct MyCollect {
     .cachedCount(ListConfig.CACHED_COUNT)
     .width("100%")
     .backgroundColor($r('app.color.white'))
-    .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
+    .padding({ left: ListConfig.HORIZONTAL_PADDING, right: ListConfig.HORIZONTAL_PADDING })
+    //.divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
     .edgeEffect(EdgeEffect.None)
   }
 

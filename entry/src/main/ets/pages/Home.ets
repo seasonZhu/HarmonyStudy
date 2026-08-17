@@ -17,6 +17,7 @@ import { WebLink } from '../entity/WebLink';
 import { ListDataProcessor } from '../utils/ListDataProcessor';
 import { ListConfig } from '../constants/StyleConstants';
 import { navPathStack } from '../router/navPathStack';
+import { ArticleCell } from '../views/ArticleCell';
 
 @Entry
 @Component
@@ -114,7 +115,7 @@ struct Home {
 
   @Builder
   private getListView() {
-    List({ space: 0, scroller: this.scroller }) {
+    List({ space: ListConfig.SPACE, scroller: this.scroller }) {
       ListItem() {
         BannerView({data: $dataSource,
           itemClick: (item) => {
@@ -141,7 +142,8 @@ struct Home {
     .cachedCount(ListConfig.CACHED_COUNT)
     .width("100%")
     .backgroundColor($r('app.color.white'))
-    .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
+    .padding({ left: ListConfig.HORIZONTAL_PADDING, right: ListConfig.HORIZONTAL_PADDING })
+    // .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
     .edgeEffect(EdgeEffect.None)
   }
 
