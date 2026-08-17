@@ -1,17 +1,12 @@
-import { AxiosResponse } from '@ohos/axios';
-import { AxiosError } from '@ohos/axios';
 import { PullToRefresh, PullToRefreshType } from '@ohos/pulltorefresh'
-import { BaseResponse } from '../model/BaseResponse';
 import { BaseListDataSource } from '../model/BaseListDataSource';
 import { MyCoinModel } from '../model/MyCoinModel';
-import { PageModel } from '../model/PageModel';
 import { ScrollActionType } from '../enum/ScrollActionType';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { MyCoinViewModel } from '../viewModel/MyCoinViewModel';
 import { LogUtil } from '@pura/harmony-utils';
 import { RouterName } from '../router/RouterName'
-import { ListDataProcessor } from '../utils/ListDataProcessor';
 import { ListConfig } from '../constants/StyleConstants';
 
 export let PageMyCoin = "PageMyCoin"
@@ -55,33 +50,28 @@ struct MyCoin {
         this.getListView()
       },
       onRefresh: async () => {
-        let result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>> = await this.viewModel.getMyCoinList(ScrollActionType.refresh)
-        ListDataProcessor.processPagedListData(
-          this.listDataSource,
-          result,
-          ScrollActionType.refresh,
-          (status: ViewStatus) => {
-            this.status = status
-          }
-        )
-        return '刷新成功'
+        try {
+          const coins: MyCoinModel[] = await this.viewModel.getMyCoinList(ScrollActionType.refresh)
+          this.listDataSource.refreshData(coins)
+          this.status = ViewStatus.success
+          return '刷新成功'
+        } catch (error) {
+          LogUtil.error("刷新失败: " + JSON.stringify(error))
+          this.status = ViewStatus.error
+          throw error as Error
+        }
       },
       onLoadMore: () => {
         return new Promise<string>((resolve, reject) => {
           this.viewModel.getMyCoinList(ScrollActionType.loadMore)
-            .then((result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>) => {
-              ListDataProcessor.processPagedListData(
-                this.listDataSource,
-                result,
-                ScrollActionType.loadMore,
-                (status: ViewStatus) => {
-                  this.status = status
-                }
-              )
+            .then((coins: MyCoinModel[]) => {
+              this.listDataSource.loadMoreData(coins)
+              this.status = ViewStatus.success
               resolve('上拉完成');
             })
-            .catch((error: AxiosError) => {
-              LogUtil.debug("loadMore error: " + JSON.stringify(error))
+            .catch((error: Error) => {
+              LogUtil.error("加载更多失败: " + JSON.stringify(error))
+              this.status = ViewStatus.error
               reject(error)
             });
         });
@@ -119,18 +109,12 @@ struct MyCoin {
 
   private async reloadData(): Promise<void> {
     this.viewModel.getMyCoinList(ScrollActionType.refresh)
-      .then((result: AxiosResponse<BaseResponse<PageModel<MyCoinModel>>>) => {
-        ListDataProcessor.processPagedListData(
-          this.listDataSource,
-          result,
-          ScrollActionType.refresh,
-          (status: ViewStatus) => {
-            this.status = status
-          }
-        )
+      .then((coins: MyCoinModel[]) => {
+        this.listDataSource.refreshData(coins)
+        this.status = ViewStatus.success
       })
-      .catch((error: AxiosError) => {
-        LogUtil.debug("http error: " + JSON.stringify(error))
+      .catch((error: Error) => {
+        LogUtil.error("加载数据失败: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
   }
