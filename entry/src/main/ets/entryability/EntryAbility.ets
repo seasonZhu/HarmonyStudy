@@ -10,6 +10,7 @@ import { LoadingDialogHelper } from '../utils/LoadingDialogHelper'
 import { registerAllNativeComponents } from '../native/HarmonyNativeComponents'
 import { registerSimpleTestComponents } from '../native/SimpleNativeTest'
 import { fullScreen, SavedContext, statusBar } from 'utils';
+import AccountManager from '../accountManager/AccountManager';
 
 const TAG: string = '[EntryLifecycleAbility]';
 const DOMAIN_NUMBER: number = 0xFF00;
@@ -21,6 +22,10 @@ export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
     AppStorageV2.connect(SavedContext, () => new SavedContext(this.context))
+    
+    // 设置 globalThis.accountManager，供 network 模块的 Cookie 拦截器使用
+    globalThis.accountManager = AccountManager.shared()
+    
     // 初始化 NetworkProvider
     NetworkProvider.init(this.context)
 

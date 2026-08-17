@@ -21,6 +21,12 @@ export class MyCoinRepository extends BaseRepository {
         ApiConstants.coinList(page)
       )
       
+      // 检查是否有错误
+      if (response.errorCode !== 0) {
+        LogUtil.error(`MyCoinRepository: API 错误，errorCode=${response.errorCode}, errorMsg=${response.errorMsg}`)
+        throw new Error(response.errorMsg || '请求失败')
+      }
+      
       LogUtil.debug(`MyCoinRepository: 获取积分列表成功，页码=${page}，数量=${response.data.datas.length}`)
       return response.data.datas
     } catch (error) {

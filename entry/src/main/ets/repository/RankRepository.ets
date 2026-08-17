@@ -21,6 +21,12 @@ export class RankRepository extends BaseRepository {
         ApiConstants.coinRank(page)
       )
       
+      // 检查是否有错误
+      if (response.errorCode !== 0) {
+        LogUtil.error(`RankRepository: API 错误，errorCode=${response.errorCode}, errorMsg=${response.errorMsg}`)
+        throw new Error(response.errorMsg || '请求失败')
+      }
+      
       LogUtil.debug(`RankRepository: 获取排行榜成功，页码=${page}，数量=${response.data.datas.length}`)
       return response.data.datas
     } catch (error) {

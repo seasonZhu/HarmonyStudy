@@ -11,6 +11,7 @@ import { loadingService } from './services/LoadingService'
 import { createLoggingInterceptor } from './interceptors/LoggingInterceptor'
 import { createTokenInterceptor } from './interceptors/TokenInterceptor'
 import { createRetryInterceptor } from './interceptors/RetryInterceptor'
+import { createCookieInterceptor } from './interceptors/CookieInterceptor'
 
 // ============ Models ============
 export { ApiResponse, createSuccessResponse, createErrorResponse, isSuccess, extractData } from './models/ApiResponse'
@@ -65,6 +66,13 @@ export {
   createLoggingInterceptor
 } from './interceptors/LoggingInterceptor'
 
+export {
+  CookieInterceptor,
+  CookieInterceptorConfig,
+  createCookieInterceptor,
+  getCookieHeaderValue
+} from './interceptors/CookieInterceptor'
+
 // ============ Services ============
 export {
   EnvironmentService,
@@ -109,6 +117,14 @@ export function createDefaultHttpClient(): HttpClient {
   client.getAxiosInstance().interceptors.response.use(
     loggingInterceptor.response.bind(loggingInterceptor),
     loggingInterceptor.responseError.bind(loggingInterceptor)
+  )
+
+  // 添加 Cookie 拦截器
+  const cookieInterceptor = createCookieInterceptor({
+    enabled: true
+  })
+  client.getAxiosInstance().interceptors.request.use(
+    cookieInterceptor.request.bind(cookieInterceptor)
   )
 
   return client
