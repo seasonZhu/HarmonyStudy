@@ -2,11 +2,8 @@ import { BaseListDataSource } from '../model/BaseListDataSource';
 import { StatusWeight } from '../views/StatusWeight';
 import { HotKeyViewModel } from '../viewModel/HotKeyViewModel';
 import { ViewStatus } from '../enum/ViewStatus';
-import { AxiosResponse } from '@ohos/axios';
-import { BaseResponse } from '../model/BaseResponse';
 import { HotKeyModel } from '../model/HotKeyModel';
 import { ToastUtil, LogUtil } from '@pura/harmony-utils';
-import { Router } from '../router/Router'
 import { RouterName } from '../router/RouterName'
 import { KeywordInfo } from '../entity/KeywordInfo';
 import { CaptureTool } from 'utils';
@@ -50,9 +47,7 @@ struct HotKey {
               .borderRadius(4)
               .fontSize(16)
               .textAlign(TextAlign.Center)
-                // 外间距
               .margin({left: 8, right: 8, bottom: 8})
-                // 内间距
               .padding(8)
               .onClick(() => {
                 let keywordInfo: KeywordInfo = {
@@ -63,7 +58,7 @@ struct HotKey {
           })
 
           SaveButton({
-            icon: SaveIconStyle.FULL_FILLED, // 图标的风格, 填充
+            icon: SaveIconStyle.FULL_FILLED,
             text: SaveDescription.SAVE_IMAGE,
             buttonType: ButtonType.Normal
           })
@@ -111,23 +106,17 @@ struct HotKey {
 
   private async reloadData(): Promise<void> {
     try {
-      let response: AxiosResponse<BaseResponse<HotKeyModel[]>> = await this.viewModel.getHotKey()
-
-      response.data.data.forEach((item) => {
-        this.dataSource.addData(item)
-      })
-
-      if (response.data.errorCode == 0) {
-        if (response.data.data.length == 0) {
-          this.status = ViewStatus.empty
-        } else {
-          this.status = ViewStatus.success
-        }
+      const hotKeys: HotKeyModel[] = await this.viewModel.getHotKey()
+      
+      this.dataSource.refreshData(hotKeys)
+      
+      if (hotKeys.length === 0) {
+        this.status = ViewStatus.empty
       } else {
-        this.status = ViewStatus.error
+        this.status = ViewStatus.success
       }
     } catch (error) {
-      LogUtil.debug("HotKey load error: " + JSON.stringify(error))
+      LogUtil.error("HotKey load error: " + JSON.stringify(error))
       this.status = ViewStatus.error
     }
   }

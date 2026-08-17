@@ -19,6 +19,12 @@ export class HotKeyRepository extends BaseRepository {
         ApiConstants.HOTKEY
       )
       
+      // 检查是否有错误
+      if (response.errorCode !== 0) {
+        LogUtil.error(`HotKeyRepository: API 错误，errorCode=${response.errorCode}, errorMsg=${response.errorMsg}`)
+        throw new Error(response.errorMsg || '请求失败')
+      }
+      
       LogUtil.debug(`HotKeyRepository: 获取热门关键词成功，数量=${response.data.length}`)
       return response.data
     } catch (error) {
