@@ -1,8 +1,5 @@
-import { AxiosResponse } from '@ohos/axios';
-import { AxiosError } from '@ohos/axios';
 import { PullToRefresh, PullToRefreshType } from '@ohos/pulltorefresh'
 import { Banner } from '../model/Banner'
-import { BaseResponse } from '../model/BaseResponse';
 import { BaseListDataSource } from '../model/BaseListDataSource';
 import { BannerView } from '../views/BannerView';
 import { Article } from '../model/Article';
@@ -14,10 +11,8 @@ import { ViewStatus } from '../enum/ViewStatus';
 import { LogUtil } from '@pura/harmony-utils';
 import { immersion } from '../utils/Immersion';
 import { WebLink } from '../entity/WebLink';
-import { ListDataProcessor } from '../utils/ListDataProcessor';
 import { ListConfig } from '../constants/StyleConstants';
 import { navPathStack } from '../router/navPathStack';
-import { ArticleCell } from '../views/ArticleCell';
 
 @Entry
 @Component
@@ -61,46 +56,45 @@ struct Home {
   @Builder
   private getRefreshView() {
     PullToRefresh({
-      // 必传项，容器主体布局类型
       pullToRefreshType: PullToRefreshType.LIST,
-      // 必传项，控制是否进行下拉刷新
       refreshing: $refreshing,
-      // 必传项，自定义主体布局，内部有列表或宫格组件
       customList: () => {
-        // 一个用@Builder修饰过的UI方法
         this.getListView()
       },
-      // 可选项，下拉刷新回调
       onRefresh: async () => {
-        const result: HomeRefreshResult = await this.viewModel.refreshRequest()
-        ListDataProcessor.processMixedRefresh(
-          this.dataSource,
-          this.listDataSource,
-          result.bannerResponse,
-          result.hotArticleResponse,
-          result.normalArticleResponse,
-          (status: ViewStatus) => {
-            this.status = status
-          },
-          (hotArticles: Article[], normalArticles: Article[]) => hotArticles.concat(normalArticles)
-        )
-        return '刷新成功'
+        try {
+          const result: HomeRefreshResult = await this.viewModel.refreshRequest()
+          
+          // 处理 Banner 数据
+          this.dataSource.refreshData(result.banners)
+          
+          // 合并置顶文章和普通文章
+          const allArticles: Article[] = result.hotArticles.concat(result.normalArticles.datas)
+          this.listDataSource.refreshData(allArticles)
+          
+          if (this.listDataSource.originData.length === 0) {
+            this.status = ViewStatus.empty
+          } else {
+            this.status = ViewStatus.success
+          }
+          
+          return '刷新成功'
+        } catch (error) {
+          LogUtil.error("Home refresh error: " + JSON.stringify(error))
+          this.status = ViewStatus.error
+          throw error as Error
+        }
       },
-      // 可选项，上拉加载更多回调
       onLoadMore: () => {
         return new Promise<string>((resolve, reject) => {
           this.viewModel.loadMoreRequest()
-            .then((normalArticleResponse: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
-              ListDataProcessor.processMixedLoadMore(
-                this.listDataSource,
-                normalArticleResponse,
-                (status: ViewStatus) => {
-                  this.status = status
-                }
-              )
+            .then((pageData: PageModel<Article>) => {
+              this.listDataSource.loadMoreData(pageData.datas)
+              this.status = ViewStatus.success
               resolve('上拉完成');
             })
-            .catch((error: AxiosError) => {
+            .catch((error: Error) => {
+              LogUtil.error("Home loadMore error: " + JSON.stringify(error))
               reject(error);
             });
         });
@@ -143,27 +137,27 @@ struct Home {
     .width("100%")
     .backgroundColor($r('app.color.white'))
     .padding({ left: ListConfig.HORIZONTAL_PADDING, right: ListConfig.HORIZONTAL_PADDING })
-    // .divider({ strokeWidth: ListConfig.DIVIDER_STROKE_WIDTH, color: $r('app.color.divider_color') })
     .edgeEffect(EdgeEffect.None)
   }
 
   async aboutToAppear(): Promise<void> {
     this.viewModel.refreshRequest()
       .then((result: HomeRefreshResult) => {
-        ListDataProcessor.processMixedRefresh(
-          this.dataSource,
-          this.listDataSource,
-          result.bannerResponse,
-          result.hotArticleResponse,
-          result.normalArticleResponse,
-          (status: ViewStatus) => {
-            this.status = status
-          },
-          (hotArticles: Article[], normalArticles: Article[]) => hotArticles.concat(normalArticles)
-        )
+        // 处理 Banner 数据
+        this.dataSource.refreshData(result.banners)
+        
+        // 合并置顶文章和普通文章
+        const allArticles: Article[] = result.hotArticles.concat(result.normalArticles.datas)
+        this.listDataSource.refreshData(allArticles)
+        
+        if (this.listDataSource.originData.length === 0) {
+          this.status = ViewStatus.empty
+        } else {
+          this.status = ViewStatus.success
+        }
       })
-      .catch((error: AxiosError) => {
-        LogUtil.debug("http error: " + JSON.stringify(error))
+      .catch((error: Error) => {
+        LogUtil.error("Home load error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
   }
