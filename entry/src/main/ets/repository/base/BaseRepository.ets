@@ -1,6 +1,9 @@
 import { getHttpClient, HttpClient, ApiError } from 'network'
 import { LogUtil } from '@pura/harmony-utils'
 
+// 重新导出 ApiError，供子类使用
+export { ApiError } from 'network'
+
 /**
  * Repository 基类
  * @description 提供统一的 HTTP 客户端和错误处理
