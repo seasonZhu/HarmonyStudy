@@ -6,8 +6,6 @@ import { Tree } from './Tree';
 import { ContentType } from '../enum/ContentType';
 import { IndexViewModel } from '../viewModel/IndexViewModel';
 import { UserInfoModel } from '../model/UserInfoModel';
-import { BaseResponse } from '../model/BaseResponse';
-import { AxiosResponse } from '@ohos/axios';
 import { ToastUtil, LogUtil } from '@pura/harmony-utils'
 import { RouterName } from '../router/RouterName'
 import { importHeadFile } from 'librarySDK';
@@ -86,13 +84,11 @@ struct Index {
     if (loginModel) {
       ToastUtil.showToast($r('app.string.auto_login'))
       try {
-        let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-        if (response.data.errorCode == 0) {
-          this.userInfo = response.data.data
-          this.loginSuccessUserInfo = response.data.data
-        }
-      } catch (_error) {
-        LogUtil.debug("auto login restore failed")
+        const userInfo: UserInfoModel = await this.viewModel.getUserInfo()
+        this.userInfo = userInfo
+        this.loginSuccessUserInfo = userInfo
+      } catch (error) {
+        LogUtil.error("auto login restore failed: " + JSON.stringify(error))
       }
     }
   }
