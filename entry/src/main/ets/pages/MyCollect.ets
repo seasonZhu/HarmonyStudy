@@ -1,7 +1,4 @@
-import { AxiosResponse } from '@ohos/axios';
-import { AxiosError } from '@ohos/axios';
-import { PullToRefresh } from '@ohos/pulltorefresh'
-import { BaseResponse } from '../model/BaseResponse';
+import { PullToRefresh, PullToRefreshType } from '@ohos/pulltorefresh'
 import { BaseListDataSource } from '../model/BaseListDataSource';
 import { Article } from '../model/Article';
 import { PageModel } from '../model/PageModel';
@@ -10,10 +7,13 @@ import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { MyCollectViewModel } from '../viewModel/MyCollectViewModel';
 import { InfoCell } from '../views/InfoCell';
-import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil';
 import { CollectActionType } from '../enum/CollectActionType';
+import { LogUtil } from '@pura/harmony-utils';
+import { ListConfig } from '../constants/StyleConstants';
+import { RouterName } from '../router/RouterName'
+import { Skeleton, SkeletonItem } from 'utils';
 
-@Entry
+@Entry({routeName: RouterName.MyCollect})
 @Component
 struct MyCollect {
   @State listDataSource: BaseListDataSource<Article> = new BaseListDataSource<Article>()
@@ -22,58 +22,66 @@ struct MyCollect {
 
   @State status: ViewStatus = ViewStatus.loading
 
+  @State refreshing: boolean = false
+
   private scroller = new Scroller()
 
   private viewModel = new MyCollectViewModel()
 
   build() {
-    Navigation() {
+    NavDestination() {
       StatusWeight({
         status: this.status,
         contentBuilder: () => {
-          // 这个地方不能直接将一个组件放在里面，必须使用一个@Builder装饰器修饰的函数
           this.getRefreshView()
         },
+        loadingBuilder: () => {
+          this.getLoadingView()
+        },
         onRetry: () => {
-          console.log("点击了重试按钮")
+          this.reloadData()
         },
       })
     }
-    .title("我的收藏")
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
+    .title($r('app.string.my_collect'))
   }
 
   @Builder
   private getRefreshView() {
     PullToRefresh({
-      // 必传项，列表组件所绑定的数据
-      data: $listData,
-      // 必传项，需绑定传入主体布局内的列表或宫格组件，不然可能滑不动
-      scroller: this.scroller,
-      // 必传项，自定义主体布局，内部有列表或宫格组件
+      pullToRefreshType: PullToRefreshType.LIST,
+      refreshing: $refreshing,
       customList: () => {
-        // 一个用@Builder修饰过的UI方法
         this.getListView()
       },
-      // 可选项，下拉刷新回调
       onRefresh: async () => {
-        let result: AxiosResponse<BaseResponse<PageModel<Article>>> = await this.viewModel.getMyCollectList(ScrollActionType.refresh)
-        this.processResponseData(result, ScrollActionType.refresh)
-        return '刷新成功'
+        try {
+          const pageData: PageModel<Article> = await this.viewModel.getMyCollectList(ScrollActionType.refresh)
+          this.listDataSource.refreshData(pageData.datas)
+          
+          if (this.listDataSource.originData.length === 0) {
+            this.status = ViewStatus.empty
+          } else {
+            this.status = ViewStatus.success
+          }
+          return '刷新成功'
+        } catch (error) {
+          LogUtil.error("MyCollect refresh error: " + JSON.stringify(error))
+          this.status = ViewStatus.error
+          throw error as Error
+        }
       },
-      // 可选项，上拉加载更多回调
       onLoadMore: () => {
         return new Promise<string>((resolve, reject) => {
           this.viewModel.getMyCollectList(ScrollActionType.loadMore)
-            .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
-              this.processResponseData(result, ScrollActionType.loadMore)
+            .then((pageData: PageModel<Article>) => {
+              this.listDataSource.loadMoreData(pageData.datas)
+              this.status = ViewStatus.success
               resolve('上拉完成');
             })
-            .catch((error: AxiosError) => {
-              resolve('上拉失败');
+            .catch((error: Error) => {
+              LogUtil.error("MyCollect loadMore error: " + JSON.stringify(error))
+              reject(error)
             });
         });
       },
@@ -82,13 +90,13 @@ struct MyCollect {
 
   @Builder
   private getListView() {
-    List({ space: 20, scroller: this.scroller }) {
+    List({ space: ListConfig.SPACE, scroller: this.scroller }) {
       LazyForEach(this.listDataSource, (item: Article) => {
         ListItem() {
           InfoCell({
             article: item,
             onItemClick: (article: Article) => {
-              console.log("点击了cell " + article.link)
+              LogUtil.debug("点击了cell " + article.link)
             },
             onCollect: (isCollect: boolean, article: Article) => {
 
@@ -101,9 +109,6 @@ struct MyCollect {
             builder: () => { this.itemEnd(item) },
             onAction: () => {
               animateTo({ duration: 1000 }, async  () => {
-                /// 这里做网络请求，然后再进行数组的删除
-                // let index = this.listDataSource.originData.indexOf(item)
-                // this.listDataSource.remove(index)
                 let result = await this.viewModel.collectAction(item.originId, CollectActionType.cancel)
                 if (result) {
                   let index = this.listDataSource.originData.indexOf(item)
@@ -122,10 +127,11 @@ struct MyCollect {
         })
       }, (item: Article, index) => item.id.toString())
     }
+    .cachedCount(ListConfig.CACHED_COUNT)
     .width("100%")
-    .backgroundColor('#FFFFFF')
-    .divider({ strokeWidth: 0.25, color: "#2F2F2F" })
-    .edgeEffect(EdgeEffect.None) // 必须设置列表为滑动到边缘无效果
+    .backgroundColor($r('app.color.white'))
+    .padding({ left: ListConfig.HORIZONTAL_PADDING, right: ListConfig.HORIZONTAL_PADDING })
+    .edgeEffect(EdgeEffect.None)
   }
 
   @Builder
@@ -146,39 +152,56 @@ struct MyCollect {
     .justifyContent(FlexAlign.SpaceEvenly)
   }
 
-  async aboutToAppear(): Promise<void> {
-    console.log("重写该方法，改为异步，还是会走这里")
+  @Builder
+  getLoadingView() {
+    Skeleton() {
+      Column() {
+        Row({ space: 15 }) {
+          SkeletonItem({ widthValue: 60 })
+          SkeletonItem({ widthValue: 100 })
+          SkeletonItem({ widthValue: 80 })
+          SkeletonItem({ widthValue: 40 })
+        }
+        .padding(10)
+        .width('100%')
 
+        ForEach([1,2,3,4,5,6], () => {
+          Column({ space: 20 }) {
+            SkeletonItem()
+            SkeletonItem({ widthValue: 200 })
+          }
+          .alignItems(HorizontalAlign.Start)
+          .height(90)
+          .padding(10)
+        })
+      }
+      .padding(16)
+    }
+  }
+
+  async aboutToAppear(): Promise<void> {
+    await this.reloadData()
+  }
+
+  private async reloadData(): Promise<void> {
     this.viewModel.getMyCollectList(ScrollActionType.refresh)
-      .then((result: AxiosResponse<BaseResponse<PageModel<Article>>>) => {
-        this.processResponseData(result, ScrollActionType.refresh)
+      .then((pageData: PageModel<Article>) => {
+        this.listDataSource.refreshData(pageData.datas)
+        
+        if (this.listDataSource.originData.length === 0) {
+          this.status = ViewStatus.empty
+        } else {
+          this.status = ViewStatus.success
+        }
       })
-      .catch((error: AxiosError) => {
-        console.log("http error: " + JSON.stringify(error))
+      .catch((error: Error) => {
+        LogUtil.error("MyCollect load error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
   }
+}
 
-  processResponseData(result: AxiosResponse<BaseResponse<PageModel<Article>>>, type: ScrollActionType) {
-
-    let response = result.data as BaseResponse<PageModel<Article>>
-
-    if (type == ScrollActionType.refresh) {
-
-      this.listDataSource.removeAll()
-
-      this.listDataSource.addListData(response.data.datas)
-
-      if (this.listDataSource.originData.length == 0) {
-        this.status = ViewStatus.empty
-      } else {
-        this.status = ViewStatus.success
-      }
-
-    } else {
-      this.status = ViewStatus.success
-
-      this.listDataSource.addListData(response.data.datas)
-    }
-  }
+@Builder
+export function MyCollectBuilder() {
+  MyCollect()
 }

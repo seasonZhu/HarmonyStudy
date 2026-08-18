@@ -1,46 +1,40 @@
-import webview from '@ohos.web.webview'
-import { Routes } from '../routes/Routes';
-import { LoadingDialog } from '../httpRequest/LoadingDialog';
+import { webview } from '@kit.ArkWeb'
+import { RouterName } from '../router/RouterName'
+import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 import { WebLink } from '../entity/WebLink';
 import AccountManager from '../accountManager/AccountManager';
-import { ToastUtil } from '@pura/harmony-utils';
+import { LogUtil } from '@pura/harmony-utils';
 import { CollectActionType } from '../enum/CollectActionType';
 import { MyCollectViewModel } from '../viewModel/MyCollectViewModel';
+import { common } from '@kit.AbilityKit';
+import { systemShare } from '@kit.ShareKit';
+import { uniformTypeDescriptor as utd } from '@kit.ArkData';
+import { ErrorHandler } from '../utils/ErrorHandler'
 
-@Entry
-@Component
+@Entry({routeName: RouterName.Web})
+@ComponentV2
 struct WebPage {
-  private controller: WebviewController = new webview.WebviewController()
+  private controller: webview.WebviewController = new webview.WebviewController()
 
-  @State private loadingProgress: number = 0
+  @Local private loadingProgress: number = 0
 
-  @State private showLoadingProgress: boolean = true
+  @Local private showLoadingProgress: boolean = true
 
-  @State private title: string = '加载中...'
+  @Local private title: string = '加载中...'
 
-  @State private collectIds: number[] = AccountManager.shared().loginModel?.collectIds ?? []
+  @Local private collectIds: number[] = []
 
-  private webLink = Routes.getParams() as WebLink
+  private webLink: WebLink = { id: null, title: null, link: null, originId: null }
 
   private viewModel = new MyCollectViewModel()
 
-  private loadingDialogController: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({text: "加载中..."}),
-    // 点击遮障层退出时的回调
-    cancel: () => {
-    },
-    //是否允许点击遮障层退出
-    autoCancel: false,
-    alignment: DialogAlignment.Center,
-    offset: { dx: 0, dy: 0 },
-    //弹窗宽度占栅格宽度的个数。默认为按照窗口大小自适应，异常值按默认值处理，最大栅格数为系统最大栅格数
-    gridCount: 2,
-    //弹窗容器样式是否自定义。默认值：false，弹窗容器的宽度根据栅格系统自适应，不跟随子节点；高度自适应子节点，最大为窗口高度的90%；圆角为24vp。
-    customStyle: false
-  })
+  private loadingHelper = new LoadingDialogHelper('加载中...')
+
+  aboutToAppear(): void {
+  }
 
   build() {
-    Navigation() {
+    NavDestination() {
       Stack() {
         Web({ src: this.webLink.link, controller: this.controller })
           .mixedMode(MixedMode.All)
@@ -65,12 +59,12 @@ struct WebPage {
             if (event?.url) {
 
             }
-            this.loadingDialogController.open()
+            this.loadingHelper.show('加载中...')
           })
-          .onPageEnd((event) => {
+          .onPageEnd((_event) => {
             //网页加载完成时触发该回调，且只在主frame触发。
             this.showLoadingProgress = false
-            this.loadingDialogController.close()
+            this.loadingHelper.hide()
           })
           .onProgressChange((event) => {
             //网页加载进度变化时触发该回调。
@@ -79,10 +73,10 @@ struct WebPage {
             }
           })
           .onErrorReceive(() => {
-            this.loadingDialogController.close()
+            this.loadingHelper.hide()
           })
           .onHttpErrorReceive(() => {
-            this.loadingDialogController.close()
+            this.loadingHelper.hide()
           })
           .onTitleReceive((event) => {
             //网页document标题更改时触发该回调。
@@ -103,11 +97,10 @@ struct WebPage {
       .alignContent(Alignment.Top)
     }
     .title(this.getTitle())
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
     .menus(this.getRightItems())
+    .onReady((context: NavDestinationContext) => {
+      this.webLink = context.pathInfo.param as WebLink
+    })
   }
 
   @Builder
@@ -119,7 +112,12 @@ struct WebPage {
         .padding({ top: 16, bottom: 16 })
         .objectFit(ImageFit.Contain)
         .onClick(() => {
-          ToastUtil.showToast("点击了分享按钮")
+          LogUtil.debug("点击了分享按钮")
+          try {
+            this.shareAction()
+          } catch (error) {
+            ErrorHandler.handle(error, '分享功能调用失败')
+          }
         })
 
       Image(this.collectIcon())
@@ -129,11 +127,19 @@ struct WebPage {
         .objectFit(ImageFit.Contain)
         .visibility(AccountManager.shared().isLogin()? Visibility.Visible : Visibility.None)
         .onClick( async () => {
-          ToastUtil.showToast("点击了收藏按钮" + this.getRealCollectId())
+          LogUtil.debug("点击了收藏按钮" + this.getRealCollectId())
           let type = this.isCollected() ? CollectActionType.cancel : CollectActionType.collect
-          let result = await this.viewModel.collectAction(this.getRealCollectId(), type)
-          if (result) {
-            this.collectIds = AccountManager.shared().loginModel?.collectIds!
+          let actionText = type === CollectActionType.collect ? '收藏中...' : '取消收藏...'
+          try {
+            let result = await LoadingDialogHelper.wrap(
+              this.viewModel.collectAction(this.getRealCollectId(), type),
+              actionText
+            )
+            if (result) {
+              this.collectIds = AccountManager.shared().loginModel?.collectIds ?? []
+            }
+          } catch (error) {
+            ErrorHandler.handle(error, '收藏操作失败')
           }
         })
     }
@@ -148,17 +154,14 @@ struct WebPage {
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.MARQUEE })
       }
+      .margin({left: 8})
       .width('100%')
     }
     .height('100%')
   }
 
   aboutToDisappear(): void {
-    this.loadingDialogController.close()
-  }
-
-  aboutToAppear(): void {
-
+    this.loadingHelper.destroy()
   }
 
   isCollected(): boolean {
@@ -187,7 +190,44 @@ struct WebPage {
     if (collectId == null && id != null) {
       return id
     } else {
-      return collectId!
+      return collectId ?? 0
     }
   }
+
+  /**
+   * @throws
+   */
+  shareAction() {
+    // https://ost.51cto.com/posts/29508
+
+    // 构造ShareData，需配置一条有效数据信息
+    let data: systemShare.SharedData = new systemShare.SharedData({
+      //设置传输文件的类型(更多类型查看上方表格)
+      utd: utd.UniformDataType.TEXT,
+      title: this.title,
+      uri: this.webLink.link ?? "",
+    });
+
+    // 构建ShareController
+    let controller: systemShare.ShareController = new systemShare.ShareController(data);
+    // 获取UIAbility上下文对象
+    let context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
+    // 注册分享面板关闭监听
+    controller.on('dismiss', () => {
+      LogUtil.info('Share panel closed');
+      // 分享结束，可处理其他业务。
+    });
+    // 进行分享面板显示
+    controller.show(context, {
+      // DETAIL为详细预览图模式
+      previewMode: systemShare.SharePreviewMode.DETAIL,
+      // SINGLE为单选模式，传入一个记录则单传，多个则n选1；BATCH为批量模式
+      selectionMode: systemShare.SelectionMode.SINGLE
+    });
+  }
+}
+
+@Builder
+export function WebPageBuilder() {
+  WebPage()
 }

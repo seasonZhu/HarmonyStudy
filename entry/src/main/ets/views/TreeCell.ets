@@ -1,7 +1,8 @@
-import { RandomUtil } from '@pura/harmony-utils/src/main/ets/utils/RandomUtil'
+import { RandomUtil } from '@pura/harmony-utils'
 import { ContentType } from '../enum/ContentType'
 import { TabModel } from '../model/TabModel'
-import { Routes } from '../routes/Routes'
+import { navPathStack } from '../router/navPathStack'
+import { TreeDetailInfo } from '../entity/TreeDetailInfo';
 
 @Component
 export struct TreeCell {
@@ -13,13 +14,13 @@ export struct TreeCell {
       Column() {
         Text(this.item.name)
           .textAlign(TextAlign.Start)
-          .padding({left: 12, bottom: 16})
+          .padding({left: 8, bottom: 20})
 
         Flex({ wrap:FlexWrap.Wrap, }){
           ForEach(this.item.children, (item: TabModel) => {
             Text(item.name)
               .fontColor(Color.White)
-              .backgroundColor("#2C86EF")
+              .backgroundColor($r('app.color.app_blue'))
               .borderRadius(4)
               .fontSize(16)
               .textAlign(TextAlign.Center)
@@ -28,7 +29,7 @@ export struct TreeCell {
                 // 内间距
               .padding(8)
               .onClick(() => {
-                Routes.toTreeDetail({tab: item, contentType: ContentType.tree})
+                navPathStack.pushPath({ name: 'TreeDetail', param: { tab: item, contentType: ContentType.tree } as TreeDetailInfo })
               })
           })
         }
@@ -37,12 +38,12 @@ export struct TreeCell {
     }
   }
 
-  getRandomString() {
-    let string = RandomUtil.randomColor()
-    if (string === "#FFFFFF") {
-      return "#2C86EF"
+  getRandomString(): string {
+    let color = RandomUtil.getRandomColor()
+    if (color === '#FFFFFF') {
+      return '#2C86EF'
     } else {
-      return string
+      return color
     }
   }
 }

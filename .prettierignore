@@ -1,0 +1,48 @@
+# 依赖目录
+oh_modules
+node_modules
+.entry
+.hvigor
+build
+
+# ArkTS/ETS 文件（Prettier 不支持）
+**/*.ets
+
+# 生成的文件
+**/*.generated.ets
+**/generated/**
+
+# 生成的文件
+**/*.generated.ets
+**/generated/**
+
+# 测试覆盖率
+coverage/
+
+# 构建产物
+dist/
+build/
+.idea/
+.vs/
+
+# Claude settings
+.claude/
+
+# 临时文件
+*.temp
+*.tmp
+
+# 日志文件
+*.log
+
+# OS 文件
+.DS_Store
+Thumbs.db
+
+# 文档文件（不格式化文档）
+*.md
+CHANGELOG.md
+README.md
+
+# 配置文件（Prettier 不支持 ESLint 配置）
+.eslintrc.js

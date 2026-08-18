@@ -1,21 +1,24 @@
 import { TreeDetailInfo } from '../entity/TreeDetailInfo';
-import { Routes } from '../routes/Routes';
 import { TabsDetail } from './TabsDetail';
 
 @Entry
 @Component
 struct TreeDetail {
 
-  treeDetailInfo = Routes.getParams() as TreeDetailInfo
+  treeDetailInfo: TreeDetailInfo = { tab: { id: 0, name: '' }, contentType: 0 }
 
   build() {
-    Navigation() {
+    NavDestination() {
       TabsDetail({contentType: this.treeDetailInfo.contentType, tab: this.treeDetailInfo.tab})
     }
     .title(this.treeDetailInfo.tab.name)
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
+    .onReady((context: NavDestinationContext) => {
+      this.treeDetailInfo = context.pathInfo.param as TreeDetailInfo
+    })
   }
+}
+
+@Builder
+export function TreeDetailBuilder() {
+  TreeDetail()
 }

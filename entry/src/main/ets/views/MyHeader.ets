@@ -11,7 +11,7 @@ export struct MyHeader {
       Column() {
         Image(this.userInfo.username != null ? $r("app.media.icon_76") : $r("app.media.user"))
           .width(60)
-          .width(60)
+          .height(60)
           .borderWidth(0.5)
           .borderColor(Color.Grey)
           .borderRadius(30)

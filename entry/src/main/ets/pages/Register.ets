@@ -1,40 +1,26 @@
 import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil'
-import { IndexViewModel } from '../viewModel/IndexViewModel'
-import { BaseResponse } from '../model/BaseResponse';
-import { AxiosResponse } from '@ohos/axios';
-import { Routes } from '../routes/Routes'
+import { LoginViewModel, RegisterResult } from '../viewModel/LoginViewModel'
+import { RouterName } from '../router/RouterName'
 import { UserInfoModel } from '../model/UserInfoModel';
-import { LoadingDialog } from '../httpRequest/LoadingDialog';
+import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
+import { navPathStack } from '../router/navPathStack';
 
-@Entry
-@Component
+@Entry({routeName: RouterName.Register})
+@ComponentV2
 struct Register {
 
-  private loadingDialogController: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({text: "正在注册..."}),
-    // 点击遮障层退出时的回调
-    cancel: () => {
-    },
-    //是否允许点击遮障层退出
-    autoCancel: false,
-    alignment: DialogAlignment.Center,
-    offset: { dx: 0, dy: 0 },
-    //弹窗宽度占栅格宽度的个数。默认为按照窗口大小自适应，异常值按默认值处理，最大栅格数为系统最大栅格数
-    gridCount: 2,
-    //弹窗容器样式是否自定义。默认值：false，弹窗容器的宽度根据栅格系统自适应，不跟随子节点；高度自适应子节点，最大为窗口高度的90%；圆角为24vp。
-    customStyle: false
-  })
+  @Local username: string = ""
 
-  @State username: string = ""
+  @Local password: string = ""
 
-  @State password: string = ""
+  @Local repassword: string = ""
 
-  @State repassword: string = ""
+  viewModel = new LoginViewModel()
 
-  viewModel = new IndexViewModel()
+  private loadingHelper = new LoadingDialogHelper('正在注册...')
 
   build() {
-    Navigation() {
+    NavDestination() {
       Column() {
         TextInput({ text: this.username, placeholder: '请输入手机号' })
           .type(InputType.PhoneNumber)
@@ -48,7 +34,7 @@ struct Register {
           .fontSize(14)
           .fontColor(Color.Black)
           .inputFilter('[0-9]', (e) => {
-            ToastUtil.showToast("请输入11位手机号")
+            ToastUtil.showToast($r('app.string.phone_number_invalid'))
           })
           .onChange((value: string) => {
             this.username = value
@@ -86,30 +72,35 @@ struct Register {
             this.repassword = value
           })
 
-        Button("注 册", { type: ButtonType.Capsule, stateEffect: true })
-          .backgroundColor(0x317aff)
+        Button($r('app.string.register_button'), { type: ButtonType.Capsule, stateEffect: true })
+          .backgroundColor($r('app.color.login_button'))
           .width("95%")
-          .margin({ top: 40, left: 20, right: 20, bottom: 20 })
+          .margin({ top: 20, left: 16, right: 16, bottom: 16 })
           .height(40)
-          .fontSize(17)
+          .fontSize(20)
           .onClick(async () => {
               if (this.password === this.repassword) {
-                this.loadingDialogController.open()
-                let result = await this.viewModel.register({ username: this.username, password: this.password, repassword: this.repassword })
-                this.loadingDialogController.close()
-                if (result) {
-                  let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-                  let userInfo = response.data.data
-                  if (response.data.errorCode == 0) {
-                    Routes.back({ params: userInfo, url: "" })
+                try {
+                  const result: RegisterResult = await this.loadingHelper.wrap(
+                    this.viewModel.registerWithUserInfo({
+                      username: this.username,
+                      password: this.password,
+                      repassword: this.repassword
+                    })
+                  )
+
+                  if (result && result.success && result.userInfo) {
+                    navPathStack.pop(result.userInfo)
+                  } else if (result && result.errorCode != null) {
+                    ToastUtil.showToast($r('app.string.get_user_info_failed'))
                   } else {
-                    ToastUtil.showToast("获取用户信息失败")
+                    ToastUtil.showToast($r('app.string.register_failed'))
                   }
-                } else {
-                  ToastUtil.showToast("注册失败")
+                } catch (error) {
+                  ToastUtil.showToast($r('app.string.register_failed'))
                 }
               } else {
-                ToastUtil.showToast("两次密码输入不一致")
+                ToastUtil.showToast($r('app.string.password_inconsistent'))
               }
           })
       }
@@ -118,19 +109,20 @@ struct Register {
       .height('100%')
 
     }
-    .title("注册")
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
+    .title($r('app.string.register'))
   }
 
   aboutToDisappear(): void {
-    this.loadingDialogController.close()
+    this.loadingHelper.destroy()
   }
 
   mockBackToRoot() {
     let params: UserInfoModel = { coinCount: 1000, level: 1000, nickname: "nickname", rank: "1000", userId: 1000, username: "1000" }
-    Routes.back({url: "", params: params})
+    navPathStack.pop(params)
   }
+}
+
+@Builder
+export function RegisterBuilder() {
+  Register()
 }

@@ -1,56 +1,78 @@
-import { AxiosResponse } from '@ohos/axios';
-import { AxiosError } from '@ohos/axios';
+import { HomeRepository } from '../repository/HomeRepository'
 import { Banner } from '../model/Banner'
-import { BaseResponse } from '../model/BaseResponse';
-import { LoginModel } from '../model/LoginModel';
-import AccountManager from '../AccountManager/AccountManager';
-import { Article } from '../model/Article';
-import { PageModel } from '../model/PageModel';
-import { ScrollActionType } from '../Enum/ScrollActionType';
-import provider from '../HttpRequest/Provider';
+import { Article } from '../model/Article'
+import { PageModel } from '../model/PageModel'
+import { LogUtil } from '@pura/harmony-utils'
 
+/**
+ * 首页刷新结果
+ */
+export interface HomeRefreshResult {
+  banners: Banner[]
+  hotArticles: Article[]
+  normalArticles: PageModel<Article>
+}
+
+/**
+ * 首页视图模型
+ * @description 处理首页的业务逻辑（Banner、置顶文章、普通文章）
+ */
 export class HomeViewModel {
-
+  private homeRepo = new HomeRepository()
   private pageNum = 1
 
-  getBanner = (): Promise<AxiosResponse<BaseResponse<Banner[]>>> => {
-    return provider.get<BaseResponse<Banner[]>, AxiosResponse<BaseResponse<Banner[]>>>('banner/json')
+  /**
+   * 获取 Banner 列表
+   * @returns Banner 列表
+   */
+  getBanner = async (): Promise<Banner[]> => {
+    LogUtil.debug('HomeViewModel: 获取 Banner')
+    return this.homeRepo.getBannerList()
   }
 
-  getHotArticle = (): Promise<AxiosResponse<BaseResponse<Article[]>>> => {
-    return provider.get<BaseResponse<Article[]>, AxiosResponse<BaseResponse<Article[]>>>('article/top/json')
+  /**
+   * 获取置顶文章
+   * @returns 置顶文章列表
+   */
+  getHotArticle = async (): Promise<Article[]> => {
+    LogUtil.debug('HomeViewModel: 获取置顶文章')
+    return this.homeRepo.getHotArticleList()
   }
 
-  getNormalArticle = (page: number): Promise<AxiosResponse<BaseResponse<PageModel<Article>>>> => {
-    let pageString = page.toString()
-    let api = 'article/list/' + pageString + '/json'
-    return provider.get<BaseResponse<PageModel<Article>>, AxiosResponse<BaseResponse<PageModel<Article>>>>(api)
+  /**
+   * 获取普通文章
+   * @param page 页码
+   * @returns 分页文章数据
+   */
+  getNormalArticle = async (page: number): Promise<PageModel<Article>> => {
+    LogUtil.debug(`HomeViewModel: 获取普通文章，页码=${page}`)
+    return this.homeRepo.getNormalArticleList(page)
   }
 
-  /// 这个地方的返回值写了很久，另外大写的Object与object是两个东西
-  public networkRequest(type: ScrollActionType): Promise<AxiosResponse<Object>[]>  {
-    if (type == ScrollActionType.refresh) {
-      this.pageNum = 1
-      return Promise.all<AxiosResponse>([this.getBanner(), this.getHotArticle(), this.getNormalArticle(this.pageNum)])
-    } else {
-      this.pageNum = this.pageNum + 1
-      return Promise.all<AxiosResponse>([this.getNormalArticle(this.pageNum)])
+  /**
+   * 刷新请求（同时获取 Banner、置顶文章、普通文章）
+   * @returns 刷新结果
+   */
+  public async refreshRequest(): Promise<HomeRefreshResult> {
+    this.pageNum = 1
+    const banners: Banner[] = await this.homeRepo.getBannerList()
+    const hotArticles: Article[] = await this.homeRepo.getHotArticleList()
+    const normalArticles: PageModel<Article> = await this.homeRepo.getNormalArticleList(this.pageNum)
+    
+    return {
+      banners: banners,
+      hotArticles: hotArticles,
+      normalArticles: normalArticles
     }
   }
 
-  public loginAction(username: string, password: string) {
-    console.info("按钮点击了，准备进行做登录")
-    let api = 'user/login?username=' + username + '&password=' + password
-    provider.post<BaseResponse<LoginModel>, AxiosResponse<BaseResponse<LoginModel>>>(api)
-      .then((response: AxiosResponse<BaseResponse<LoginModel>>)=> {
-        // 处理成功情况
-        console.info("loginModel" + response.data.data)
-        response.data.data.password = password
-        AccountManager.shared().loginModel = response.data.data
-      })
-      .catch((error: AxiosError)=> {
-        // 处理错误情况
-        console.info(JSON.stringify(error))
-      })
+  /**
+   * 加载更多请求
+   * @returns 分页文章数据
+   */
+  public async loadMoreRequest(): Promise<PageModel<Article>> {
+    this.pageNum = this.pageNum + 1
+    LogUtil.debug(`HomeViewModel: 加载更多，页码=${this.pageNum}`)
+    return this.homeRepo.getNormalArticleList(this.pageNum)
   }
 }

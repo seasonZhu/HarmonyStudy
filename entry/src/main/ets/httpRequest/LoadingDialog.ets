@@ -1,5 +1,3 @@
-
-
 @CustomDialog
 export struct LoadingDialog {
   controller?: CustomDialogController

@@ -1,5 +1,5 @@
 {
-  "modelVersion": "5.0.0",
+  "modelVersion": "6.0.0",
   "name": "harmony_study",
   "version": "1.0.0",
   "description": "Please describe the basic information.",
@@ -7,10 +7,11 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@ohos/axios": "2.2.0",
-    "@ohos/imageknife": "2.1.2",
-    "@ohos/pulltorefresh": "2.0.5",
-    "@pura/harmony-utils": "1.0.2"
+    "@ohos/axios": "2.2.7",
+    "@ohos/imageknife": "3.2.7",
+    "@ohos/pulltorefresh": "3.0.0",
+    "@pura/harmony-utils": "1.4.0",
+    "@dcloudio/uni-app-runtime": "5.0.2026020301"
   },
   "devDependencies": {
     "@ohos/hypium": "1.0.16",

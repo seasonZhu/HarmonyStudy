@@ -1,131 +1,129 @@
 import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil'
-import { IndexViewModel } from '../viewModel/IndexViewModel'
-import { BaseResponse } from '../model/BaseResponse';
-import { AxiosResponse } from '@ohos/axios';
-import { Routes } from '../routes/Routes'
+import { LoginViewModel, LoginResult } from '../viewModel/LoginViewModel'
+import { RouterName } from '../router/RouterName'
 import { UserInfoModel } from '../model/UserInfoModel';
-import { LoadingDialog } from '../httpRequest/LoadingDialog';
+import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
+import { navPathStack } from '../router/navPathStack';
+import { emitter } from '@kit.BasicServicesKit';
+import { LogUtil } from '@pura/harmony-utils';
 
-@Entry
-@Component
+export const LOGIN_SUCCESS_EVENT = "LOGIN_SUCCESS_EVENT"
+
+@Entry({routeName: RouterName.Login})
+@ComponentV2
 struct Login {
 
-  private loadingDialogController: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({text: "正在登录..."}),
-    // 点击遮障层退出时的回调
-    cancel: () => {
-    },
-    //是否允许点击遮障层退出
-    autoCancel: false,
-    alignment: DialogAlignment.Center,
-    offset: { dx: 0, dy: 0 },
-    //弹窗宽度占栅格宽度的个数。默认为按照窗口大小自适应，异常值按默认值处理，最大栅格数为系统最大栅格数
-    gridCount: 2,
-    //弹窗容器样式是否自定义。默认值：false，弹窗容器的宽度根据栅格系统自适应，不跟随子节点；高度自适应子节点，最大为窗口高度的90%；圆角为24vp。
-    customStyle: false
-  })
+  @Local username: string = ""
 
-  @State username: string = ""
+  @Local password: string = ""
 
-  @State password: string = ""
+  viewModel = new LoginViewModel()
 
-  viewModel = new IndexViewModel()
+  private loadingHelper = new LoadingDialogHelper('正在登录...')
 
   build() {
-    Navigation() {
-        Column() {
-          TextInput({ text: this.username, placeholder: '请输入手机号' })
-            .type(InputType.PhoneNumber)
-            .placeholderColor(Color.Grey)
-            .placeholderFont({ size: 14, weight: 400 })
-            .caretColor($r('app.color.mainBlue'))
-            .maxLength(11)
-            .width('95%')
-            .height(40)
-            .margin(20)
-            .fontSize(14)
-            .fontColor(Color.Black)
-            .inputFilter('[0-9]', (e) => {
-              ToastUtil.showToast("请输入11位手机号")
-            })
-            .onChange((value: string) => {
-              this.username = value
-            })
+    NavDestination() {
+      Column() {
+        TextInput({ text: this.username, placeholder: '请输入手机号' })
+          .type(InputType.PhoneNumber)
+          .placeholderColor(Color.Grey)
+          .placeholderFont({ size: 14, weight: 400 })
+          .caretColor($r('app.color.mainBlue'))
+          .maxLength(11)
+          .width('95%')
+          .height(40)
+          .margin(20)
+          .fontSize(14)
+          .fontColor(Color.Black)
+          .inputFilter('[0-9]', (_e) => {
+            ToastUtil.showToast($r('app.string.phone_number_invalid'))
+          })
+          .onChange((value: string) => {
+            this.username = value
+          })
 
-          TextInput({ text: this.password, placeholder: '请输入密码' })
-            .type(InputType.Password)
-            .showPasswordIcon(true)
-            .placeholderColor(Color.Grey)
-            .placeholderFont({ size: 14, weight: 400 })
-            .caretColor($r('app.color.mainBlue'))
-            .maxLength(11)
-            .width('95%')
-            .height(40)
-            .margin(20)
-            .fontSize(14)
-            .fontColor(Color.Black)
-            .onChange((value: string) => {
-              this.password = value
+        TextInput({ text: this.password, placeholder: '请输入密码' })
+          .type(InputType.Password)
+          .showPasswordIcon(true)
+          .placeholderColor(Color.Grey)
+          .placeholderFont({ size: 14, weight: 400 })
+          .caretColor($r('app.color.mainBlue'))
+          .maxLength(11)
+          .width('95%')
+          .height(40)
+          .margin(20)
+          .fontSize(14)
+          .fontColor(Color.Black)
+          .onChange((value: string) => {
+            this.password = value
+          })
+
+        Row() {
+          Blank()
+            .layoutWeight(1)
+
+          Text("还没有账号？进行注册")
+            .decoration({
+              type: TextDecorationType.Underline,
+              color: $r('app.color.text_grey')
             })
-
-          Row() {
-            Blank()
-              .layoutWeight(1)
-
-            Text("还没有账号？进行注册")
-              .decoration({
-                type: TextDecorationType.Underline,
-                color: "#3079FF"
-              })
-              .fontColor("#3079FF")
-              .fontSize(15)
-              .maxLines(1)
-              .onClick(() => {
-                Routes.toRegister()
-              })
-              .margin({ right: 20 })
-          }
-
-          Button("登 录", { type: ButtonType.Capsule, stateEffect: true })
-            .backgroundColor(0x317aff)
-            .width("95%")
-            .margin({ top: 40, left: 20, right: 20, bottom: 20 })
-            .height(40)
-            .fontSize(17)
-            .onClick(async () => {
-              this.loadingDialogController.open()
-              let result = await this.viewModel.login({ username: "13437156081", password: "z19871031" })
-              this.loadingDialogController.close()
-              if (result) {
-                let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-                let userInfo = response.data.data
-                Routes.back({ params: userInfo, url: "" })
-              } else {
-                ToastUtil.showToast("登录失败")
-              }
+            .fontColor($r('app.color.text_grey'))
+            .fontSize(15)
+            .maxLines(1)
+            .onClick(() => {
+              navPathStack.pushPath({ name: 'Register' })
             })
+            .margin({ right: 20 })
         }
-        .width('100%')
-        .justifyContent(FlexAlign.Start)
-        .height('100%')
+
+        Button($r('app.string.login_button'), { type: ButtonType.Capsule, stateEffect: true })
+          .backgroundColor($r('app.color.login_button'))
+          .width("95%")
+          .margin({ top: 20, left: 16, right: 16, bottom: 16 })
+          .height(40)
+          .fontSize(20)
+          .onClick(async () => {
+            try {
+              const result: LoginResult = await this.loadingHelper.wrap(
+                this.viewModel.loginWithUserInfo({
+                  username: this.username,
+                  password: this.password
+                })
+              )
+
+              if (result && result.success && result.userInfo) {
+                ToastUtil.showToast($r('app.string.login_success'))
+                emitter.emit(LOGIN_SUCCESS_EVENT, { data: { userInfo: result.userInfo } })
+                navPathStack.pop()
+              } else {
+                ToastUtil.showToast($r('app.string.login_failed'))
+              }
+            } catch (error) {
+              ToastUtil.showToast($r('app.string.login_failed'))
+            }
+          })
+      }
+      .width('100%')
+      .justifyContent(FlexAlign.Start)
+      .height('100%')
 
     }
-    .title("登录")
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
+    .title($r('app.string.login'))
+    .onReady((context: NavDestinationContext) => {
+      const param = context.pathInfo.param as UserInfoModel
+      if (param) {
+        LogUtil.debug(`params: ${param}`)
+      }
+    })
   }
 
   aboutToDisappear(): void {
-    this.loadingDialogController.close()
+    this.loadingHelper.destroy()
   }
 
-  onPageShow(): void {
-    let userInfo = Routes.getParams() as UserInfoModel
-    if (userInfo) {
-      Routes.back({url: "", params: userInfo})
-    }
-  }
+}
 
+@Builder
+export function LoginBuilder() {
+  Login()
 }

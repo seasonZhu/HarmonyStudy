@@ -1,0 +1,142 @@
+import { webview } from '@kit.ArkWeb';
+import { JSONUtil, DateUtil, FileUtil, ImageUtil, LogUtil, ToastUtil } from '@pura/harmony-utils';
+import { BusinessError } from '@kit.BasicServicesKit';
+import { image } from '@kit.ImageKit';
+import { photoAccessHelper } from '@kit.MediaLibraryKit';
+import axios from '@ohos/axios'
+import { AxiosResponse } from '@ohos/axios';
+import { AxiosError } from '@ohos/axios';
+import { RouterName } from '../router/RouterName'
+import { ErrorHandler } from '../utils/ErrorHandler'
+
+/*
+ * https://ohpm.openharmony.cn/#/cn/detail/@hzw%2Fohos-dsbridge
+ * 鸿蒙版本的DSBridge，三端统一
+ * */
+class JavaScriptInterface {
+  private controller: webview.WebviewController | null = null;
+
+  setController(controller: webview.WebviewController) {
+    this.controller = controller;
+  }
+
+  showToast(): string {
+    ToastUtil.showToast("ArkTS Hello World!")
+    return 'ArkTS Hello World!';
+  }
+
+  showMessage(message: string) {
+    ToastUtil.showToast("ArkTS Hello World!" + message)
+    return 'ArkTS Hello World!';
+  }
+
+  /// 'https://evfile.dna-nev.com.cn/dna-app/preprod/20231129/da637ae245fa49ecb8f10c78dbdf8c88.jpg?x-oss-process=image/quality,q_80'
+  /// 前端下载图片事件
+  downloadImage(url: string) {
+    LogUtil.info("test ", "触发了js的保存图片")
+    axios({
+      url: url,
+      method: 'get',
+    }).then( async (res: AxiosResponse)=>{
+      LogUtil.info("test ", JSON.stringify(res.data))
+      let imageData = res.data as ArrayBuffer
+      let imageSource: image.ImageSource = image.createImageSource(imageData)
+      let pixelMap = await imageSource.createPixelMap()
+      let filePath = await ImageUtil.savePixelMap(pixelMap, FileUtil.getFilesDirPath(""), "download.png")
+      let imgName = `download_${DateUtil.getTodayTime()}.png`;
+      // 注意：PickerUtil在新版本的@pura/harmony-utils中已被移除
+      // 如果需要保存图片功能，请使用photoAccessHelper相关API
+      LogUtil.info("test", "图片下载功能需要使用photoAccessHelper实现");
+    }).catch((error: AxiosError)=>{
+      LogUtil.info("error:" + JSON.stringify(error));
+    })
+  }
+
+  runJavaScript(script: string) {
+    if (this.controller) {
+      this.controller.runJavaScript(script);
+    }
+  }
+}
+
+/*
+ * 应用侧调用前端页面函数
+ * https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/web-in-app-frontend-page-function-invoking-V5
+ * 前端页面调用应用侧函数
+ * https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/web-in-page-app-function-invoking-V5
+ * */
+@Entry({routeName: RouterName.WebExample})
+@ComponentV2
+struct WebExample {
+  webviewController: webview.WebviewController = new webview.WebviewController();
+  // 声明需要注册的对象
+  @Local javaScriptObject: JavaScriptInterface = new JavaScriptInterface();
+
+  build() {
+    NavDestination() {
+      Column() {
+        // Web组件加载本地index.html页面
+        Web({ src: $rawfile('index.html'), controller: this.webviewController})
+          // 将对象注入到web端，javaScriptProxy可以不停的链式调用
+          .javaScriptProxy({
+            /// 原生侧传入的对象
+            object: this.javaScriptObject,
+            /// 在js侧对象的名称
+            name: "javaScriptObject",
+            /// 方法名
+            methodList: ["showMessage", "downloadImage"],
+            controller: this.webviewController
+          })
+          .onShowFileSelector((event) => {
+            if (event) {
+              let photoSelectOptions = new photoAccessHelper.PhotoSelectOptions();
+              photoSelectOptions.MIMEType = photoAccessHelper.PhotoViewMIMETypes.IMAGE_TYPE;
+              photoSelectOptions.maxSelectNumber = 1;
+              let photoPicker = new photoAccessHelper.PhotoViewPicker();
+              photoPicker.select(photoSelectOptions).then((photoSelectResult) => {
+                if (photoSelectResult && photoSelectResult.photoUris.length > 0) {
+                  event.result.handleFileList(photoSelectResult.photoUris);
+                }
+              }).catch((err: BusinessError) => {
+                LogUtil.info("test", "选择图片失败: " + err.message);
+              });
+              return true;
+            }
+            return false;
+          })
+      }
+    }
+    .title("Web与鸿蒙原生交互")
+    .menus(this.getButton())
+  }
+
+  @Builder
+  getButton() {
+    Button('runJavaScript')
+      .onClick(async  () => {
+        let map: Record<string, string> = {
+          "type": "commit",
+          "message": "this is a message from Flutter"
+        };
+
+        let jsonString = JSONUtil.beanToJsonStr(map)
+        /// 这种交互，不支持原生向JS传递参数
+        //let javaScriptCallbackResult = this.webviewController.runJavaScript(`sendMessageToDiscussList(${jsonString})`);
+
+        // 前端页面函数无参时，将param删除。
+        try {
+          let javaScriptCallbackResult = await this.webviewController.runJavaScript(`harmonyOSCallJS()`)
+          ToastUtil.showToast(javaScriptCallbackResult)
+        } catch (error) {
+          ErrorHandler.handle(error, 'JavaScript 执行失败', false)
+        }
+      })
+  }
+}
+
+@Builder
+export function WebExampleBuilder() {
+  WebExample()
+}
+
+export { WebExample }

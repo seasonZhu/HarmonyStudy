@@ -1,38 +1,37 @@
-import { DialogUtil, ToastUtil } from '@pura/harmony-utils';
+import { DialogUtil, LogUtil, ToastUtil } from '@pura/harmony-utils';
 import { UserInfoModel } from '../model/UserInfoModel';
-import { Routes } from '../routes/Routes';
+import { RouterName } from '../router/RouterName'
 import { LoginViewModel } from '../viewModel/LoginViewModel';
-import { LoadingDialog } from '../httpRequest/LoadingDialog';
+import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 import { MainPage } from 'librarySDK/src/main/ets/components/MainPage';
 import { SDKTools } from 'librarySDK/src/main/ets/components/SDKTools';
+import { router } from '@kit.ArkUI';
+import { RouteConstant } from 'librarySDK';
+import { navPathStack } from '../router/navPathStack';
 
-@Entry
+@Entry({routeName: RouterName.Setting})
 @Component
 struct Setting {
-  private loadingDialogController: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({text: "正在登出..."}),
-    // 点击遮障层退出时的回调
-    cancel: () => {
-    },
-    //是否允许点击遮障层退出
-    autoCancel: false,
-    alignment: DialogAlignment.Center,
-    offset: { dx: 0, dy: 0 },
-    //弹窗宽度占栅格宽度的个数。默认为按照窗口大小自适应，异常值按默认值处理，最大栅格数为系统最大栅格数
-    gridCount: 2,
-    //弹窗容器样式是否自定义。默认值：false，弹窗容器的宽度根据栅格系统自适应，不跟随子节点；高度自适应子节点，最大为窗口高度的90%；圆角为24vp。
-    customStyle: false
-  })
 
   viewModel = new LoginViewModel()
 
+  private loadingHelper = new LoadingDialogHelper('正在登出...')
+
   build() {
-    Navigation() {
+    NavDestination() {
       Column() {
         Image($r('app.media.pic_harmoney_logo_new'))// 直接加载网络地址，请填写一个具体的网络图片地址
           .objectFit(ImageFit.Auto)
           .width("100%")
           .backgroundColor(Color.Black)
+          .onClick(() => {
+            LogUtil.debug("跳转到SDK页面")
+            try {
+              router.pushNamedRoute({ name: RouteConstant.mainPage})
+            } catch (error) {
+              LogUtil.debug('跳转SDK页面失败: ' + JSON.stringify(error))
+            }
+          })
 
         Blank()
           .width("100")
@@ -51,15 +50,7 @@ struct Setting {
       .width('100%')
       .height('100%')
     }
-    .title("设置")
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
-  }
-
-  aboutToAppear(): void {
-
+    .title($r('app.string.settings'))
   }
 
   aboutToDisappear(): void {
@@ -86,15 +77,22 @@ struct Setting {
   }
 
   async logout() {
-    this.loadingDialogController.open()
-    let result = await this.viewModel.logout()
-    this.loadingDialogController.close()
-    if (result) {
-      ToastUtil.showToast("退出登录成功")
-      let userInfo: UserInfoModel = {}
-      Routes.back({ url:"", params: userInfo })
-    } else {
-      ToastUtil.showToast("退出登录失败")
+    try {
+      let result = await this.loadingHelper.wrap(this.viewModel.logout())
+      if (result) {
+        ToastUtil.showToast($r('app.string.logout_success'))
+        let userInfo: UserInfoModel = {}
+        navPathStack.pop(userInfo)
+      } else {
+        ToastUtil.showToast($r('app.string.logout_failed'))
+      }
+    } catch (error) {
+      ToastUtil.showToast($r('app.string.logout_failed'))
     }
   }
+}
+
+@Builder
+export function SettingBuilder() {
+  Setting()
 }

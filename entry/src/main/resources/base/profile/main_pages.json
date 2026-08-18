@@ -1,5 +1,6 @@
 {
   "src": [
+    "pages/Splash",
     "pages/Index",
     "pages/Home",
     "pages/My",
@@ -14,6 +15,13 @@
     "pages/MyCoin",
     "pages/MyCollect",
     "pages/Setting",
-    "pages/Register"
+    "pages/Register",
+    "pages/WebExample",
+    "pages/WebComponent",
+    "pages/ObservedV2TestPage",
+    "pages/EnvironmentSwitch",
+    "pages/NetworkComparisonPage",
+    "network/examples/pages/NetworkExamplePage",
+    "pages/NavPathStackTestPage"
   ]
 }

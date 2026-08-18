@@ -1,11 +1,20 @@
+import { LoginRepository } from '../repository/LoginRepository'
 import { UserInfoModel } from '../model/UserInfoModel'
-import { LoginViewModel } from './LoginViewModel'
-import { AxiosResponse } from '@ohos/axios';
-import { BaseResponse } from '../model/BaseResponse';
-import provider from '../HttpRequest/Provider';
+import { LogUtil } from '@pura/harmony-utils'
 
-export class IndexViewModel extends LoginViewModel {
-  getUserInfo = (): Promise<AxiosResponse<BaseResponse<UserInfoModel>>> => {
-    return provider.get<BaseResponse<UserInfoModel>, AxiosResponse<BaseResponse<UserInfoModel>>>("lg/coin/userinfo/json")
+/**
+ * 主页视图模型
+ * @description 处理主页的业务逻辑
+ */
+export class IndexViewModel {
+  private loginRepo = new LoginRepository()
+
+  /**
+   * 获取用户信息
+   * @returns 用户信息
+   */
+  getUserInfo = async (): Promise<UserInfoModel> => {
+    LogUtil.debug('IndexViewModel: 获取用户信息')
+    return this.loginRepo.getUserInfo()
   }
 }

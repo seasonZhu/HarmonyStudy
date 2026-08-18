@@ -1,74 +1,89 @@
-import { AxiosResponse } from '@ohos/axios';
-import { BaseResponse } from '../model/BaseResponse';
-import httpClient from '../HttpRequest/Provider';
-import { ScrollActionType } from '../Enum/ScrollActionType';
-import { Article } from '../model/Article';
-import { PageModel } from '../model/PageModel';
-import { UserInfoModel } from '../model/UserInfoModel';
-import { CollectActionType } from '../enum/CollectActionType';
-import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil';
-import AccountManager from '../accountManager/AccountManager';
+import { MyCollectRepository } from '../repository/MyCollectRepository'
+import { Article } from '../model/Article'
+import { PageModel } from '../model/PageModel'
+import { UserInfoModel } from '../model/UserInfoModel'
+import { ScrollActionType } from '../enum/ScrollActionType'
+import { CollectActionType } from '../enum/CollectActionType'
+import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil'
+import AccountManager from '../accountManager/AccountManager'
+import { LogUtil } from '@pura/harmony-utils'
 
+/**
+ * 我的收藏视图模型
+ * @description 处理我的收藏页面的业务逻辑
+ */
 export class MyCollectViewModel {
+  private collectRepo = new MyCollectRepository()
   private pageNum = 0
 
-  getMyCollectList = (type: ScrollActionType): Promise<AxiosResponse<BaseResponse<PageModel<Article>>>> => {
-    if (type == ScrollActionType.refresh) {
+  /**
+   * 获取收藏列表
+   * @param type 滚动操作类型
+   * @returns 分页文章数据
+   */
+  getMyCollectList = async (type: ScrollActionType): Promise<PageModel<Article>> => {
+    if (type === ScrollActionType.refresh) {
       this.pageNum = 0
     } else {
       this.pageNum = this.pageNum + 1
     }
-
-    let api = "lg/collect/list/" + this.pageNum.toString() + "/json"
-    return httpClient.get<BaseResponse<PageModel<Article>>>(api)
+    
+    LogUtil.debug(`MyCollectViewModel: 获取收藏列表，页码=${this.pageNum}`)
+    return this.collectRepo.getCollectList(this.pageNum)
   }
 
-  getUserInfo = (): Promise<AxiosResponse<BaseResponse<UserInfoModel>>> => {
-    return httpClient.get<BaseResponse<UserInfoModel>>("lg/coin/userinfo/json")
+  /**
+   * 获取用户信息
+   * @returns 用户信息
+   */
+  getUserInfo = async (): Promise<UserInfoModel> => {
+    LogUtil.debug('MyCollectViewModel: 获取用户信息')
+    return this.collectRepo.getUserInfo()
   }
 
+  /**
+   * 收藏操作
+   * @param id 文章ID
+   * @param type 收藏操作类型
+   * @returns 是否成功
+   */
   async collectAction(id: number, type: CollectActionType): Promise<boolean> {
-    let api: string
     switch(type) {
       case CollectActionType.collect:
-        api = "lg/collect/" + id + "/json"
-        let collectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post<BaseResponse<string>>(api)
-        if (collectResponse.data.errorCode == 0) {
-          ToastUtil.showToast("收藏成功")
+        const collectSuccess = await this.collectRepo.collectArticle(id)
+        if (collectSuccess) {
+          ToastUtil.showToast($r('app.string.collect_success'))
           if (AccountManager.shared().loginModel && AccountManager.shared().loginModel?.collectIds) {
             let newLoginModel = AccountManager.shared().loginModel!
             let collectIds = AccountManager.shared().loginModel?.collectIds!
             collectIds.push(id)
             newLoginModel.collectIds = collectIds
-            AccountManager.shared().loginModel = newLoginModel
+            AccountManager.shared().saveLoginModel(newLoginModel)
           }
           return true
         } else {
-          ToastUtil.showToast("收藏失败")
+          ToastUtil.showToast($r('app.string.collect_failed'))
           return false
         }
-        break
       case CollectActionType.cancel:
-        api = "lg/uncollect_originId/" + id + "/json"
-        let cancelCollectResponse: AxiosResponse<BaseResponse<string>> = await httpClient.post<BaseResponse<string>>(api)
-        if (cancelCollectResponse.data.errorCode == 0) {
-          ToastUtil.showToast("取消收藏成功")
+        const cancelSuccess = await this.collectRepo.cancelCollect(id)
+        if (cancelSuccess) {
+          ToastUtil.showToast($r('app.string.uncollect_success'))
           if (AccountManager.shared().loginModel && AccountManager.shared().loginModel?.collectIds) {
             let newLoginModel = AccountManager.shared().loginModel!
             let collectIds = AccountManager.shared().loginModel?.collectIds!
             let index = collectIds.indexOf(id)
-            if (index) {
+            if (index >= 0) {
               collectIds.splice(index, 1)
               newLoginModel.collectIds = collectIds
-              AccountManager.shared().loginModel = newLoginModel
+              AccountManager.shared().saveLoginModel(newLoginModel)
             }
           }
           return true
         } else {
-          ToastUtil.showToast("取消收藏失败")
+          ToastUtil.showToast($r('app.string.uncollect_failed'))
           return false
         }
-        break
     }
   }
 }

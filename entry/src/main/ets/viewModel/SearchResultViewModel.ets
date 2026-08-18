@@ -1,24 +1,32 @@
-import { AxiosResponse } from '@ohos/axios';
-import { BaseResponse } from '../model/BaseResponse';
-import httpClient from '../HttpRequest/Provider';
-import { ScrollActionType } from '../Enum/ScrollActionType';
-import { Article } from '../model/Article';
-import { PageModel } from '../model/PageModel';
-import { KeywordInfo } from '../entity/KeywordInfo';
+import { SearchResultRepository } from '../repository/SearchResultRepository'
+import { Article } from '../model/Article'
+import { PageModel } from '../model/PageModel'
+import { KeywordInfo } from '../entity/KeywordInfo'
+import { ScrollActionType } from '../enum/ScrollActionType'
+import { LogUtil } from '@pura/harmony-utils'
 
+/**
+ * 搜索结果视图模型
+ * @description 处理搜索结果页面的业务逻辑
+ */
 export class SearchResultViewModel {
+  private searchRepo = new SearchResultRepository()
   private pageNum = 0
-
-  postSearchResultList = (type: ScrollActionType, keywordInfo: KeywordInfo): Promise<AxiosResponse<BaseResponse<PageModel<Article>>>> => {
-    if (type == ScrollActionType.refresh) {
+  
+  /**
+   * 搜索文章列表
+   * @param type 滚动操作类型
+   * @param keywordInfo 关键词信息
+   * @returns 分页文章数据
+   */
+  searchArticles = async (type: ScrollActionType, keywordInfo: KeywordInfo): Promise<PageModel<Article>> => {
+    if (type === ScrollActionType.refresh) {
       this.pageNum = 0
     } else {
       this.pageNum = this.pageNum + 1
     }
-
-    let api = "article/query/" + this.pageNum.toString() + "/json"
-    /// 奇葩的post入参
-    let params = `k=${keywordInfo.k}`
-    return httpClient.post<BaseResponse<PageModel<Article>>>(api, params)
+    
+    LogUtil.debug(`SearchResultViewModel: 搜索文章，页码=${this.pageNum}，关键词=${keywordInfo.k}`)
+    return this.searchRepo.searchArticles(this.pageNum, keywordInfo)
   }
 }

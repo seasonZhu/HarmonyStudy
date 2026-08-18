@@ -1,35 +1,47 @@
 import { Banner } from '../model/Banner';
 import { BaseListDataSource } from '../model/BaseListDataSource';
-import { ImageKnifeComponent, ScaleType } from '@ohos/imageknife'
-import display from '@ohos.display';
+import { ImageKnifeComponent, ImageKnifeOption } from '@ohos/imageknife'
+import { display } from '@kit.ArkUI';
+import { LogUtil } from '@pura/harmony-utils';
 
 @Component
 export struct BannerView {
   private swiperControllers = new SwiperController()
 
-  private swiperHeigth = 200
+  private swiperHeight = 200
+
+  itemClick?: (item: Banner) => void
 
   aboutToAppear(): void {
     try {
       let swiperWidth = display.getDefaultDisplaySync().width
       let densityPixels = display.getDefaultDisplaySync().densityPixels
-      this.swiperHeigth = (swiperWidth / densityPixels) * 0.5625
+      this.swiperHeight = (swiperWidth / densityPixels) * 0.5625
     } catch (exception) {
-      console.error('Failed to obtain the default display object. Code: ' + JSON.stringify(exception));
+      LogUtil.debug('Failed to obtain the default display object. Code: ' + JSON.stringify(exception));
     }
   }
 
   @Link data: BaseListDataSource<Banner>;
+
   build() {
     Swiper(this.swiperControllers) {
       LazyForEach(this.data, (item: Banner) => {
-        /// 这个库我之前用着很好，不知道为啥现在就显示不出来了
-        //ImageKnifeComponent({ imageKnifeOption: {loadSrc: item.imagePath, mainScaleType: ScaleType.AUTO_HEIGHT} })
-        Image(item.imagePath)
+        ImageKnifeComponent({
+          imageKnifeOption: {
+            loadSrc:item.imagePath,
+            objectFit: ImageFit.Auto
+          }
+        })
+          .onClick(() => {
+            if (this.itemClick) {
+              this.itemClick(item)
+            }
+          })
       })
     }
     .width('100%')
-    .height(this.swiperHeigth)
+    .height(this.swiperHeight)
     .cachedCount(2)
     .index(1)
     .autoPlay(true)
@@ -47,22 +59,22 @@ export struct BannerView {
         .selectedColor($r('app.color.mainBlue'),))
     .curve(Curve.Linear)
     .onChange((index: number) => {
-      console.info(index.toString())
+      LogUtil.debug(index.toString())
     })
     .onGestureSwipe((index: number, extraInfo: SwiperAnimationEvent) => {
-      console.info("index: " + index)
-      console.info("current offset: " + extraInfo.currentOffset)
+      LogUtil.debug("index: " + index)
+      LogUtil.debug("current offset: " + extraInfo.currentOffset)
     })
     .onAnimationStart((index: number, targetIndex: number, extraInfo: SwiperAnimationEvent) => {
-      console.info("index: " + index)
-      console.info("targetIndex: " + targetIndex)
-      console.info("current offset: " + extraInfo.currentOffset)
-      console.info("target offset: " + extraInfo.targetOffset)
-      console.info("velocity: " + extraInfo.velocity)
+      LogUtil.debug("index: " + index)
+      LogUtil.debug("targetIndex: " + targetIndex)
+      LogUtil.debug("current offset: " + extraInfo.currentOffset)
+      LogUtil.debug("target offset: " + extraInfo.targetOffset)
+      LogUtil.debug("velocity: " + extraInfo.velocity)
     })
     .onAnimationEnd((index: number, extraInfo: SwiperAnimationEvent) => {
-      console.info("index: " + index)
-      console.info("current offset: " + extraInfo.currentOffset)
+      LogUtil.debug("index: " + index)
+      LogUtil.debug("current offset: " + extraInfo.currentOffset)
     })
   }
 }

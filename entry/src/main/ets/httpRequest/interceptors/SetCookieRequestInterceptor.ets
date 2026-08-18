@@ -1,12 +1,13 @@
 import { AxiosHeaders, InternalAxiosRequestConfig } from '@ohos/axios';
 import AccountManager from '../../AccountManager/AccountManager';
 import { AxiosClientRequestInterceptor } from './AxiosClientRequestInterceptor';
+import { LogUtil } from '@pura/harmony-utils';
 
 export class SetCookieRequestInterceptor implements AxiosClientRequestInterceptor {
   onFulfilled(config: InternalAxiosRequestConfig) {
     // 配置Cookie
     let cookie = getCookieHeaderValue()
-    console.log("http cookie: " + cookie)
+    LogUtil.debug("http cookie: " + cookie)
     config.headers.set('Cookie', cookie)
     return config
   }

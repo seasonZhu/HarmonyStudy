@@ -1,16 +1,16 @@
 import { BaseListDataSource } from '../model/BaseListDataSource';
-import { ViewStatus } from '../Enum/ViewStatus';
-import { AxiosResponse } from '@ohos/axios';
-import { BaseResponse } from '../model/BaseResponse';
+import { ViewStatus } from '../enum/ViewStatus';
 import { TabModel } from '../model/TabModel';
 import { TabScaffoldViewModel } from '../viewModel/TabScaffoldViewModel';
 import { StringUtils } from '../utils/StringUtils';
 import { TabsDetail } from './TabsDetail';
-import { ContentType } from '../enum/ContentType';
+import { ContentType, getTitle } from '../enum/ContentType';
+import { LogUtil } from '@pura/harmony-utils';
+import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 
 @Entry
 @Component
-export struct TabScaffold {
+struct TabScaffold {
 
   @Prop contentType: ContentType
 
@@ -24,26 +24,31 @@ export struct TabScaffold {
 
   private tabsController = new TabsController()
 
-  build() {
+  private loadingHelper = new LoadingDialogHelper('加载中...')
 
-    Tabs({ barPosition: BarPosition.Start, index: this.currentIndex, controller: this.tabsController }) {
-      ForEach(this.datas, (item: TabModel) => {
-        this.getPage(item)
+  build() {
+    NavDestination() {
+      Tabs({ barPosition: BarPosition.Start, index: this.currentIndex, controller: this.tabsController }) {
+        ForEach(this.datas, (item: TabModel) => {
+          this.getPage(item)
+        })
+      }
+      .scrollable(true)
+      .vertical(false)
+      .barWidth('100%')
+      .barHeight(44)
+      .barMode(BarMode.Scrollable)
+      .onChange((index: number) => {
+        this.currentIndex = index
+        this.tabsController.changeIndex(index)
+      })
+      .onGestureSwipe((index, event) => {
+        this.currentIndex = index
+        this.tabsController.changeIndex(index)
       })
     }
-    .scrollable(true)
-    .vertical(false)
-    .barWidth('100%')
-    .barHeight(44)
-    .barMode(BarMode.Scrollable)
-    .onChange((index: number) => {
-      this.currentIndex = index
-      this.tabsController.changeIndex(index)
-    })
-    .onGestureSwipe((index, event) => {
-      this.currentIndex = index
-      this.tabsController.changeIndex(index)
-    })
+    .title(getTitle(this.contentType))
+    .hideBackButton(true)
   }
 
   @Builder
@@ -51,7 +56,6 @@ export struct TabScaffold {
     TabContent() {
       TabsDetail({contentType: this.contentType, tab: model})
     }
-    //.tabBar(new SubTabBarStyle(StringUtils.replaceHtmlElement(model.name?.toString() ?? "")))
     .tabBar(StringUtils.replaceHtmlElement(model.name?.toString() ?? ""))
   }
 
@@ -63,15 +67,29 @@ export struct TabScaffold {
 
   async aboutToAppear(): Promise<void> {
     this.viewModel = new TabScaffoldViewModel(this.contentType)
-    let response: AxiosResponse<BaseResponse<TabModel[]>> = await this.viewModel.getTabs()
 
-    this.datas = response.data.data
-    console.info(this.datas.length.toString())
+    try {
+      const tabs: TabModel[] = await this.loadingHelper.wrap(
+        this.viewModel.getTabs()
+      )
 
-    if (response.data.errorCode == 0) {
+      this.datas = tabs
+      LogUtil.debug(this.datas.length.toString())
       this.status = ViewStatus.success
-    } else {
+    } catch (error) {
+      LogUtil.error("加载Tab失败: " + JSON.stringify(error))
       this.status = ViewStatus.error
     }
   }
+
+  aboutToDisappear(): void {
+    this.loadingHelper.destroy()
+  }
 }
+
+@Builder
+export function TabScaffoldBuilder() {
+  TabScaffold()
+}
+
+export { TabScaffold }

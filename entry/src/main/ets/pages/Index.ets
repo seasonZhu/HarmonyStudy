@@ -6,16 +6,17 @@ import { Tree } from './Tree';
 import { ContentType } from '../enum/ContentType';
 import { IndexViewModel } from '../viewModel/IndexViewModel';
 import { UserInfoModel } from '../model/UserInfoModel';
-import { BaseResponse } from '../model/BaseResponse';
-import { AxiosResponse } from '@ohos/axios';
-import { PreferencesUtil, ToastUtil } from '@pura/harmony-utils'
-import { Routes } from '../routes/Routes'
+import { ToastUtil, LogUtil } from '@pura/harmony-utils'
+import { RouterName } from '../router/RouterName'
+import { importHeadFile } from 'librarySDK';
+import { navPathStack } from '../router/navPathStack';
+import AccountManager from '../accountManager/AccountManager';
 
 @Preview
-@Entry
+@Entry({routeName: RouterName.Index})
 @Component
 struct Index {
-  @State currentIndex: number = 0
+  @State activeIndex: number = 0
 
   @State userInfo: UserInfoModel = {}
 
@@ -24,87 +25,88 @@ struct Index {
   private tabsController = new TabsController()
 
   private viewModel = new IndexViewModel()
-  
+
   build() {
-    Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
-      ForEach(allTabTypeCases, (type: TabType) => {
-        this.getPage(type)
+    Navigation(navPathStack) {
+      Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {
+        ForEach(allTabTypeCases, (type: TabType) => {
+          this.getPage(type)
+        })
+      }
+      .scrollable(false)
+      .vertical(false)
+      .barWidth('100%')
+      .barHeight(56)
+      .barMode(BarMode.Fixed)
+      .onChange((index: number) => {
+        this.activeIndex = index;
       })
     }
-    .scrollable(false)
-    .vertical(false)
-    .barWidth('100%')
-    .barHeight(56)
-    .barMode(BarMode.Fixed)
-    .onChange((index: number) => {
-      this.currentIndex = index;
-    })
+    .hideTitleBar(true)
   }
 
   @Builder
   tabBarItem(model: TabTypeModel) {
     Column({space:4}) {
-      Image(this.currentIndex == model.index ? model.selectedImage : model.normalImage)
+      Image(this.activeIndex == model.index ? model.selectedImage : model.normalImage)
         .height(24)
-        .objectFit(ImageFit.Contain)
+        .aspectRatio(1)
       Text(model.title)
-        .fontColor(this.currentIndex == model.index ? '#1698CE' : '#6B6B6B')
+        .fontColor(this.activeIndex == model.index ? $r('app.color.app_blue') : $r('app.color.text_secondary'))
         .fontSize(12)
     }
     .onClick(() => {
-      this.currentIndex = model.index;
+      this.activeIndex = model.index;
       this.tabsController.changeIndex(model.index);
     })
   }
 
   @Builder
   getPage(type: TabType) {
-    if (type == TabType.home) {
-      TabContent() {
+    TabContent() {
+      if (type == TabType.home) {
         Home()
-      }
-      .tabBar(this.tabBarItem(getTabModel(type)))
-    } else if (type == TabType.project) {
-      TabContent() {
+      } else if (type == TabType.project) {
         TabScaffold({contentType: ContentType.project})
-      }
-      .tabBar(this.tabBarItem(getTabModel(type)))
-    } else if (type == TabType.publicNumber) {
-      TabContent() {
+      } else if (type == TabType.publicNumber) {
         TabScaffold({contentType: ContentType.publicNumber})
-      }
-      .tabBar(this.tabBarItem(getTabModel(type)))
-    } else if (type == TabType.tree) {
-      TabContent() {
+      } else if (type == TabType.tree) {
         Tree()
+      } else {
+        My()
       }
-      .tabBar(this.tabBarItem(getTabModel(type)))
-    } else {
-      TabContent() {
-        My({userInfo: this.userInfo })
-      }
-      .tabBar(this.tabBarItem(getTabModel(type)))
     }
+    .tabBar(this.tabBarItem(getTabModel(type)))
   }
 
   async aboutToAppear(): Promise<void> {
-    let username = await PreferencesUtil.get("username", "") as string
-    let password = await PreferencesUtil.get("password", "") as string
-
-    if (username.length != 0 && password.length != 0) {
-      ToastUtil.showToast("进行自动登录")
-      let result = await this.viewModel.login({username: username, password: password})
-      if (result) {
-        let response: AxiosResponse<BaseResponse<UserInfoModel>> = await this.viewModel.getUserInfo()
-        this.userInfo = response.data.data
+    let loginModel = await AccountManager.shared().restoreLoginModel()
+    if (loginModel) {
+      ToastUtil.showToast($r('app.string.auto_login'))
+      try {
+        const userInfo: UserInfoModel = await this.viewModel.getUserInfo()
+        this.userInfo = userInfo
+        this.loginSuccessUserInfo = userInfo
+      } catch (error) {
+        LogUtil.error("auto login restore failed: " + JSON.stringify(error))
       }
     }
   }
 
   onPageShow(): void {
-    let userInfo = Routes.getParams() as UserInfoModel
-    if (userInfo) {
-      this.loginSuccessUserInfo = userInfo
+    /// 从模块传参过App侧
+    let params: number[] = navPathStack.getParamByName('Index') as number[]
+    if (params && params.length > 0) {
+      let index: number = params[0]
+      if (index != null) {
+        this.activeIndex = index;
+        this.tabsController.changeIndex(index)
+      }
     }
   }
+}
+
+@Builder
+export function IndexBuilder() {
+  Index()
 }

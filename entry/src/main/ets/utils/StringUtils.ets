@@ -1,9 +1,9 @@
 export class StringUtils {
   static replaceHtmlElement(htmlElement: string) {
     return htmlElement
-      .replace(RegExp("(<em[^>]*>)|(</em>)"), "")
-      .replace(RegExp("\n{2,}"), "\n")
-      .replace(RegExp("s{2,}"), " ")
+      .replace(/(<em[^>]*>)|(<\/em>)/g, "")
+      .replace(/\n{2,}/g, "\n")
+      .replace(/s{2,}/g, " ")
       .replace("&ndash;", "–")
       .replace("&mdash;", "—")
       .replace("&lsquo;", "‘")

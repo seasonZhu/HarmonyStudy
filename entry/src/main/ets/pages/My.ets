@@ -1,27 +1,40 @@
-import { getTitleByMyType, MyType } from '../enum/MyType'
-import { allTabTypeCases } from '../enum/TabType'
+import { getTitleByMyType, MyType, getIconByMyType } from '../enum/MyType'
+import { allMyTypeCases } from '../enum/MyType'
 import { UserInfoModel } from '../model/UserInfoModel'
-import { Routes } from '../routes/Routes'
+import { navPathStack } from '../router/navPathStack'
 import { MyHeader } from '../views/MyHeader'
+import { LogUtil } from '@pura/harmony-utils'
+import { emitter } from '@kit.BasicServicesKit'
+import { LOGIN_SUCCESS_EVENT } from './Login'
+import { Router } from '../router/Router'
+import { PagesConstant } from '../router/PagesConstant'
 
-@Entry
+
+@Entry({routeName: 'My'})
 @Component
-export struct My {
+struct My {
 
-  @Prop userInfo: UserInfoModel
+  @Consume loginSuccessUserInfo: UserInfoModel = {}
 
-  @Consume
-  @Watch("update")
-  loginSuccessUserInfo: UserInfoModel
+  aboutToAppear(): void {
+    emitter.on(LOGIN_SUCCESS_EVENT, (data: emitter.EventData) => {
+      if (data?.data?.["userInfo"]) {
+        this.loginSuccessUserInfo = data.data["userInfo"] as UserInfoModel
+      }
+    })
+  }
 
+  aboutToDisappear(): void {
+    emitter.off(LOGIN_SUCCESS_EVENT)
+  }
 
   build() {
-    Navigation() {
+    NavDestination() {
       List() {
-        ForEach(allTabTypeCases, (type: MyType) => {
+        ForEach(allMyTypeCases, (type: MyType) => {
           ListItem() {
             if (type == MyType.header) {
-              MyHeader({userInfo: this.userInfo})
+              MyHeader({userInfo: this.loginSuccessUserInfo})
                 .height(150)
                 .width('100%')
             } else {
@@ -31,9 +44,13 @@ export struct My {
                   .strokeWidth(0.5)
                   .width("100%")
                 Row() {
+                  SymbolGlyph(getIconByMyType(type))
+                    .fontSize(20)
+                    .fontColor([$r('app.color.text_primary')])
+                    .margin({ left: 16 })
                   Text(getTitleByMyType(type))
                     .margin({
-                      left: 32
+                      left: 8
                     })
                     .fontSize(20)
                   Blank()
@@ -49,12 +66,10 @@ export struct My {
           })
         })
       }
+      .width('100%')
+      .height('100%')
     }
-    .title("我的")
-    .mode(NavigationMode.Auto)
-    .titleMode(NavigationTitleMode.Mini)
-    .height('100%')
-    .width('100%')
+    .title($r('app.string.my'))
     .hideBackButton(true)
   }
 
@@ -63,25 +78,42 @@ export struct My {
       case MyType.header:
         break
       case MyType.ranking:
-        Routes.toRank()
+        navPathStack.pushPath({ name: 'Rank' })
         break
       case MyType.myCoin:
-        Routes.toMyCoin()
+        navPathStack.pushPath({ name: 'MyCoin' })
         break
       case MyType.myCollect:
-        Routes.toCollect()
+        navPathStack.pushPath({ name: 'MyCollect' })
+        break
+      case MyType.webExample:
+        navPathStack.pushPath({ name: 'WebExample' })
+        break
+      case MyType.webComponent:
+        navPathStack.pushPath({ name: 'WebComponent' })
+        break
+      case MyType.uniApp:
+        navPathStack.pushPath({ name: 'ObservedV2TestPage' })
+        break
+      case MyType.environmentSwitch:
+        LogUtil.debug("点击了切换环境")
+        navPathStack.pushPath({ name: 'EnvironmentSwitch' })
+        break
+      case MyType.networkComparison:
+        LogUtil.debug("点击了网络对比测试")
+        Router.push(PagesConstant.NetworkComparison)
+        //navPathStack.pushPath({ name: 'NetworkComparison' })
         break
       case MyType.setting:
-        Routes.toSetting()
+        navPathStack.pushPath({ name: 'Setting' })
         break
     }
   }
-
-  aboutToAppear(): void {
-
-  }
-
-  update() {
-    this.userInfo = this.loginSuccessUserInfo
-  }
 }
+
+@Builder
+export function MyBuilder() {
+  My()
+}
+
+export { My }

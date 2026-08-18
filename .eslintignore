@@ -1,0 +1,30 @@
+# 依赖目录
+oh_modules
+.entry
+.hvigor
+build
+node_modules
+
+# 生成的文件
+**/*.generated.ets
+**/generated/**
+
+# 测试文件
+coverage/
+**/*.test.ets
+**/test/**
+
+# 构建配置
+hvigor/
+.hvigor/
+
+# IDE
+.idea/
+.vs/
+
+# 临时文件
+*.temp
+*.tmp
+
+# 日志
+*.log

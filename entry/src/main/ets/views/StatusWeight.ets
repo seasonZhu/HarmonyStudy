@@ -1,26 +1,94 @@
-import { ViewStatus } from '../enum/ViewStatus';
+import { ViewStatus } from '../enum/ViewStatus'
+import { LogUtil } from '@pura/harmony-utils'
 
-@Component
+/**
+ * 页面状态布局组件
+ *
+ * @description
+ * 统一管理页面的 loading、error、empty、success 四种状态显示
+ * 支持自定义状态 UI，提供默认实现
+ *
+ * @example
+ * ```typescript
+ * // 基础用法
+ * StatusWeight({
+ *   status: this.status,
+ *   contentBuilder: () => this.getContent()
+ * })
+ *
+ * // 自定义错误页面
+ * StatusWeight({
+ *   status: this.status,
+ *   errorText: '网络连接失败',
+ *   errorIcon: $r('app.media.ic_network_error'),
+ *   contentBuilder: () => this.getContent(),
+ *   onRetry: () => this.loadData()
+ * })
+ * ```
+ *
+ * @author StatusWeight
+ * @version 2.0.0
+ */
+@ComponentV2
 export struct StatusWeight {
-  @Prop status: ViewStatus
+  @Param status: ViewStatus = ViewStatus.loading
 
+  /** 内容构建器（success 状态显示） */
   @BuilderParam contentBuilder: () => void
 
-  @BuilderParam emptyBuilder?: () => void
-
+  /** 自定义 loading 构建器 */
   @BuilderParam loadingBuilder?: () => void
 
+  /** 自定义 error 构建器 */
   @BuilderParam errorBuilder?: () => void
 
-  onRetry?: () => void
+  /** 自定义 empty 构建器 */
+  @BuilderParam emptyBuilder?: () => void
+
+  /** 错误提示文字 */
+  @Param errorText: ResourceStr = $r('app.string.request_failed_retry')
+
+  /** 空状态提示文字 */
+  @Param emptyText: ResourceStr = $r('app.string.no_data')
+
+  /** 加载提示文字 */
+  @Param loadingText: ResourceStr = $r('app.string.loading_request')
+
+  /** 错误图标 */
+  @Param errorIcon: ResourceStr = $r('app.media.ic_error1')
+
+  /** 空状态图标 */
+  @Param emptyIcon: ResourceStr = $r('app.media.pic_no_data')
+
+  /** 图标大小 */
+  @Param iconSize: number = 160
+
+  /** 文字大小 */
+  @Param textSize: number = 18
+
+  /** 图标与文字间距 */
+  @Param textMarginTop: number = 48
+
+  /** 重试回调（仅 error 状态） */
+  @Param onRetry: (() => void) | undefined = undefined
+
+  /** 空状态操作回调 */
+  @Param onEmptyAction: (() => void) | undefined = undefined
 
   build() {
-    this.statusUI()
+    Column() {
+      this.statusUI()
+    }
+    .width('100%')
+    .height('100%')
+    .animation({
+      duration: 300,
+      curve: Curve.EaseInOut
+    })
   }
 
   @Builder
   private statusUI() {
-    /// 这里居然不能使用switch进行区别性编写
     if (this.status === ViewStatus.loading) {
       if (this.loadingBuilder) {
         this.loadingBuilder()
@@ -29,7 +97,19 @@ export struct StatusWeight {
       }
     } else if (this.status === ViewStatus.error) {
       if (this.errorBuilder) {
+        /// 这个自定义的errorBuilder无法和入参的onRetry进行配合，需要在errorBuilder内部去定义onRetry，或者外部包裹一层组件去触发点击事件
         this.errorBuilder()
+        /*
+        Column() {
+          this.errorBuilder()
+        }
+        .onClick(() => {
+          if (this.onRetry) {
+            LogUtil.debug('StatusWeight: 点击重试按钮')
+            this.onRetry!()
+          }
+        })
+        */
       } else {
         this.error()
       }
@@ -48,56 +128,75 @@ export struct StatusWeight {
   private loading() {
     Column() {
       LoadingProgress()
-        .color("#2C86EF")
+        .color($r('app.color.app_blue'))
         .width(60)
         .height(60)
 
-      Text('正在加载...')
-        .margin({
-          top: 48
-        })
-        .fontSize(18)
+      Text(this.loadingText)
+        .margin({ top: this.textMarginTop })
+        .fontSize(this.textSize)
+        .fontColor($r('app.color.text_secondary'))
     }
     .justifyContent(FlexAlign.Center)
-    .height('100%')
     .width('100%')
+    .height('100%')
   }
 
   @Builder
   private error() {
     Column() {
-      Image($r('app.media.ic_error1'))
-        .height(160)
-        .width(280)
-        .objectFit(ImageFit.Auto)
-      Text('请求失败，点击重试。')
-        .margin({
-          top: 48
-        })
-        .fontSize(18)
+      Image(this.errorIcon)
+        .height(this.iconSize)
+        .width(this.iconSize)
+        .objectFit(ImageFit.Contain)
+        .opacity(0.8)
+
+      Text(this.errorText)
+        .margin({ top: this.textMarginTop })
+        .fontSize(this.textSize)
+        .fontColor($r('app.color.text_secondary'))
+
+      if (this.onRetry) {
+        Button($r('app.string.retry'))
+          .margin({ top: 24 })
+          .onClick(() => {
+            LogUtil.debug('StatusWeight: 点击重试按钮')
+            this.onRetry!()
+          })
+      }
     }
     .justifyContent(FlexAlign.Center)
-    .height('100%')
     .width('100%')
-    .onClick(this.onRetry)
+    .height('100%')
+    .padding({ left: 32, right: 32 })
   }
 
   @Builder
   private empty() {
     Column() {
-      Image($r('app.media.pic_no_data'))
-        .height(180)
-        .width(180)
-        .objectFit(ImageFit.Auto)
-      Text('暂 无 数 据')
-        .margin({
-          top: 48
-        })
-        .fontSize(18)
+      Image(this.emptyIcon)
+        .height(this.iconSize)
+        .width(this.iconSize)
+        .objectFit(ImageFit.Contain)
+        .opacity(0.6)
+
+      Text(this.emptyText)
+        .margin({ top: this.textMarginTop })
+        .fontSize(this.textSize)
+        .fontColor($r('app.color.text_secondary'))
+
+      if (this.onEmptyAction) {
+        Button($r('app.string.go_add'))
+          .margin({ top: 24 })
+          .onClick(() => {
+            LogUtil.debug('StatusWeight: 点击空状态操作按钮')
+            this.onEmptyAction?.()
+          })
+      }
     }
     .justifyContent(FlexAlign.Center)
-    .height('100%')
     .width('100%')
-    .onClick(this.onRetry)
+    .height('100%')
+    .padding({ left: 32, right: 32 })
   }
 }
