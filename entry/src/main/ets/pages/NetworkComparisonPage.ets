@@ -21,11 +21,11 @@ interface TestResult {
 }
 
 @Entry({ routeName: RouterName.NetworkComparisonPage })
-@Component
+@ComponentV2
 struct NetworkComparisonPage {
-  @State testResults: TestResult[] = []
-  @State isRunning: boolean = false
-  @State currentTest: string = ''
+  @Local testResults: TestResult[] = []
+  @Local isRunning: boolean = false
+  @Local currentTest: string = ''
 
   private httpClient: HttpClient = getHttpClient()
 
