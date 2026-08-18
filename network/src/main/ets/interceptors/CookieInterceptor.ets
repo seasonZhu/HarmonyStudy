@@ -12,6 +12,17 @@ export interface CookieInterceptorConfig {
 }
 
 /**
+ * AccountManager 接口定义
+ * @description 用于类型安全的跨模块访问
+ */
+interface IAccountManager {
+  loginModel?: {
+    username?: string
+    password?: string
+  }
+}
+
+/**
  * Cookie 拦截器
  * @description 自动添加登录 Cookie 到请求头
  */
@@ -54,19 +65,19 @@ export class CookieInterceptor {
  */
 export function getCookieHeaderValue(): string {
   // 从全局获取 AccountManager（需要在 entry 模块中设置）
-  const accountManager: Object = globalThis.accountManager as Object
+  const accountManager = globalThis.accountManager as IAccountManager
   if (!accountManager) {
     LogUtil.warn('[CookieInterceptor] AccountManager 未初始化')
     return ''
   }
 
-  const loginModel: Object = (accountManager as Record<string, Object>)['loginModel'] as Object
+  const loginModel = accountManager.loginModel
   if (!loginModel) {
     return ''
   }
   
-  const username: string = (loginModel as Record<string, string>)['username'] ?? ''
-  const password: string = (loginModel as Record<string, string>)['password'] ?? ''
+  const username = loginModel.username ?? ''
+  const password = loginModel.password ?? ''
 
   if (username.length === 0 && password.length === 0) {
     return ''

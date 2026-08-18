@@ -24,7 +24,17 @@ export default class EntryAbility extends UIAbility {
     AppStorageV2.connect(SavedContext, () => new SavedContext(this.context))
     
     // 设置 globalThis.accountManager，供 network 模块的 Cookie 拦截器使用
-    globalThis.accountManager = AccountManager.shared()
+    try {
+      const accountManager = AccountManager.shared()
+      if (accountManager) {
+        globalThis.accountManager = accountManager
+        hilog.info(DOMAIN_NUMBER, TAG, 'AccountManager 初始化成功')
+      } else {
+        hilog.error(DOMAIN_NUMBER, TAG, 'AccountManager.shared() 返回 null')
+      }
+    } catch (error) {
+      hilog.error(DOMAIN_NUMBER, TAG, 'AccountManager 初始化失败: %{public}s', JSON.stringify(error))
+    }
     
     // 初始化 NetworkProvider
     NetworkProvider.init(this.context)

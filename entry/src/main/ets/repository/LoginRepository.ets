@@ -75,14 +75,14 @@ export class LoginRepository extends BaseRepository {
       // 检查是否有错误
       if (response.errorCode !== 0) {
         LogUtil.error(`LoginRepository: 登出失败，errorCode=${response.errorCode}, errorMsg=${response.errorMsg}`)
-        return false
+        throw new Error(response.errorMsg || '登出失败')
       }
       
       LogUtil.debug('LoginRepository: 登出成功')
       return true
     } catch (error) {
       this.handleError(error as ApiError)
-      return false
+      throw error as Error
     }
   }
 

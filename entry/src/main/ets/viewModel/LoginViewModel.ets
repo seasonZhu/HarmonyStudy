@@ -72,11 +72,12 @@ export class LoginViewModel {
    */
   public register(info: LoginOrRegisterInfo): Promise<boolean> {
     return new Promise<boolean>((resolve, _reject) => {
-      if (info.repassword == null) {
+      const repassword = info.repassword
+      if (!repassword) {
         resolve(false)
         return
       }
-      this.loginRepo.register(info.username, info.password, info.repassword!)
+      this.loginRepo.register(info.username, info.password, repassword)
         .then((loginModel: LoginModel)=> {
           LogUtil.debug("loginModel" + loginModel)
           loginModel.password = info.password
