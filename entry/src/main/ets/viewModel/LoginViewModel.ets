@@ -1,14 +1,10 @@
-import { AxiosResponse } from '@ohos/axios';
-import { AxiosError } from '@ohos/axios';
-import { BaseResponse } from '../model/BaseResponse';
+import { LoginRepository } from '../repository/LoginRepository'
 import { LoginModel } from '../model/LoginModel';
 import { UserInfoModel } from '../model/UserInfoModel';
 import AccountManager from '../accountManager/AccountManager';
-import httpClient from '../httpRequest/Provider';
 import { LoginOrRegisterInfo } from '../entity/LoginOrRegisterInfo';
 import { LogUtil } from '@pura/harmony-utils';
 import { ErrorHandler } from '../utils/ErrorHandler';
-import { ApiConstants } from '../constants/ApiConstants';
 
 export interface LoginResult {
   success: boolean
@@ -22,98 +18,113 @@ export interface RegisterResult {
   errorCode?: number
 }
 
+/**
+ * 认证视图模型
+ * @description 处理登录、注册、登出相关的业务逻辑
+ */
 export class LoginViewModel {
+  private loginRepo = new LoginRepository()
+
+  /**
+   * 用户登录
+   * @param info 登录信息
+   * @returns 是否成功
+   */
   public login(info: LoginOrRegisterInfo): Promise<boolean> {
     return new Promise<boolean>((resolve, _reject) => {
-      httpClient.post(ApiConstants.userLogin(info.username, info.password))
-        .then((response: AxiosResponse<BaseResponse<LoginModel>>)=> {
-          if (response.data.errorCode == 0) {
-            LogUtil.debug("loginModel" + response.data.data)
-            response.data.data.password = info.password
-            AccountManager.shared().saveLoginModel(response.data.data)
-            resolve(true)
-          } else {
-            resolve(false)
-          }
+      this.loginRepo.login(info.username, info.password)
+        .then((loginModel: LoginModel)=> {
+          LogUtil.debug("loginModel" + loginModel)
+          loginModel.password = info.password
+          AccountManager.shared().saveLoginModel(loginModel)
+          resolve(true)
         })
-        .catch((error: AxiosError)=> {
+        .catch((error: Error)=> {
           ErrorHandler.handle(error, '登录失败', false)
           resolve(false)
         })
     });
   }
 
+  /**
+   * 用户登录并获取用户信息
+   * @param info 登录信息
+   * @returns 登录结果
+   */
   public async loginWithUserInfo(info: LoginOrRegisterInfo): Promise<LoginResult> {
     try {
       const loginSuccess = await this.login(info)
       if (!loginSuccess) {
         return { success: false }
       }
-      const response: AxiosResponse<BaseResponse<UserInfoModel>> = await httpClient.get(ApiConstants.USER_INFO)
-      if (response.data.errorCode == 0) {
-        return { success: true, userInfo: response.data.data }
-      } else {
-        return { success: false, errorCode: response.data.errorCode }
-      }
+      const userInfo: UserInfoModel = await this.loginRepo.getUserInfo()
+      return { success: true, userInfo: userInfo }
     } catch (error) {
       ErrorHandler.handle(error, '登录流程失败')
       return { success: false }
     }
   }
 
+  /**
+   * 用户注册
+   * @param info 注册信息
+   * @returns 是否成功
+   */
   public register(info: LoginOrRegisterInfo): Promise<boolean> {
     return new Promise<boolean>((resolve, _reject) => {
       if (info.repassword == null) {
         resolve(false)
+        return
       }
-      httpClient.post(ApiConstants.userRegister(info.username, info.password, info.repassword!))
-        .then((response: AxiosResponse<BaseResponse<LoginModel>>)=> {
-          if (response.data.errorCode == 0) {
-            LogUtil.debug("loginModel" + response.data.data)
-            response.data.data.password = info.password
-            AccountManager.shared().saveLoginModel(response.data.data)
-            resolve(true)
-          } else {
-            resolve(false)
-          }
+      this.loginRepo.register(info.username, info.password, info.repassword!)
+        .then((loginModel: LoginModel)=> {
+          LogUtil.debug("loginModel" + loginModel)
+          loginModel.password = info.password
+          AccountManager.shared().saveLoginModel(loginModel)
+          resolve(true)
         })
-        .catch((error: AxiosError)=> {
+        .catch((error: Error)=> {
           ErrorHandler.handle(error, '注册失败', false)
           resolve(false)
         })
     });
   }
 
+  /**
+   * 用户注册并获取用户信息
+   * @param info 注册信息
+   * @returns 注册结果
+   */
   public async registerWithUserInfo(info: LoginOrRegisterInfo): Promise<RegisterResult> {
     try {
       const registerSuccess = await this.register(info)
       if (!registerSuccess) {
         return { success: false }
       }
-      const response: AxiosResponse<BaseResponse<UserInfoModel>> = await httpClient.get(ApiConstants.USER_INFO)
-      if (response.data.errorCode == 0) {
-        return { success: true, userInfo: response.data.data }
-      } else {
-        return { success: false, errorCode: response.data.errorCode }
-      }
+      const userInfo: UserInfoModel = await this.loginRepo.getUserInfo()
+      return { success: true, userInfo: userInfo }
     } catch (error) {
       ErrorHandler.handle(error, '注册流程失败')
       return { success: false }
     }
   }
 
+  /**
+   * 用户登出
+   * @returns 是否成功
+   */
   public logout(): Promise<boolean> {
     return new Promise<boolean>((resolve, _reject) => {
-      httpClient.get(ApiConstants.USER_LOGOUT)
-        .then((response: AxiosResponse<BaseResponse<string>>)=> {
-          if (response.data.errorCode == 0) {
+      this.loginRepo.logout()
+        .then((success: boolean)=> {
+          if (success) {
             AccountManager.shared().toDestroy()
             resolve(true)
           } else {
             resolve(false)
           }
         })
-        .catch((error: AxiosError)=> {
+        .catch((error: Error)=> {
           ErrorHandler.handle(error, '登出失败', false)
           resolve(false)
         })
