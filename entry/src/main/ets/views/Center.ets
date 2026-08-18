@@ -1,4 +1,4 @@
-@Component
+@ComponentV2
 export struct Center {
 
   @BuilderParam body: () => void

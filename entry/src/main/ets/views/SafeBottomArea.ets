@@ -1,4 +1,4 @@
-@Component
+@ComponentV2
 export struct SafeBottomArea {
   build() {
     Blank()
