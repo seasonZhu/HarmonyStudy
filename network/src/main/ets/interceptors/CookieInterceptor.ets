@@ -12,14 +12,20 @@ export interface CookieInterceptorConfig {
 }
 
 /**
+ * 登录模型接口
+ * @description 用于类型安全的跨模块访问
+ */
+interface ILoginModel {
+  username?: string
+  password?: string
+}
+
+/**
  * AccountManager 接口定义
  * @description 用于类型安全的跨模块访问
  */
 interface IAccountManager {
-  loginModel?: {
-    username?: string
-    password?: string
-  }
+  loginModel?: ILoginModel
 }
 
 /**
