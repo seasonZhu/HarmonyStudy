@@ -30,53 +30,56 @@ struct NetworkComparisonPage {
   private httpClient: HttpClient = getHttpClient()
 
   build() {
-    Column() {
-      Text('网络层对比测试')
-        .fontSize(24)
-        .fontWeight(FontWeight.Bold)
-        .margin({ top: 20, bottom: 20 })
+    NavDestination() {
+      Column() {
+        Text('网络层对比测试')
+          .fontSize(24)
+          .fontWeight(FontWeight.Bold)
+          .margin({ top: 20, bottom: 20 })
 
-      Text('对比 httpRequest 和 network 模块的功能和性能')
-        .fontSize(14)
-        .fontColor($r('app.color.text_secondary'))
-        .margin({ bottom: 20 })
+        Text('对比 httpRequest 和 network 模块的功能和性能')
+          .fontSize(14)
+          .fontColor($r('app.color.text_secondary'))
+          .margin({ bottom: 20 })
 
-      Button('开始所有测试')
-        .width('80%')
-        .height(50)
-        .fontSize(16)
-        .enabled(!this.isRunning)
-        .onClick(() => {
-          this.runAllTests()
-        })
-        .margin({ bottom: 20 })
+        Button('开始所有测试')
+          .width('80%')
+          .height(50)
+          .fontSize(16)
+          .enabled(!this.isRunning)
+          .onClick(() => {
+            this.runAllTests()
+          })
+          .margin({ bottom: 20 })
 
-      if (this.isRunning) {
-        Row() {
-          LoadingProgress()
-            .width(20)
-            .height(20)
-          Text(`正在执行: ${this.currentTest}`)
-            .fontSize(14)
-            .margin({ left: 10 })
-        }
-        .margin({ bottom: 20 })
-      }
-
-      List({ space: 10 }) {
-        ForEach(this.testResults, (result: TestResult, index: number) => {
-          ListItem() {
-            this.TestResultCard(result)
+        if (this.isRunning) {
+          Row() {
+            LoadingProgress()
+              .width(20)
+              .height(20)
+            Text(`正在执行: ${this.currentTest}`)
+              .fontSize(14)
+              .margin({ left: 10 })
           }
-        })
+          .margin({ bottom: 20 })
+        }
+
+        List({ space: 10 }) {
+          ForEach(this.testResults, (result: TestResult, index: number) => {
+            ListItem() {
+              this.TestResultCard(result)
+            }
+          })
+        }
+        .width('100%')
+        .layoutWeight(1)
+        .padding({ left: 16, right: 16 })
       }
       .width('100%')
-      .layoutWeight(1)
-      .padding({ left: 16, right: 16 })
+      .height('100%')
+      .backgroundColor('#F5F5F5')
     }
-    .width('100%')
-    .height('100%')
-    .backgroundColor('#F5F5F5')
+    .title('网络层对比测试')
   }
 
   @Builder
