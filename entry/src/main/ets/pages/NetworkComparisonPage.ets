@@ -20,7 +20,7 @@ interface TestResult {
   error?: string
 }
 
-@Entry({ routeName: RouterName.NetworkComparison })
+@Entry({ routeName: RouterName.NetworkComparisonPage })
 @Component
 struct NetworkComparisonPage {
   @State testResults: TestResult[] = []
@@ -365,3 +365,5 @@ struct NetworkComparisonPage {
 export function NetworkComparisonPageBuilder() {
   NetworkComparisonPage()
 }
+
+export { NetworkComparisonPage }

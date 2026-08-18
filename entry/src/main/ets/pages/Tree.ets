@@ -1,7 +1,4 @@
-import { AxiosResponse } from '@ohos/axios';
-import { AxiosError } from '@ohos/axios';
 import { PullToRefresh, PullToRefreshConfigurator, PullToRefreshType } from '@ohos/pulltorefresh';
-import { BaseResponse } from '../model/BaseResponse';
 import { BaseListDataSource } from '../model/BaseListDataSource';
 import { ScrollActionType } from '../enum/ScrollActionType';
 import { StatusWeight } from '../views/StatusWeight';
@@ -11,7 +8,6 @@ import { TreeCell } from '../views/TreeCell';
 import { TabScaffoldViewModel } from '../viewModel/TabScaffoldViewModel';
 import { ContentType } from '../enum/ContentType';
 import { LogUtil } from '@pura/harmony-utils';
-import { ListDataProcessor } from '../utils/ListDataProcessor';
 import { ListConfig } from '../constants/StyleConstants';
 
 @Entry
@@ -38,15 +34,19 @@ struct Tree {
           this.getRefreshView()
         },
         onRetry: async () => {
-          let result: AxiosResponse = await this.viewModel!.getTabs()
-          ListDataProcessor.processArrayListData(
-            this.listDataSource,
-            result,
-            ScrollActionType.refresh,
-            (status: ViewStatus) => {
-              this.status = status
+          try {
+            const tabs: TabModel[] = await this.viewModel!.getTabs()
+            this.listDataSource.refreshData(tabs)
+            
+            if (tabs.length === 0) {
+              this.status = ViewStatus.empty
+            } else {
+              this.status = ViewStatus.success
             }
-          )
+          } catch (error) {
+            LogUtil.error("Tree retry error: " + JSON.stringify(error))
+            this.status = ViewStatus.error
+          }
         },
       })
     }
@@ -57,28 +57,28 @@ struct Tree {
   @Builder
   private getRefreshView() {
     PullToRefresh({
-      // 必传项，容器主体布局类型
       pullToRefreshType: PullToRefreshType.LIST,
-      // 必传项，控制是否进行下拉刷新
       refreshing: $refreshing,
-      // 必传项，自定义主体布局，内部有列表或宫格组件
       customList: () => {
-        // 一个用@Builder修饰过的UI方法
         this.getListView()
       },
       refreshConfigurator: this.setNoLoadMoreRefreshConfig(),
-      // 可选项，下拉刷新回调
       onRefresh: async () => {
-        let result: AxiosResponse = await this.viewModel!.getTabs()
-        ListDataProcessor.processArrayListData(
-          this.listDataSource,
-          result,
-          ScrollActionType.refresh,
-          (status: ViewStatus) => {
-            this.status = status
+        try {
+          const tabs: TabModel[] = await this.viewModel!.getTabs()
+          this.listDataSource.refreshData(tabs)
+          
+          if (tabs.length === 0) {
+            this.status = ViewStatus.empty
+          } else {
+            this.status = ViewStatus.success
           }
-        )
-        return '刷新成功'
+          return '刷新成功'
+        } catch (error) {
+          LogUtil.error("Tree refresh error: " + JSON.stringify(error))
+          this.status = ViewStatus.error
+          throw error as Error
+        }
       },
     })
   }
@@ -100,18 +100,17 @@ struct Tree {
   async aboutToAppear(): Promise<void> {
     this.viewModel = new TabScaffoldViewModel(ContentType.tree)
     this.viewModel.getTabs()
-      .then((result: AxiosResponse) => {
-        ListDataProcessor.processArrayListData(
-          this.listDataSource,
-          result,
-          ScrollActionType.refresh,
-          (status: ViewStatus) => {
-            this.status = status
-          }
-        )
+      .then((tabs: TabModel[]) => {
+        this.listDataSource.refreshData(tabs)
+        
+        if (tabs.length === 0) {
+          this.status = ViewStatus.empty
+        } else {
+          this.status = ViewStatus.success
+        }
       })
-      .catch((error: AxiosError) => {
-        LogUtil.debug("http error: " + JSON.stringify(error))
+      .catch((error: Error) => {
+        LogUtil.error("Tree load error: " + JSON.stringify(error))
         this.status = ViewStatus.error
       });
   }
