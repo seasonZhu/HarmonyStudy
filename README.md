@@ -6,6 +6,18 @@
 [![HarmonyOS](https://img.shields.io/badge/HarmonyOS-API%2010%2B-blue.svg)](https://developer.huawei.com/consumer/cn/harmonyos/)
 [![ArkTS](https://img.shields.io/badge/language-ArkTS-orange.svg)](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/arkts-get-started-V5)
 
+## 📚 文档导航
+
+| 文档 | 说明 |
+|:-----|:-----|
+| **[开发指南](./docs/DEVELOPMENT_GUIDE.md)** | 完整的开发指南，包含命名规范、HSP模块、网络请求、路由框架等 |
+| **[快速参考](./docs/QUICK_REFERENCE.md)** | 常用代码片段和速查表 |
+| **[网络请求](./docs/NETWORK_USAGE.md)** | network 模块使用指南 |
+| **[路由设计](./docs/navpathstack-design.md)** | NavPathStack 路由框架设计 |
+| **[业务模块化](./docs/business-module-architecture-design.md)** | 业务模块化架构设计方案 |
+
+---
+
 ## 📖 项目简介
 
 本项目是基于 [WanAndroid 开放 API](https://www.wanandroid.com/) 开发的 HarmonyOS 原生客户端，采用**响应式编程**架构设计，严格遵循 HarmonyOS 最佳实践。
