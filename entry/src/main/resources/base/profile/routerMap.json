@@ -94,6 +94,11 @@
       "name": "NetworkExamplePage",
       "pageSourceFile": "src/main/ets/network/examples/pages/NetworkExamplePage.ets",
       "buildFunction": "NetworkExamplePageBuilder"
+    },
+    {
+      "name": "NetworkComparisonPage",
+      "pageSourceFile": "src/main/ets/pages/NetworkComparisonPage.ets",
+      "buildFunction": "NetworkComparisonPageBuilder"
     }
   ]
 }
