@@ -7,8 +7,9 @@ import { TabsDetail } from './TabsDetail';
 import { ContentType, getTitle } from '../enum/ContentType';
 import { LogUtil } from '@pura/harmony-utils';
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
+import { RouterName } from '../router/RouterName';
 
-@Entry
+@Entry({ routeName: RouterName.TabScaffold })
 @Component
 struct TabScaffold {
 

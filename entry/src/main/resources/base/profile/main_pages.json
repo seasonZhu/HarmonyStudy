@@ -3,11 +3,11 @@
     "pages/Splash",
     "pages/Index",
     "pages/Home",
-    "pages/My",
+    "pages/Profile",
     "pages/HotKey",
     "pages/Tree",
     "pages/TabScaffold",
-    "pages/WebPage",
+    "pages/WebBrowser",
     "pages/TreeDetail",
     "pages/SearchResult",
     "pages/Login",
@@ -18,10 +18,12 @@
     "pages/Register",
     "pages/WebExample",
     "pages/WebComponent",
-    "pages/ObservedV2TestPage",
+    "pages/ObservedV2Test",
     "pages/EnvironmentSwitch",
-    "pages/NetworkComparisonPage",
-    "network/examples/pages/NetworkExamplePage",
-    "pages/NavPathStackTestPage"
+    "pages/NetworkComparison",
+    "network/examples/pages/NetworkExample",
+    "pages/NavPathStackTest",
+    "pages/TabsDetail",
+    "pages/NativeComponentsDemo"
   ]
 }

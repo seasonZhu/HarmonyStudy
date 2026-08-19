@@ -6,17 +6,23 @@ import ("entry/ets/pages/MyCoin")
 import ("entry/ets/pages/Rank")
 import ("entry/ets/pages/SearchResult")
 import ("entry/ets/pages/MyCollect")
-import ("entry/ets/pages/WebPage")
+import ("entry/ets/pages/WebBrowser")
 import ("entry/ets/pages/HotKey")
 import ("entry/ets/pages/TreeDetail")
 import ("entry/ets/pages/EnvironmentSwitch")
 import ("entry/ets/pages/Setting")
 import ("entry/ets/pages/WebExample")
 import ("entry/ets/pages/WebComponent")
-import ("entry/ets/pages/ObservedV2TestPage")
-import ("entry/ets/network/examples/pages/NetworkExamplePage")
+import ("entry/ets/pages/ObservedV2Test")
+import ("entry/ets/network/examples/pages/NetworkExample")
 import ("entry/ets/pages/NativeComponentsDemo")
-import ("entry/ets/pages/NetworkComparisonPage")
+import ("entry/ets/pages/NetworkComparison")
+import ("entry/ets/pages/Profile")
+import ("entry/ets/pages/Tree")
+import ("entry/ets/pages/Home")
+import ("entry/ets/pages/TabsDetail")
+import ("entry/ets/pages/TabScaffold")
+import ("entry/ets/pages/NavPathStackTest")
 
 
 export enum RouterName {
@@ -28,15 +34,21 @@ export enum RouterName {
   Rank = "Rank",
   SearchResult = "SearchResult",
   MyCollect = "MyCollect",
-  Web = "WebPage",
-  Hotkey = "HotKey",
+  WebBrowser = "WebBrowser",
+  HotKey = "HotKey",
   TreeDetail = "TreeDetail",
   EnvironmentSwitch = "EnvironmentSwitch",
   Setting = "Setting",
-  WebExample =  "WebExample",
-  WebComponent =  "WebComponent",
-  ObservedV2TestPage = "ObservedV2TestPage",
-  NetworkExample = "NetworkExamplePage",
+  WebExample = "WebExample",
+  WebComponent = "WebComponent",
+  ObservedV2Test = "ObservedV2Test",
+  NetworkExample = "NetworkExample",
   NativeComponentsDemo = "NativeComponentsDemo",
-  NetworkComparisonPage = "NetworkComparisonPage"
+  NetworkComparison = "NetworkComparison",
+  Profile = "Profile",
+  Tree = "Tree",
+  Home = "Home",
+  TabsDetail = "TabsDetail",
+  TabScaffold = "TabScaffold",
+  NavPathStackTest = "NavPathStackTest"
 }

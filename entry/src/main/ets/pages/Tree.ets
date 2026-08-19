@@ -9,8 +9,9 @@ import { TabScaffoldViewModel } from '../viewModel/TabScaffoldViewModel';
 import { ContentType } from '../enum/ContentType';
 import { LogUtil } from '@pura/harmony-utils';
 import { ListConfig } from '../constants/StyleConstants';
+import { RouterName } from '../router/RouterName';
 
-@Entry
+@Entry({ routeName: RouterName.Tree })
 @Component
 struct Tree {
 

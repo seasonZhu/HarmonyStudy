@@ -9,7 +9,7 @@ import { KeywordInfo } from '../entity/KeywordInfo';
 import { CaptureTool } from 'utils';
 import { navPathStack } from '../router/navPathStack';
 
-@Entry({routeName: RouterName.Hotkey})
+@Entry({routeName: RouterName.HotKey})
 @ComponentV2
 struct HotKey {
   @Local dataSource: BaseListDataSource<HotKeyModel> = new BaseListDataSource<HotKeyModel>()

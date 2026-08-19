@@ -11,9 +11,9 @@ import { systemShare } from '@kit.ShareKit';
 import { uniformTypeDescriptor as utd } from '@kit.ArkData';
 import { ErrorHandler } from '../utils/ErrorHandler'
 
-@Entry({routeName: RouterName.Web})
+@Entry({routeName: RouterName.WebBrowser})
 @ComponentV2
-struct WebPage {
+struct WebBrowser {
   private controller: webview.WebviewController = new webview.WebviewController()
 
   @Local private loadingProgress: number = 0
@@ -228,6 +228,6 @@ struct WebPage {
 }
 
 @Builder
-export function WebPageBuilder() {
-  WebPage()
+export function WebBrowserBuilder() {
+  WebBrowser()
 }

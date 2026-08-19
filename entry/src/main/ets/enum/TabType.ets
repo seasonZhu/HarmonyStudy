@@ -1,5 +1,5 @@
 import { Home } from '../pages/Home'
-import { My } from '../pages/My'
+import { Profile } from '../pages/Profile'
 
 export enum TabType {
   home,

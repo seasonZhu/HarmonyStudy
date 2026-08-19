@@ -2,6 +2,7 @@
 import { openUniMP,isExistsUniMP, releaseWgtToRunPath } from '@dcloudio/uni-app-runtime';
 import { FileUtil, LogUtil } from '@pura/harmony-utils';
 import { navPathStack } from '../router/navPathStack';
+import { RouterName } from '../router/RouterName';
 
 @ObservedV2
 class Person {
@@ -17,9 +18,9 @@ class Son {
   weight: number = 200
 }
 
-@Entry
+@Entry({ routeName: RouterName.ObservedV2Test })
 @Component
-struct ObservedV2TestPage {
+struct ObservedV2Test {
   person = new Person()
 
   build() {
@@ -418,8 +419,8 @@ struct ObservedV2TestPage {
 }
 
 @Builder
-export function ObservedV2TestPageBuilder() {
-  ObservedV2TestPage()
+export function ObservedV2TestBuilder() {
+  ObservedV2Test()
 }
 
-export { ObservedV2TestPage }
+export { ObservedV2Test }

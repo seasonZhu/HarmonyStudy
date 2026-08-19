@@ -135,8 +135,8 @@ export class Router {
   /**
    * 跳转到 Web 页面
    */
-  static toWebPage(webLink: WebLink): void {
-    Router.push(PagesConstant.Web, webLink)
+  static toWebBrowser(webLink: WebLink): void {
+    Router.push(PagesConstant.WebBrowser, webLink)
   }
 
   /**
@@ -205,8 +205,8 @@ export class Router {
   /**
    * 跳转到测试页面
    */
-  static toObservedV2TestPage(): void {
-    Router.push(PagesConstant.ObservedV2TestPage)
+  static toObservedV2Test(): void {
+    Router.push(PagesConstant.ObservedV2Test)
   }
 
   /**
@@ -219,8 +219,8 @@ export class Router {
   /**
    * 跳转到搜索热词页
    */
-  static toHotkey(): void {
-    Router.push(PagesConstant.Hotkey)
+  static toHotKey(): void {
+    Router.push(PagesConstant.HotKey)
   }
 
   /**

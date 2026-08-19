@@ -1,6 +1,6 @@
 import { TabType, TabTypeModel, allTabTypeCases, getTabModel, } from '../enum/TabType';
 import { Home } from './Home';
-import { My } from './My';
+import { Profile } from './Profile';
 import { TabScaffold } from './TabScaffold';
 import { Tree } from './Tree';
 import { ContentType } from '../enum/ContentType';
@@ -73,7 +73,7 @@ struct Index {
       } else if (type == TabType.tree) {
         Tree()
       } else {
-        My()
+        Profile()
       }
     }
     .tabBar(this.tabBarItem(getTabModel(type)))

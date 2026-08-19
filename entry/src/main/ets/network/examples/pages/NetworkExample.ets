@@ -1,5 +1,5 @@
 /**
- * NetworkExamplePage - 网络请求示例页面
+ * NetworkExample - 网络请求示例页面
  * @description 展示如何使用 network 模块进行各种网络请求
  * 所有接口都使用真实的 WanAndroid API
  */
@@ -9,10 +9,11 @@ import { Environment } from 'network'
 import { NetworkExampleViewModel, ViewState } from '../viewModel/NetworkExampleViewModel'
 import { Article, Banner, HotKey } from '../api/WanAndroidModels'
 import { promptAction } from '@kit.ArkUI'
+import { RouterName } from '../../../router/RouterName'
 
-@Entry
+@Entry({ routeName: RouterName.NetworkExample })
 @Component
-struct NetworkExamplePage {
+struct NetworkExample {
   @State viewModel: NetworkExampleViewModel = new NetworkExampleViewModel()
   @State username: string = ''
   @State password: string = ''
@@ -535,8 +536,8 @@ struct NetworkExamplePage {
 }
 
 @Builder
-export function NetworkExamplePageBuilder() {
-  NetworkExamplePage()
+export function NetworkExampleBuilder() {
+  NetworkExample()
 }
 
-export { NetworkExamplePage }
+export { NetworkExample }

@@ -115,7 +115,7 @@ export struct ProjectCell {
       if (this.onItemClick) {
         this.onItemClick(this.article)
       }
-      navPathStack.pushPath({ name: 'WebPage', param: this.article as WebLink })
+      navPathStack.pushPath({ name: 'WebBrowser', param: this.article as WebLink })
     })
     .gesture(
       LongPressGesture({ repeat: false })

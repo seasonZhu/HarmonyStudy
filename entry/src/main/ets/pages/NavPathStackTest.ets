@@ -1,6 +1,8 @@
-@Entry
+import { RouterName } from '../router/RouterName'
+
+@Entry({ routeName: RouterName.NavPathStackTest })
 @Component
-struct NavPathStackTestPage {
+struct NavPathStackTest {
   @State message: string = 'Hello World';
   @State receivedValue: number = 0;
   pathStack: NavPathStack | undefined = undefined;
@@ -52,6 +54,6 @@ struct NavPathStackTestPage {
 }
 
 @Builder
-export function NavPathStackTestPageBuilder() {
-  NavPathStackTestPage()
+export function NavPathStackTestBuilder() {
+  NavPathStackTest()
 }

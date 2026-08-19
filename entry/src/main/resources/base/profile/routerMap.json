@@ -26,11 +26,6 @@
       "buildFunction": "HotKeyBuilder"
     },
     {
-      "name": "WebPage",
-      "pageSourceFile": "src/main/ets/pages/WebPage.ets",
-      "buildFunction": "WebPageBuilder"
-    },
-    {
       "name": "TreeDetail",
       "pageSourceFile": "src/main/ets/pages/TreeDetail.ets",
       "buildFunction": "TreeDetailBuilder"
@@ -71,11 +66,6 @@
       "buildFunction": "WebComponentBuilder"
     },
     {
-      "name": "ObservedV2TestPage",
-      "pageSourceFile": "src/main/ets/pages/ObservedV2TestPage.ets",
-      "buildFunction": "ObservedV2TestPageBuilder"
-    },
-    {
       "name": "EnvironmentSwitch",
       "pageSourceFile": "src/main/ets/pages/EnvironmentSwitch.ets",
       "buildFunction": "EnvironmentSwitchBuilder"
@@ -86,19 +76,54 @@
       "buildFunction": "NativeComponentsDemoBuilder"
     },
     {
-      "name": "NavPathStackTestPage",
-      "pageSourceFile": "src/main/ets/pages/NavPathStackTestPage.ets",
-      "buildFunction": "NavPathStackTestPageBuilder"
+      "name": "Profile",
+      "pageSourceFile": "src/main/ets/pages/Profile.ets",
+      "buildFunction": "ProfileBuilder"
     },
     {
-      "name": "NetworkExamplePage",
-      "pageSourceFile": "src/main/ets/network/examples/pages/NetworkExamplePage.ets",
-      "buildFunction": "NetworkExamplePageBuilder"
+      "name": "WebBrowser",
+      "pageSourceFile": "src/main/ets/pages/WebBrowser.ets",
+      "buildFunction": "WebBrowserBuilder"
     },
     {
-      "name": "NetworkComparisonPage",
-      "pageSourceFile": "src/main/ets/pages/NetworkComparisonPage.ets",
-      "buildFunction": "NetworkComparisonPageBuilder"
+      "name": "NetworkComparison",
+      "pageSourceFile": "src/main/ets/pages/NetworkComparison.ets",
+      "buildFunction": "NetworkComparisonBuilder"
+    },
+    {
+      "name": "ObservedV2Test",
+      "pageSourceFile": "src/main/ets/pages/ObservedV2Test.ets",
+      "buildFunction": "ObservedV2TestBuilder"
+    },
+    {
+      "name": "NavPathStackTest",
+      "pageSourceFile": "src/main/ets/pages/NavPathStackTest.ets",
+      "buildFunction": "NavPathStackTestBuilder"
+    },
+    {
+      "name": "NetworkExample",
+      "pageSourceFile": "src/main/ets/network/examples/pages/NetworkExample.ets",
+      "buildFunction": "NetworkExampleBuilder"
+    },
+    {
+      "name": "Tree",
+      "pageSourceFile": "src/main/ets/pages/Tree.ets",
+      "buildFunction": "TreeBuilder"
+    },
+    {
+      "name": "Home",
+      "pageSourceFile": "src/main/ets/pages/Home.ets",
+      "buildFunction": "HomeBuilder"
+    },
+    {
+      "name": "TabsDetail",
+      "pageSourceFile": "src/main/ets/pages/TabsDetail.ets",
+      "buildFunction": "TabsDetailBuilder"
+    },
+    {
+      "name": "TabScaffold",
+      "pageSourceFile": "src/main/ets/pages/TabScaffold.ets",
+      "buildFunction": "TabScaffoldBuilder"
     }
   ]
 }

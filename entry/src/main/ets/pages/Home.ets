@@ -13,8 +13,9 @@ import { immersion } from '../utils/Immersion';
 import { WebLink } from '../entity/WebLink';
 import { ListConfig } from '../constants/StyleConstants';
 import { navPathStack } from '../router/navPathStack';
+import { RouterName } from '../router/RouterName';
 
-@Entry
+@Entry({ routeName: RouterName.Home })
 @Component
 struct Home {
 
@@ -116,7 +117,7 @@ struct Home {
             LogUtil.debug($r('app.string.click_banner'))
             LogUtil.debug(item.url)
             const webLink: WebLink = { id: item.id, title: item.title, link: item.url, originId: null }
-            navPathStack.pushPath({ name: 'WebPage', param: webLink })
+            navPathStack.pushPath({ name: 'WebBrowser', param: webLink })
           }})
       }
       LazyForEach(this.listDataSource, (item: Article) => {

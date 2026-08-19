@@ -20,9 +20,9 @@ interface TestResult {
   error?: string
 }
 
-@Entry({ routeName: RouterName.NetworkComparisonPage })
+@Entry({ routeName: RouterName.NetworkComparison })
 @ComponentV2
-struct NetworkComparisonPage {
+struct NetworkComparison {
   @Local testResults: TestResult[] = []
   @Local isRunning: boolean = false
   @Local currentTest: string = ''
@@ -362,8 +362,8 @@ struct NetworkComparisonPage {
 }
 
 @Builder
-export function NetworkComparisonPageBuilder() {
-  NetworkComparisonPage()
+export function NetworkComparisonBuilder() {
+  NetworkComparison()
 }
 
-export { NetworkComparisonPage }
+export { NetworkComparison }

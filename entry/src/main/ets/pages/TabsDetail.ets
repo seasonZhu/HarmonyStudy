@@ -11,8 +11,9 @@ import { ContentType } from '../enum/ContentType';
 import { TabModel } from '../model/TabModel';
 import { LogUtil } from '@pura/harmony-utils';
 import { ListConfig } from '../constants/StyleConstants';
+import { RouterName } from '../router/RouterName';
 
-@Entry
+@Entry({ routeName: RouterName.TabsDetail })
 @Component
 struct TabsDetail {
 

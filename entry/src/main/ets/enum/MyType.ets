@@ -30,7 +30,7 @@ export function getPathByMyType(type: MyType): PagesConstant {
     case MyType.webComponent:
       return PagesConstant.WebComponent
     case MyType.uniApp:
-      return PagesConstant.ObservedV2TestPage
+      return PagesConstant.ObservedV2Test
     case MyType.environmentSwitch:
       return PagesConstant.EnvironmentSwitch
     case MyType.networkComparison:

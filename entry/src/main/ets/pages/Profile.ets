@@ -8,11 +8,12 @@ import { emitter } from '@kit.BasicServicesKit'
 import { LOGIN_SUCCESS_EVENT } from './Login'
 import { Router } from '../router/Router'
 import { PagesConstant } from '../router/PagesConstant'
+import { RouterName } from '../router/RouterName'
 
 
-@Entry({routeName: 'My'})
+@Entry({routeName: RouterName.Profile})
 @Component
-struct My {
+struct Profile {
 
   @Consume loginSuccessUserInfo: UserInfoModel = {}
 
@@ -101,8 +102,8 @@ struct My {
         break
       case MyType.networkComparison:
         LogUtil.debug("点击了网络对比测试")
-        Router.push(PagesConstant.NetworkComparison)
-        //navPathStack.pushPath({ name: 'NetworkComparison' })
+        //Router.push(PagesConstant.NetworkComparison)
+        navPathStack.pushPath({ name: 'NetworkComparisonPage' })
         break
       case MyType.setting:
         navPathStack.pushPath({ name: 'Setting' })
@@ -112,8 +113,8 @@ struct My {
 }
 
 @Builder
-export function MyBuilder() {
-  My()
+export function ProfileBuilder() {
+  Profile()
 }
 
-export { My }
+export { Profile }
