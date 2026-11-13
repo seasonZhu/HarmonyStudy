@@ -1,7 +1,7 @@
 import { openUniMP, releaseWgtToRunPath } from '@dcloudio/uni-app-runtime'
 import { FileUtil } from '@pura/harmony-utils'
 import { getTitleByMyType, MyType, getIconByMyType } from '../enum/MyType'
-import { allMyTypeCases } from '../enum/MyType'
+import { getVisibleMyTypes } from '../enum/MyType'
 import { UserInfoModel } from '../model/UserInfoModel'
 import { navPathStack } from '../router/navPathStack'
 import { MyHeader } from '../views/MyHeader'
@@ -34,7 +34,7 @@ struct Profile {
   build() {
     NavDestination() {
       List() {
-        ForEach(allMyTypeCases, (type: MyType) => {
+        ForEach(getVisibleMyTypes(), (type: MyType) => {
           ListItem() {
             if (type == MyType.header) {
               MyHeader({userInfo: this.loginSuccessUserInfo})

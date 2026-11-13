@@ -63,7 +63,7 @@ struct HotKey {
             buttonType: ButtonType.Normal
           })
             .fontColor(Color.White)
-            .backgroundColor("#2C86EF")
+            .backgroundColor($r('app.color.app_blue'))
             .borderRadius(4)
             .fontSize(16)
             .padding(8)

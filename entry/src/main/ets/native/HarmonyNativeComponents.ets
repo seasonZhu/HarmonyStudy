@@ -94,7 +94,7 @@ export struct NativeButtonComponent {
   private getBackgroundColor(): ResourceColor {
     switch (this.type) {
       case 'primary':
-        return $r('app.color.mainBlue');
+        return $r('app.color.app_blue');
       case 'success':
         return '#4CAF50';
       case 'warning':
@@ -102,7 +102,7 @@ export struct NativeButtonComponent {
       case 'danger':
         return '#F44336';
       default:
-        return $r('app.color.mainBlue');
+        return $r('app.color.app_blue');
     }
   }
 }
@@ -198,7 +198,7 @@ export struct NativeCameraComponent {
 
       Text('选择图片')
         .fontSize(14)
-        .fontColor($r('app.color.mainBlue'))
+        .fontColor($r('app.color.app_blue'))
     }
     .width('100%')
     .height('100%')
@@ -309,7 +309,7 @@ export struct NativeLocationComponent {
     Column() {
       if (this.isLoading) {
         LoadingProgress()
-          .color($r('app.color.mainBlue'))
+          .color($r('app.color.app_blue'))
           .width(40)
           .height(40)
 
@@ -324,7 +324,7 @@ export struct NativeLocationComponent {
 
         Text('获取定位')
           .fontSize(14)
-          .fontColor($r('app.color.mainBlue'))
+          .fontColor($r('app.color.app_blue'))
       }
     }
     .width('100%')
@@ -424,7 +424,7 @@ export struct NativeScannerComponent {
 
       Text('扫一扫')
         .fontSize(14)
-        .fontColor($r('app.color.mainBlue'))
+        .fontColor($r('app.color.app_blue'))
     }
     .width('100%')
     .height('100%')
@@ -565,7 +565,7 @@ export struct NativeSystemInfoComponent {
     Column() {
       if (this.isLoading) {
         LoadingProgress()
-          .color($r('app.color.mainBlue'))
+          .color($r('app.color.app_blue'))
           .width(40)
           .height(40)
 
@@ -580,7 +580,7 @@ export struct NativeSystemInfoComponent {
 
         Text('系统信息')
           .fontSize(14)
-          .fontColor($r('app.color.mainBlue'))
+          .fontColor($r('app.color.app_blue'))
       }
     }
     .width('100%')

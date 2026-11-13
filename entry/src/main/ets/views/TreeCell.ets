@@ -1,3 +1,4 @@
+import { ThemeColors } from '../constants/ThemeColors'
 import { RandomUtil } from '@pura/harmony-utils'
 import { ContentType } from '../enum/ContentType'
 import { TabModel } from '../model/TabModel'
@@ -41,7 +42,7 @@ export struct TreeCell {
   getRandomString(): string {
     let color = RandomUtil.getRandomColor()
     if (color === '#FFFFFF') {
-      return '#2C86EF'
+      return ThemeColors.PRIMARY
     } else {
       return color
     }

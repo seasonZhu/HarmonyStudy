@@ -5,8 +5,12 @@
       "value": "#FFFFFFFF"
     },
     {
+      "name": "app_blue",
+      "value": "#007AFF"
+    },
+    {
       "name": "mainBlue",
-      "value": "#2096F3"
+      "value": "#007AFF"
     },
     {
       "name": "text_primary",

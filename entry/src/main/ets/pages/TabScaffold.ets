@@ -37,7 +37,7 @@ struct TabScaffold {
       .scrollable(true)
       .vertical(false)
       .barWidth('100%')
-      .barHeight(44)
+      .barHeight(48)
       .barMode(BarMode.Scrollable)
       .onChange((index: number) => {
         this.currentIndex = index
@@ -57,13 +57,16 @@ struct TabScaffold {
     TabContent() {
       TabsDetail({contentType: this.contentType, tab: model})
     }
-    .tabBar(StringUtils.replaceHtmlElement(model.name?.toString() ?? ""))
-  }
-
-  @Builder
-  getTabBarText(model: TabModel) {
-    Text(StringUtils.replaceHtmlElement(model.name?.toString() ?? ""))
-      .fontColor($r("app.color.mainBlue"))
+    .tabBar(SubTabBarStyle.of(StringUtils.replaceHtmlElement(model.name?.toString() ?? ""))
+      .labelStyle({
+        selectedColor: $r('app.color.app_blue'),
+        unselectedColor: $r('app.color.app_blue'),
+        font: { size: 14 },
+        maxLines: 1,
+        overflow: TextOverflow.Ellipsis
+      })
+      .padding({ left: 12, right: 12, top: 0, bottom: 0 })
+      .indicator({ color: $r('app.color.app_blue'), height: 2 }))
   }
 
   async aboutToAppear(): Promise<void> {

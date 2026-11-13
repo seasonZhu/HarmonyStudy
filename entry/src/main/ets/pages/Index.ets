@@ -51,6 +51,17 @@ struct Index {
       Image(this.activeIndex == model.index ? model.selectedImage : model.normalImage)
         .height(24)
         .aspectRatio(1)
+        .colorFilter(this.activeIndex == model.index ? new ColorFilter([
+          0, 0, 0, 0, 0,
+          0, 0, 0, 0, 122 / 255,
+          0, 0, 0, 0, 1,
+          0, 0, 0, 1, 0
+        ]) : new ColorFilter([
+          1, 0, 0, 0, 0,
+          0, 1, 0, 0, 0,
+          0, 0, 1, 0, 0,
+          0, 0, 0, 1, 0
+        ]))
       Text(model.title)
         .fontColor(this.activeIndex == model.index ? $r('app.color.app_blue') : $r('app.color.text_secondary'))
         .fontSize(12)

@@ -150,7 +150,7 @@ struct NetworkExample {
         Text('首页')
           .fontSize(14)
           .fontColor('#FFFFFF')
-          .backgroundColor('#2C86EF')
+          .backgroundColor($r('app.color.app_blue'))
           .padding({ left: 8, right: 8, top: 4, bottom: 4 })
           .borderRadius(4)
       }
@@ -164,7 +164,7 @@ struct NetworkExample {
         .width('100%')
         .height(44)
         .fontSize(16)
-        .backgroundColor('#2C86EF')
+        .backgroundColor($r('app.color.app_blue'))
         .borderRadius(8)
         .margin({ top: 12 })
         .onClick(() => {
@@ -442,7 +442,7 @@ struct NetworkExample {
         Text('环境')
           .fontSize(14)
           .fontColor('#FFFFFF')
-          .backgroundColor('#1890FF')
+          .backgroundColor($r('app.color.app_blue'))
           .padding({ left: 8, right: 8, top: 4, bottom: 4 })
           .borderRadius(4)
       }
@@ -524,7 +524,7 @@ struct NetworkExample {
 
       Text('• BaseURL: https://wanandroid.com/')
         .fontSize(12)
-        .fontColor('#2C86EF')
+        .fontColor($r('app.color.app_blue'))
         .margin({ top: 4 })
     }
     .width('100%')

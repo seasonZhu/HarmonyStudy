@@ -109,7 +109,7 @@ struct NativeComponentsDemo {
   @result="onCameraResult"
 />`)
         .fontSize(12)
-        .fontColor('#2C86EF')
+        .fontColor($r('app.color.app_blue'))
         .fontFamily('monospace')
         .margin({ top: 8 })
         .padding(12)
@@ -153,7 +153,7 @@ struct NativeComponentsDemo {
         Text('按钮')
           .fontSize(14)
           .fontColor('#FFFFFF')
-          .backgroundColor('#2C86EF')
+          .backgroundColor($r('app.color.app_blue'))
           .padding({ left: 8, right: 8, top: 4, bottom: 4 })
           .borderRadius(4)
       }
@@ -168,7 +168,7 @@ struct NativeComponentsDemo {
       if (this.buttonResult) {
         Text(this.buttonResult)
           .fontSize(14)
-          .fontColor('#2C86EF')
+          .fontColor($r('app.color.app_blue'))
           .padding(12)
           .width('100%')
           .backgroundColor('#E3F2FD')
@@ -385,7 +385,7 @@ struct NativeComponentsDemo {
     Row() {
       Text(tag)
         .fontSize(14)
-        .fontColor('#2C86EF')
+        .fontColor($r('app.color.app_blue'))
         .fontFamily('monospace')
         .layoutWeight(1)
 

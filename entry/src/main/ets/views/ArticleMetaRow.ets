@@ -82,7 +82,7 @@ export struct ArticleMetaRow {
             bottom: CardStyle.TAG_PADDING_BOTTOM
           })
           .textAlign(TextAlign.Center)
-          .fontColor('#1565C0')
+          .fontColor($r('app.color.app_blue'))
           .backgroundColor('#E3F2FD')
           .borderRadius(CardStyle.TAG_BORDER_RADIUS)
           .fontSize(CardStyle.TAG_FONT_SIZE)

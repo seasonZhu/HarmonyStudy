@@ -56,7 +56,7 @@ export struct BannerView {
         .selectedItemWidth(8)
         .selectedItemHeight(8)
         .color('rgba(255,255,255,.3)')
-        .selectedColor($r('app.color.mainBlue'),))
+        .selectedColor($r('app.color.app_blue'),))
     .curve(Curve.Linear)
     .onChange((index: number) => {
       LogUtil.debug(index.toString())

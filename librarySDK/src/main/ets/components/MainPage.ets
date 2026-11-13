@@ -44,7 +44,7 @@ export struct MainPage {
         Column() {
           // 跳转到第二页面按钮
           Button('跳转到第二页面', { type: ButtonType.Capsule, stateEffect: true })
-            .backgroundColor($r('app.color.mainBlue'))
+            .backgroundColor($r('app.color.app_blue'))
             .width('90%')
             .height(44)
             .fontSize(16)

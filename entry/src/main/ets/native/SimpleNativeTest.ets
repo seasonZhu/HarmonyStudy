@@ -36,7 +36,7 @@ export struct TextWithMessageComponent {
     Column() {
       Text(this.message)
         .fontSize(18)
-        .fontColor('#2C86EF')
+        .fontColor($r('app.color.app_blue'))
         .padding(16)
 
       Text('Native Component Works!')
@@ -125,7 +125,7 @@ export struct TestButtonComponent {
         .fontSize(16)
         .width('100%')
         .height('100%')
-        .backgroundColor(this.type === 'primary' ? '#2C86EF' : '#4CAF50')
+        .backgroundColor(this.type === 'primary' ? $r('app.color.app_blue') : '#4CAF50')
         .onClick(() => {
           if (this.onClickCallback) {
             const detail = {

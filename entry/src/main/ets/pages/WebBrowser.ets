@@ -87,7 +87,7 @@ struct WebBrowser {
 
         if (this.showLoadingProgress) {
           Progress({ value: 0, total: 100, type: ProgressType.Linear })
-            .color($r("app.color.mainBlue"))
+            .color($r("app.color.app_blue"))
             .value(this.loadingProgress)
             .width('100%')
         }

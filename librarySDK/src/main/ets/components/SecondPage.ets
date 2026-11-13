@@ -107,7 +107,7 @@ export struct SecondPage {
         Column() {
           // 返回按钮
           Button('返回首页', { type: ButtonType.Capsule, stateEffect: true })
-            .backgroundColor($r('app.color.mainBlue'))
+            .backgroundColor($r('app.color.app_blue'))
             .width('90%')
             .height(44)
             .fontSize(16)

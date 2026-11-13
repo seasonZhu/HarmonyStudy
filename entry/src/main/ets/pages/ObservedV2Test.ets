@@ -69,7 +69,7 @@ struct ObservedV2Test {
             Text(`${this.person.age} 岁`)
               .fontSize(24)
               .fontWeight(FontWeight.Bold)
-              .fontColor('#2C86EF')
+              .fontColor($r('app.color.app_blue'))
           }
           .width('100%')
           .height(80)
@@ -82,7 +82,7 @@ struct ObservedV2Test {
             .width('100%')
             .height(44)
             .fontSize(16)
-            .backgroundColor('#2C86EF')
+            .backgroundColor($r('app.color.app_blue'))
             .borderRadius(8)
             .margin({ top: 12 })
             .onClick(() => {
@@ -175,7 +175,7 @@ struct ObservedV2Test {
             .width('100%')
             .height(44)
             .fontSize(16)
-            .backgroundColor('#2C86EF')
+            .backgroundColor($r('app.color.app_blue'))
             .borderRadius(8)
             .margin({ top: 12 })
             .onClick(() => {

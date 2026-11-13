@@ -1,3 +1,4 @@
+import { AppConfig } from '../constants/AppConfig'
 import { PagesConstant } from '../router/PagesConstant';
 
 export enum MyType {
@@ -14,6 +15,13 @@ export enum MyType {
 }
 
 export let allMyTypeCases = [MyType.header, MyType.ranking, MyType.myCoin, MyType.myCollect, MyType.webExample, MyType.webComponent, MyType.uniApp, MyType.environmentSwitch, MyType.uniAppMiniProgram, MyType.setting]
+
+export function getVisibleMyTypes(isAppTest: boolean = AppConfig.IS_APP_TEST): MyType[] {
+  const developmentTypes: MyType[] = [
+    MyType.webExample, MyType.webComponent, MyType.uniApp, MyType.environmentSwitch
+  ]
+  return allMyTypeCases.filter((type: MyType) => !isAppTest || !developmentTypes.includes(type))
+}
 
 export function getPathByMyType(type: MyType): PagesConstant {
   switch (type) {

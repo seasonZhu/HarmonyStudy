@@ -139,7 +139,7 @@ struct EnvironmentSwitch {
                   Text('当前')
                     .fontSize(12)
                     .fontColor('#FFFFFF')
-                    .backgroundColor('#2C86EF')
+                    .backgroundColor($r('app.color.app_blue'))
                     .padding({ left: 8, right: 8, top: 4, bottom: 4 })
                     .borderRadius(4)
                 } else {

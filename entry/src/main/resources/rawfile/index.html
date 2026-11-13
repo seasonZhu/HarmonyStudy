@@ -112,6 +112,21 @@
             displayImage(event.detail);
         });
     </script>
+    <style>
+        :root { --app-primary: #007AFF; }
+        button, input[type="button"] {
+            background-color: var(--app-primary);
+            color: white;
+            border: 1px solid var(--app-primary);
+            border-radius: 4px;
+            padding: 6px 12px;
+        }
+        a { color: var(--app-primary); }
+        input:focus-visible, button:focus-visible {
+            outline: 2px solid var(--app-primary);
+            outline-offset: 2px;
+        }
+    </style>
 </head>
 
 <body>
