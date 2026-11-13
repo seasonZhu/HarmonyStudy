@@ -11,7 +11,7 @@ import { ViewStatus } from '../enum/ViewStatus';
 import { LogUtil } from '@pura/harmony-utils';
 import { immersion } from '../utils/Immersion';
 import { WebLink } from '../entity/WebLink';
-import { ListConfig } from '../constants/StyleConstants';
+import { ListConfig, CardStyle } from '../constants/StyleConstants';
 import { navPathStack } from '../router/navPathStack';
 import { RouterName } from '../router/RouterName';
 
@@ -110,7 +110,7 @@ struct Home {
 
   @Builder
   private getListView() {
-    List({ space: ListConfig.SPACE, scroller: this.scroller }) {
+    List({ space: CardStyle.LIST_SPACE, scroller: this.scroller }) {
       ListItem() {
         BannerView({data: $dataSource,
           itemClick: (item) => {
@@ -136,8 +136,13 @@ struct Home {
     }
     .cachedCount(ListConfig.CACHED_COUNT)
     .width("100%")
-    .backgroundColor($r('app.color.white'))
-    .padding({ left: ListConfig.HORIZONTAL_PADDING, right: ListConfig.HORIZONTAL_PADDING })
+    .backgroundColor(CardStyle.LIST_BACKGROUND)
+    .padding({
+      left: CardStyle.LIST_HORIZONTAL_PADDING,
+      right: CardStyle.LIST_HORIZONTAL_PADDING,
+      top: CardStyle.LIST_TOP_PADDING,
+      bottom: CardStyle.LIST_BOTTOM_PADDING
+    })
     .edgeEffect(EdgeEffect.None)
   }
 

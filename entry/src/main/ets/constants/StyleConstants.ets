@@ -9,7 +9,15 @@ export class ListConfig {
 export class CardStyle {
   static readonly BORDER_RADIUS: number = 12
   static readonly INNER_PADDING: number = 12
-  static readonly SHADOW_RADIUS: number = 12
+  static readonly SHADOW_RADIUS: number = 6
+  static readonly SHADOW_COLOR: string = '#0D182638'
+  static readonly SHADOW_OFFSET_Y: number = 2
+  static readonly BORDER_COLOR: string = '#E8EBEF'
+  static readonly LIST_BACKGROUND: string = '#F5F6F8'
+  static readonly LIST_SPACE: number = 12
+  static readonly LIST_HORIZONTAL_PADDING: number = 16
+  static readonly LIST_TOP_PADDING: number = 12
+  static readonly LIST_BOTTOM_PADDING: number = 16
   static readonly TAG_BORDER_RADIUS: number = 4
   static readonly TAG_PADDING_LEFT: number = 6
   static readonly TAG_PADDING_RIGHT: number = 6

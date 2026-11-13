@@ -1,6 +1,5 @@
 // [Harmony 状态管理神器 @ObservedV2](https://juejin.cn/post/7391704406327164982)
-import { openUniMP,isExistsUniMP, releaseWgtToRunPath } from '@dcloudio/uni-app-runtime';
-import { FileUtil, LogUtil } from '@pura/harmony-utils';
+import { LogUtil } from '@pura/harmony-utils';
 import { navPathStack } from '../router/navPathStack';
 import { RouterName } from '../router/RouterName';
 
@@ -142,16 +141,16 @@ struct ObservedV2Test {
         .borderRadius(12)
         .margin({ left: 16, right: 16, top: 16 })
 
-        // UniApp 集成卡片
+        // 网络层对比测试卡片
         Column() {
           Row() {
             Column() {
-              Text('UniApp 小程序')
+              Text('网络层对比测试')
                 .fontSize(16)
                 .fontWeight(FontWeight.Medium)
                 .fontColor('#333333')
 
-              Text('集成运行本地小程序')
+              Text('对比两种网络层的请求结果')
                 .fontSize(12)
                 .fontColor('#999999')
                 .margin({ top: 4 })
@@ -159,7 +158,7 @@ struct ObservedV2Test {
             .alignItems(HorizontalAlign.Start)
             .layoutWeight(1)
 
-            Text('集成')
+            Text('测试')
               .fontSize(14)
               .fontColor('#FFFFFF')
               .backgroundColor('#4CAF50')
@@ -172,8 +171,7 @@ struct ObservedV2Test {
           .backgroundColor('#FFFFFF')
           .borderRadius(12)
 
-          // 原有逻辑保持不变
-          Button("Go to UniApp")
+          Button('查看网络层对比测试')
             .width('100%')
             .height(44)
             .fontSize(16)
@@ -181,7 +179,7 @@ struct ObservedV2Test {
             .borderRadius(8)
             .margin({ top: 12 })
             .onClick(() => {
-              this.openLocalUniApp()
+              navPathStack.pushPath({ name: RouterName.NetworkComparison })
             })
         }
         .width('100%')
@@ -228,7 +226,7 @@ struct ObservedV2Test {
             .borderRadius(8)
             .margin({ top: 12 })
             .onClick(() => {
-              navPathStack.pushPath({ name: 'NetworkExamplePage' })
+              navPathStack.pushPath({ name: RouterName.NetworkExample })
             })
         }
         .width('100%')
@@ -276,7 +274,7 @@ struct ObservedV2Test {
             .margin({ top: 12 })
             .onClick(() => {
               // 顺传：传递 person.age 作为参数
-              navPathStack.pushPathByName('NavPathStackTestPage', this.person.age, (popInfo) => {
+              navPathStack.pushPathByName(RouterName.NavPathStackTest, this.person.age, (popInfo) => {
                 // 逆传：接收返回值
                 LogUtil.debug(`NavPathStackTest 返回值: ${popInfo.result}`)
               })
@@ -304,7 +302,7 @@ struct ObservedV2Test {
             .fontColor('#666666')
             .margin({ top: 4 })
 
-          Text('• 支持运行本地UniApp小程序')
+          Text('• 支持网络层对比测试')
             .fontSize(12)
             .fontColor('#666666')
             .margin({ top: 4 })
@@ -340,82 +338,7 @@ struct ObservedV2Test {
     LogUtil.debug(`onPageShow`)
   }
 
-  aboutToAppear(): void {
-    let fileDir: string = getContext(this).filesDir
-    let fileName = "__UNI__98AF8A0.wgt"//"__UNI__DF9D7DE.wgt"//
 
-    getContext(this).resourceManager.getRawFileContent(fileName, (error, value) => {
-      LogUtil.debug(`${"UniApp#"}[${"wgt File"}] ${"getRawFile:__UNI__.wgt"}`)
-      if (error != null) {
-        LogUtil.error("error is " + error.message)
-        return
-      }
-      let filePath = fileDir + "/" + fileName
-      let file = FileUtil.openSync(filePath)
-      FileUtil.writeSync(file.fd, value.buffer)
-      FileUtil.closeSync(file.fd)
-      LogUtil.debug(`${"UniApp#"}[${"wgt File"}] ${"filePath:" + filePath}`)
-    })
-  }
-
-  /// https://ohpm.openharmony.cn/#/cn/detail/@dcloudio%2Funi-app-runtime
-  private async openLocalUniApp() {
-    const mpId = "__UNI__98AF8A0"//"__UNI__DF9D7DE"//
-
-    await new Promise<void>((resolve, reject) => {
-      try {
-        // 判断应用是否已释放到运行目录
-        let isExists = isExistsUniMP(mpId)
-        LogUtil.debug("isExists:"+isExists)
-
-        let fileDir: string = getContext(this).filesDir
-        // 拼接wgt包路径
-        let path = fileDir + "/"+mpId+".wgt"
-        // 释放 wgt 包到运行目录
-        releaseWgtToRunPath(mpId, path, (code:number, error: Error|null)=>{
-          LogUtil.debug(JSON.stringify({code, error}))
-          resolve()
-          // 启动小程序
-          const mp = openUniMP(mpId, {
-            capsuleMenuActionSheetItems: [
-              {
-                id: '1',
-                title: 'test1'
-              },
-              {
-                id: '2',
-                title: 'test2'
-              }
-            ]
-          })
-          mp.on('close',()=>{
-            LogUtil.debug('UniMP-close')
-          })
-          mp.on('show',()=>{
-            LogUtil.debug('UniMP-show')
-          })
-          mp.on('hide',()=>{
-            LogUtil.debug('UniMP-hide')
-          })
-          mp.on('menuItemClick', (id: string) => {
-            LogUtil.debug('menuItemClick', id)
-
-            // 宿主向小程序发送消息
-            mp.sendUniMPEvent("NativeEvent", {msg: "native message"})
-          })
-
-          mp.on('uniMPEvent', (event: string, data: ESObject, notify: (result: string) => void) => {
-            LogUtil.debug(`宿主收到小程序消息，事件：${event}，消息：${JSON.stringify(data)}`);
-            notify('宿主成功接收小程序消息')
-          })
-        })
-      } catch(err){
-        reject(err)
-      }
-    }).then(() => {
-
-    })
-  }
 }
 
 @Builder

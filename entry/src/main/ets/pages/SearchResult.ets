@@ -10,7 +10,7 @@ import { SearchResultViewModel } from '../viewModel/SearchResultViewModel';
 import { RouterName } from '../router/RouterName'
 import { KeywordInfo } from '../entity/KeywordInfo';
 import { LogUtil } from '@pura/harmony-utils';
-import { ListConfig } from '../constants/StyleConstants';
+import { ListConfig, CardStyle } from '../constants/StyleConstants';
 
 @Entry({routeName: RouterName.SearchResult})
 @Component
@@ -92,7 +92,7 @@ struct SearchResult {
 
   @Builder
   private getListView() {
-    List({ space: ListConfig.SPACE, scroller: this.scroller }) {
+    List({ space: CardStyle.LIST_SPACE, scroller: this.scroller }) {
       LazyForEach(this.listDataSource, (item: Article) => {
         ListItem() {
           InfoCell({
@@ -109,8 +109,13 @@ struct SearchResult {
     }
     .cachedCount(ListConfig.CACHED_COUNT)
     .width("100%")
-    .backgroundColor($r('app.color.white'))
-    .padding({ left: ListConfig.HORIZONTAL_PADDING, right: ListConfig.HORIZONTAL_PADDING })
+    .backgroundColor(CardStyle.LIST_BACKGROUND)
+    .padding({
+      left: CardStyle.LIST_HORIZONTAL_PADDING,
+      right: CardStyle.LIST_HORIZONTAL_PADDING,
+      top: CardStyle.LIST_TOP_PADDING,
+      bottom: CardStyle.LIST_BOTTOM_PADDING
+    })
     .edgeEffect(EdgeEffect.None)
   }
 

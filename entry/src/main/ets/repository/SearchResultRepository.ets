@@ -18,10 +18,11 @@ export class SearchResultRepository extends BaseRepository {
    */
   async searchArticles(page: number, keywordInfo: KeywordInfo): Promise<PageModel<Article>> {
     try {
-      const params = `k=${keywordInfo.k}`
+      const params = `k=${encodeURIComponent(keywordInfo.k)}`
       const response = await this.httpClient.post<PageModel<Article>>(
         ApiConstants.articleQuery(page),
-        params
+        params,
+        { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
       )
       
       // 检查是否有错误

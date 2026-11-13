@@ -60,7 +60,13 @@ export struct ArticleCell {
     .width('100%')
     .backgroundColor($r('app.color.white'))
     .borderRadius(CardStyle.BORDER_RADIUS)
-    .shadow({ radius: 16, color: '#30000000', offsetX: 0, offsetY: 0 })
+    .border({ width: 0.5, color: CardStyle.BORDER_COLOR })
+    .shadow({
+      radius: CardStyle.SHADOW_RADIUS,
+      color: CardStyle.SHADOW_COLOR,
+      offsetX: 0,
+      offsetY: CardStyle.SHADOW_OFFSET_Y
+    })
     .padding(CardStyle.INNER_PADDING)
     .onClick(() => {
       if (this.onItemClick) {

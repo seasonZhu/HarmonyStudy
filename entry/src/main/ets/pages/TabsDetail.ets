@@ -10,7 +10,7 @@ import { TabsDetailViewModel } from '../viewModel/TabsDetailViewModel';
 import { ContentType } from '../enum/ContentType';
 import { TabModel } from '../model/TabModel';
 import { LogUtil } from '@pura/harmony-utils';
-import { ListConfig } from '../constants/StyleConstants';
+import { ListConfig, CardStyle } from '../constants/StyleConstants';
 import { RouterName } from '../router/RouterName';
 
 @Entry({ routeName: RouterName.TabsDetail })
@@ -91,7 +91,7 @@ struct TabsDetail {
 
   @Builder
   private getListView() {
-    List({ space: ListConfig.SPACE, scroller: this.scroller }) {
+    List({ space: CardStyle.LIST_SPACE, scroller: this.scroller }) {
       LazyForEach(this.listDataSource, (item: Article) => {
         ListItem() {
           InfoCell({
@@ -108,8 +108,13 @@ struct TabsDetail {
     }
     .cachedCount(ListConfig.CACHED_COUNT)
     .width("100%")
-    .backgroundColor($r('app.color.white'))
-    .padding({ left: ListConfig.HORIZONTAL_PADDING, right: ListConfig.HORIZONTAL_PADDING })
+    .backgroundColor(CardStyle.LIST_BACKGROUND)
+    .padding({
+      left: CardStyle.LIST_HORIZONTAL_PADDING,
+      right: CardStyle.LIST_HORIZONTAL_PADDING,
+      top: CardStyle.LIST_TOP_PADDING,
+      bottom: CardStyle.LIST_BOTTOM_PADDING
+    })
     .edgeEffect(EdgeEffect.None)
   }
 

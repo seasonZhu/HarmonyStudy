@@ -13,12 +13,38 @@
           "storeFile": "/Users/dy/.ohos/config/default_HarmonyStudy_1rRmeFsNVNAIdv1MMblm1buJ6VcaXULJTUR_cxJA1AA=.p12",
           "storePassword": "0000001B06ECC85339ACD0CD5BD2928C7E6734D73B86E06881CBD7964EF10E87A74F67F504606BCED1C516"
         }
+      },
+      {
+        "name": "release",
+        "type": "HarmonyOS",
+        "material": {
+          // 发布签名材料就绪后，替换下方三个占位符（搜索 "<" 即可定位）
+          "certpath": "signing/release.cer",
+          "keyAlias": "<发布密钥别名>",
+          "keyPassword": "<发布密钥密码>",
+          "profile": "signing/release.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "signing/release.p12",
+          "storePassword": "<密钥库密码>"
+        }
       }
     ],
     "products": [
       {
         "name": "default",
         "signingConfig": "default",
+        "compatibleSdkVersion": "5.1.0(18)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "useNormalizedOHMUrl": true
+          }
+        },
+        "targetSdkVersion": "5.1.0(18)"
+      },
+      {
+        "name": "release",
+        "signingConfig": "release",
         "compatibleSdkVersion": "5.1.0(18)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
@@ -46,7 +72,8 @@
         {
           "name": "default",
           "applyToProducts": [
-            "default"
+            "default",
+            "release"
           ]
         }
       ]
