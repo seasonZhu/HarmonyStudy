@@ -11,7 +11,7 @@ import { LogUtil } from '@pura/harmony-utils';
 import { ListConfig } from '../constants/StyleConstants';
 import { RouterName } from '../router/RouterName';
 
-@Entry({ routeName: RouterName.Tree })
+
 @Component
 struct Tree {
 

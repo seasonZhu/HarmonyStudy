@@ -3,13 +3,9 @@ import { UserInfoModel } from '../model/UserInfoModel';
 import { RouterName } from '../router/RouterName'
 import { LoginViewModel } from '../viewModel/LoginViewModel';
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
-import { MainPage } from 'librarySDK/src/main/ets/components/MainPage';
-import { SDKTools } from 'librarySDK/src/main/ets/components/SDKTools';
-import { router } from '@kit.ArkUI';
-import { RouteConstant } from 'librarySDK';
 import { navPathStack } from '../router/navPathStack';
 
-@Entry({routeName: RouterName.Setting})
+
 @Component
 struct Setting {
 
@@ -24,14 +20,7 @@ struct Setting {
           .objectFit(ImageFit.Auto)
           .width("100%")
           .backgroundColor(Color.Black)
-          .onClick(() => {
-            LogUtil.debug("跳转到SDK页面")
-            try {
-              router.pushNamedRoute({ name: RouteConstant.mainPage})
-            } catch (error) {
-              LogUtil.debug('跳转SDK页面失败: ' + JSON.stringify(error))
-            }
-          })
+
 
         Blank()
           .width("100")

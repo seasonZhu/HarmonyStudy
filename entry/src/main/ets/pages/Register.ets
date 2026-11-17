@@ -5,7 +5,7 @@ import { UserInfoModel } from '../model/UserInfoModel';
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 import { navPathStack } from '../router/navPathStack';
 
-@Entry({routeName: RouterName.Register})
+
 @ComponentV2
 struct Register {
 

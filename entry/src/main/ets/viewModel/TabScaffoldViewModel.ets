@@ -21,6 +21,11 @@ export class TabScaffoldViewModel {
    */
   getTabs = async (): Promise<TabModel[]> => {
     LogUtil.debug(`TabScaffoldViewModel: 获取标签列表，类型=${this.contentType}`)
-    return this.tabScaffoldRepo.getTabs(this.contentType)
+    const tabs = await this.tabScaffoldRepo.getTabs(this.contentType)
+    // 体系页只展示有子项的大分类，统一覆盖首次加载、刷新和失败重试。
+    if (this.contentType === ContentType.tree) {
+      return tabs.filter((tab: TabModel) => (tab.children?.length ?? 0) > 0)
+    }
+    return tabs
   }
 }

@@ -1,3 +1,4 @@
+import { RouterName } from '../router/RouterName'
 import { ThemeColors } from '../constants/ThemeColors'
 import { RandomUtil } from '@pura/harmony-utils'
 import { ContentType } from '../enum/ContentType'
@@ -30,7 +31,7 @@ export struct TreeCell {
                 // 内间距
               .padding(8)
               .onClick(() => {
-                navPathStack.pushPath({ name: 'TreeDetail', param: { tab: item, contentType: ContentType.tree } as TreeDetailInfo })
+                navPathStack.pushPath({ name: RouterName.TreeDetail, param: { tab: item, contentType: ContentType.tree } as TreeDetailInfo })
               })
           })
         }

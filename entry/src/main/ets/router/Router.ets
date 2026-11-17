@@ -15,7 +15,7 @@ interface NamedRouteOptions {
 }
 
 /**
- * 路由工具类 - 优化版本
+ * 旧版 Router 页面栈工具类，仅供历史示例参考。业务统一使用 navPathStack。
  *
  * @description
  * 提供类型安全的路由跳转功能

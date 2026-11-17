@@ -13,7 +13,7 @@ import { LOGIN_SUCCESS_EVENT } from './Login'
 import { RouterName } from '../router/RouterName'
 
 
-@Entry({routeName: RouterName.Profile})
+
 @Component
 struct Profile {
 
@@ -141,26 +141,29 @@ struct Profile {
       case MyType.header:
         break
       case MyType.ranking:
-        navPathStack.pushPath({ name: 'Rank' })
+        navPathStack.pushPath({ name: RouterName.Rank })
         break
       case MyType.myCoin:
-        navPathStack.pushPath({ name: 'MyCoin' })
+        navPathStack.pushPath({ name: RouterName.MyCoin })
         break
       case MyType.myCollect:
-        navPathStack.pushPath({ name: 'MyCollect' })
+        navPathStack.pushPath({ name: RouterName.MyCollect })
         break
       case MyType.webExample:
-        navPathStack.pushPath({ name: 'WebExample' })
+        navPathStack.pushPath({ name: RouterName.WebExample })
         break
       case MyType.webComponent:
-        navPathStack.pushPath({ name: 'WebComponent' })
+        navPathStack.pushPath({ name: RouterName.WebComponent })
         break
       case MyType.uniApp:
         navPathStack.pushPath({ name: RouterName.ObservedV2Test })
         break
+      case MyType.routingExamples:
+        navPathStack.pushPath({ name: RouterName.RoutingExamples })
+        break
       case MyType.environmentSwitch:
         LogUtil.debug("点击了切换环境")
-        navPathStack.pushPath({ name: 'EnvironmentSwitch' })
+        navPathStack.pushPath({ name: RouterName.EnvironmentSwitch })
         break
       case MyType.uniAppMiniProgram:
         this.openLocalUniApp().catch((error: Error) => {
@@ -169,7 +172,7 @@ struct Profile {
         })
         break
       case MyType.setting:
-        navPathStack.pushPath({ name: 'Setting' })
+        navPathStack.pushPath({ name: RouterName.Setting })
         break
     }
   }

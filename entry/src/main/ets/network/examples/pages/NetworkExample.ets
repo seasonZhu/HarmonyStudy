@@ -11,7 +11,7 @@ import { Article, Banner, HotKey } from '../api/WanAndroidModels'
 import { promptAction } from '@kit.ArkUI'
 import { RouterName } from '../../../router/RouterName'
 
-@Entry({ routeName: RouterName.NetworkExample })
+
 @Component
 struct NetworkExample {
   @State viewModel: NetworkExampleViewModel = new NetworkExampleViewModel()

@@ -5,7 +5,7 @@ import { LogUtil } from '@pura/harmony-utils';
 import { RouterName } from '../router/RouterName'
 import { ErrorHandler } from '../utils/ErrorHandler'
 
-@Entry({routeName: RouterName.EnvironmentSwitch})
+
 @ComponentV2
 struct EnvironmentSwitch {
   @Local currentEnvironment: Environment = Environment.PROD

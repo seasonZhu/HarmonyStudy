@@ -1,11 +1,15 @@
 {
   "app": {
     "bundleName": "com.wandroid.harmonyStudy",
-    "patchVersionCode": 2000006,
-    "versionCode": 1000000
+    "patchVersionCode": 2000019,
+    "versionCode": 1000000,
+    "versionName": "1.0.0",
+    "patchVersionName": "2000019"
   },
   "module": {
     "name": "entry",
-    "type": "hotreload"
+    "type": "hotreload",
+    "deviceTypes": ["phone","tablet","2in1"],
+    "originalModuleHash": ""
   }
 }

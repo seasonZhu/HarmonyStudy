@@ -9,7 +9,7 @@ import { KeywordInfo } from '../entity/KeywordInfo';
 import { CaptureTool } from 'utils';
 import { navPathStack } from '../router/navPathStack';
 
-@Entry({routeName: RouterName.HotKey})
+
 @ComponentV2
 struct HotKey {
   @Local dataSource: BaseListDataSource<HotKeyModel> = new BaseListDataSource<HotKeyModel>()
@@ -53,7 +53,7 @@ struct HotKey {
                 let keywordInfo: KeywordInfo = {
                   k: item.name
                 }
-                navPathStack.pushPath({ name: 'SearchResult', param: keywordInfo })
+                navPathStack.pushPath({ name: RouterName.SearchResult, param: keywordInfo })
               })
           })
 
@@ -93,7 +93,7 @@ struct HotKey {
           let keywordInfo: KeywordInfo = {
             k: keyword
           }
-          navPathStack.pushPath({ name: 'SearchResult', param: keywordInfo })
+          navPathStack.pushPath({ name: RouterName.SearchResult, param: keywordInfo })
         } else {
           ToastUtil.showToast($r('app.string.search_keyword_empty'))
         }

@@ -1,29 +1,6 @@
 {
   "src": [
-    "pages/Splash",
     "pages/Index",
-    "pages/Home",
-    "pages/Profile",
-    "pages/HotKey",
-    "pages/Tree",
-    "pages/TabScaffold",
-    "pages/WebBrowser",
-    "pages/TreeDetail",
-    "pages/SearchResult",
-    "pages/Login",
-    "pages/Rank",
-    "pages/MyCoin",
-    "pages/MyCollect",
-    "pages/Setting",
-    "pages/Register",
-    "pages/WebExample",
-    "pages/WebComponent",
-    "pages/ObservedV2Test",
-    "pages/EnvironmentSwitch",
-    "pages/NetworkComparison",
-    "network/examples/pages/NetworkExample",
-    "pages/NavPathStackTest",
-    "pages/TabsDetail",
-    "pages/NativeComponentsDemo"
+    "pages/RouterPageExample"
   ]
 }

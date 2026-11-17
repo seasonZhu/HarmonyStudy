@@ -1,11 +1,10 @@
 import { TreeDetailInfo } from '../entity/TreeDetailInfo';
 import { TabsDetail } from './TabsDetail';
 
-@Entry
 @Component
 struct TreeDetail {
 
-  treeDetailInfo: TreeDetailInfo = { tab: { id: 0, name: '' }, contentType: 0 }
+  @State treeDetailInfo: TreeDetailInfo = { tab: { id: 0, name: '' }, contentType: 0 }
 
   build() {
     NavDestination() {

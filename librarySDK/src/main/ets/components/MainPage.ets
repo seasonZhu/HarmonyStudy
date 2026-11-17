@@ -52,11 +52,16 @@ export struct MainPage {
             .onClick(() => {
               LogUtil.debug('MainPage: 跳转到 SecondPage');
               try {
-                router.pushNamedRoute({ name: "librarySDK_SecondPage" });
+                router.pushNamedRoute({ name: RouteConstant.secondPage });
               } catch (error) {
                 LogUtil.error('MainPage: 跳转失败', JSON.stringify(error));
               }
             })
+
+          // Router 返回后，宿主 Index 中的 NavPathStack 保留原有示例页面。
+          Button('返回路由示例').onClick(() => {
+            router.back()
+          })
 
           // 功能按钮占位（可扩展）
           Button('更多功能', { type: ButtonType.Capsule, stateEffect: true })

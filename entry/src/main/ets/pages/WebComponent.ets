@@ -3,7 +3,7 @@ import { BusinessError } from '@kit.BasicServicesKit';
 import { LogUtil } from '@pura/harmony-utils';
 import { RouterName } from '../router/RouterName'
 
-@Entry({routeName: RouterName.WebComponent})
+
 @ComponentV2
 struct WebComponent {
   controller: webview.WebviewController = new webview.WebviewController();

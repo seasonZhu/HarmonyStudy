@@ -124,6 +124,11 @@
       "name": "TabScaffold",
       "pageSourceFile": "src/main/ets/pages/TabScaffold.ets",
       "buildFunction": "TabScaffoldBuilder"
+    },
+    {
+      "name": "RoutingExamples",
+      "pageSourceFile": "src/main/ets/pages/RoutingExamples.ets",
+      "buildFunction": "RoutingExamplesBuilder"
     }
   ]
 }

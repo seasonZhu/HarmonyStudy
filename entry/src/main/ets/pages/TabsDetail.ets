@@ -13,7 +13,7 @@ import { LogUtil } from '@pura/harmony-utils';
 import { ListConfig, CardStyle } from '../constants/StyleConstants';
 import { RouterName } from '../router/RouterName';
 
-@Entry({ routeName: RouterName.TabsDetail })
+
 @Component
 struct TabsDetail {
 

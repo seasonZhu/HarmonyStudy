@@ -8,12 +8,11 @@ import { IndexViewModel } from '../viewModel/IndexViewModel';
 import { UserInfoModel } from '../model/UserInfoModel';
 import { ToastUtil, LogUtil } from '@pura/harmony-utils'
 import { RouterName } from '../router/RouterName'
-import { importHeadFile } from 'librarySDK';
 import { navPathStack } from '../router/navPathStack';
 import AccountManager from '../accountManager/AccountManager';
 
 @Preview
-@Entry({routeName: RouterName.Index})
+@Entry
 @Component
 struct Index {
   @State activeIndex: number = 0
@@ -104,17 +103,7 @@ struct Index {
     }
   }
 
-  onPageShow(): void {
-    /// 从模块传参过App侧
-    let params: number[] = navPathStack.getParamByName('Index') as number[]
-    if (params && params.length > 0) {
-      let index: number = params[0]
-      if (index != null) {
-        this.activeIndex = index;
-        this.tabsController.changeIndex(index)
-      }
-    }
-  }
+
 }
 
 @Builder

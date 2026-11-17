@@ -1,3 +1,4 @@
+import { RouterName } from './RouterName'
 import { promptAction } from '@kit.ArkUI'
 import AccountManager from '../accountManager/AccountManager'
 
@@ -39,7 +40,7 @@ navPathStack.setInterception({
         // 弹出目标页面，跳转到登录页
         to.pathStack.pop()
         to.pathStack.pushPath({
-          name: 'Login'
+          name: RouterName.Login
         })
       }
     }

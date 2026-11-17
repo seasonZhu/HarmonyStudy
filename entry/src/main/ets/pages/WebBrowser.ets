@@ -11,7 +11,7 @@ import { systemShare } from '@kit.ShareKit';
 import { uniformTypeDescriptor as utd } from '@kit.ArkData';
 import { ErrorHandler } from '../utils/ErrorHandler'
 
-@Entry({routeName: RouterName.WebBrowser})
+
 @ComponentV2
 struct WebBrowser {
   private controller: webview.WebviewController = new webview.WebviewController()

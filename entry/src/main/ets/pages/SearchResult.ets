@@ -12,7 +12,7 @@ import { KeywordInfo } from '../entity/KeywordInfo';
 import { LogUtil } from '@pura/harmony-utils';
 import { ListConfig, CardStyle } from '../constants/StyleConstants';
 
-@Entry({routeName: RouterName.SearchResult})
+
 @Component
 struct SearchResult {
   @State listDataSource: BaseListDataSource<Article> = new BaseListDataSource<Article>()

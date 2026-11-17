@@ -1,26 +1,13 @@
 import { Banner } from '../model/Banner';
 import { BaseListDataSource } from '../model/BaseListDataSource';
 import { ImageKnifeComponent, ImageKnifeOption } from '@ohos/imageknife'
-import { display } from '@kit.ArkUI';
 import { LogUtil } from '@pura/harmony-utils';
 
 @Component
 export struct BannerView {
   private swiperControllers = new SwiperController()
 
-  private swiperHeight = 200
-
   itemClick?: (item: Banner) => void
-
-  aboutToAppear(): void {
-    try {
-      let swiperWidth = display.getDefaultDisplaySync().width
-      let densityPixels = display.getDefaultDisplaySync().densityPixels
-      this.swiperHeight = (swiperWidth / densityPixels) * 0.5625
-    } catch (exception) {
-      LogUtil.debug('Failed to obtain the default display object. Code: ' + JSON.stringify(exception));
-    }
-  }
 
   @Link data: BaseListDataSource<Banner>;
 
@@ -30,9 +17,11 @@ export struct BannerView {
         ImageKnifeComponent({
           imageKnifeOption: {
             loadSrc:item.imagePath,
-            objectFit: ImageFit.Auto
+            objectFit: ImageFit.Cover
           }
         })
+          .width('100%')
+          .height('100%')
           .onClick(() => {
             if (this.itemClick) {
               this.itemClick(item)
@@ -40,9 +29,11 @@ export struct BannerView {
           })
       })
     }
+    .borderRadius(8)
     .width('100%')
-    .height(this.swiperHeight)
-    .cachedCount(2)
+    // 按列表内的实际宽度计算高度，避免屏幕宽度与卡片宽度不一致产生底部空白。
+    .aspectRatio(16 / 9)
+    .cachedCount(3)
     .index(1)
     .autoPlay(true)
     .interval(2000)
@@ -53,8 +44,8 @@ export struct BannerView {
       new DotIndicator()
         .itemWidth(8)
         .itemHeight(8)
-        .selectedItemWidth(8)
-        .selectedItemHeight(8)
+        .selectedItemWidth(10)
+        .selectedItemHeight(10)
         .color('rgba(255,255,255,.3)')
         .selectedColor($r('app.color.app_blue'),))
     .curve(Curve.Linear)

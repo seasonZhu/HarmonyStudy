@@ -1,6 +1,6 @@
 import { RouterName } from '../router/RouterName'
 
-@Entry({ routeName: RouterName.NavPathStackTest })
+
 @Component
 struct NavPathStackTest {
   @State message: string = 'Hello World';
@@ -23,7 +23,7 @@ struct NavPathStackTest {
             .fontWeight(FontWeight.Bold)
             .fontColor('#666666')
 
-          Button('返回（逆传值 +100）')
+          Button('返回（顺传值 +100）')
             .width('80%')
             .height(44)
             .fontSize(16)

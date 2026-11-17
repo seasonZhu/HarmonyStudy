@@ -20,7 +20,7 @@ interface TestResult {
   error?: string
 }
 
-@Entry({ routeName: RouterName.NetworkComparison })
+
 @ComponentV2
 struct NetworkComparison {
   @Local testResults: TestResult[] = []

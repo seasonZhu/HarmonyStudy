@@ -9,7 +9,7 @@ import { LogUtil } from '@pura/harmony-utils';
 
 export const LOGIN_SUCCESS_EVENT = "LOGIN_SUCCESS_EVENT"
 
-@Entry({routeName: RouterName.Login})
+
 @ComponentV2
 struct Login {
 
@@ -71,7 +71,7 @@ struct Login {
             .fontSize(15)
             .maxLines(1)
             .onClick(() => {
-              navPathStack.pushPath({ name: 'Register' })
+              navPathStack.pushPath({ name: RouterName.Register })
             })
             .margin({ right: 20 })
         }

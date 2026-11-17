@@ -17,7 +17,7 @@ class Son {
   weight: number = 200
 }
 
-@Entry({ routeName: RouterName.ObservedV2Test })
+
 @Component
 struct ObservedV2Test {
   person = new Person()

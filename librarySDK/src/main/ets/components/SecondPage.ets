@@ -19,7 +19,7 @@ export struct SecondPage {
   private showBackDialog(): void {
     DialogUtil.showPrimaryDialog({
       title: "提示",
-      message: "是否返回到首页？",
+      message: "是否返回到路由示例？",
       primaryButton: {
         value: "取消",
         action: () => {
@@ -36,14 +36,14 @@ export struct SecondPage {
   }
 
   /**
-   * 返回到首页
-   * 保持原有逻辑不变
+   * 返回到路由示例
+   * 返回宿主 Router 根页面后，继续显示其 Navigation 栈顶的路由示例
    */
   private backToIndex(): void {
-    LogUtil.debug('SecondPage: 返回到首页');
+    LogUtil.debug('SecondPage: 返回到路由示例');
     try {
       /// 这里是entry项目中的注册的路由地址
-      router.back({ url: "pages/Index", params: { "index": 0 } });
+      router.back({ url: "pages/Index" });
     } catch (error) {
       LogUtil.error('SecondPage: 返回失败', JSON.stringify(error));
     }
@@ -90,7 +90,7 @@ export struct SecondPage {
               .fontColor($r('app.color.text_secondary'))
               .margin({ bottom: 8 })
 
-            Text('• 点击返回按钮可返回首页')
+            Text('• 点击返回按钮可返回路由示例')
               .fontSize(14)
               .fontColor($r('app.color.text_secondary'))
           }
@@ -106,7 +106,7 @@ export struct SecondPage {
         // 底部按钮区域
         Column() {
           // 返回按钮
-          Button('返回首页', { type: ButtonType.Capsule, stateEffect: true })
+          Button('返回路由示例', { type: ButtonType.Capsule, stateEffect: true })
             .backgroundColor($r('app.color.app_blue'))
             .width('90%')
             .height(44)

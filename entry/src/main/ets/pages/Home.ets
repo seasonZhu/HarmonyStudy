@@ -15,7 +15,7 @@ import { ListConfig, CardStyle } from '../constants/StyleConstants';
 import { navPathStack } from '../router/navPathStack';
 import { RouterName } from '../router/RouterName';
 
-@Entry({ routeName: RouterName.Home })
+
 @Component
 struct Home {
 
@@ -117,7 +117,7 @@ struct Home {
             LogUtil.debug($r('app.string.click_banner'))
             LogUtil.debug(item.url)
             const webLink: WebLink = { id: item.id, title: item.title, link: item.url, originId: null }
-            navPathStack.pushPath({ name: 'WebBrowser', param: webLink })
+            navPathStack.pushPath({ name: RouterName.WebBrowser, param: webLink })
           }})
       }
       LazyForEach(this.listDataSource, (item: Article) => {
@@ -180,11 +180,18 @@ export { Home }
 struct SearchIcon {
   build() {
     Image($r('app.media.search'))
+      // PNG 按 iOS System Blue（#007AFF）着色，保留原图透明度。
+      .colorFilter(new ColorFilter([
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 122 / 255,
+        0, 0, 0, 0, 1,
+        0, 0, 0, 1, 0
+      ]))
       .width(60)
       .height(60)
       .padding(16)
       .onClick(() => {
-        navPathStack.pushPath({ name: 'HotKey' })
+        navPathStack.pushPath({ name: RouterName.HotKey })
       })
   }
   /// 沉浸式开与关

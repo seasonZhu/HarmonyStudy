@@ -13,7 +13,7 @@ import { ListConfig, CardStyle } from '../constants/StyleConstants';
 import { RouterName } from '../router/RouterName'
 import { Skeleton, SkeletonItem } from 'utils';
 
-@Entry({routeName: RouterName.MyCollect})
+
 @Component
 struct MyCollect {
   @State listDataSource: BaseListDataSource<Article> = new BaseListDataSource<Article>()

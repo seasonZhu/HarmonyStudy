@@ -1,31 +1,13 @@
-/// 如果需要在App端也能够像模块一样进行路由，也必须使用import()这样操作
-import ("entry/ets/pages/Index")
-import ("entry/ets/pages/Login")
-import ("entry/ets/pages/Register")
-import ("entry/ets/pages/MyCoin")
-import ("entry/ets/pages/Rank")
-import ("entry/ets/pages/SearchResult")
-import ("entry/ets/pages/MyCollect")
-import ("entry/ets/pages/WebBrowser")
-import ("entry/ets/pages/HotKey")
-import ("entry/ets/pages/TreeDetail")
-import ("entry/ets/pages/EnvironmentSwitch")
-import ("entry/ets/pages/Setting")
-import ("entry/ets/pages/WebExample")
-import ("entry/ets/pages/WebComponent")
-import ("entry/ets/pages/ObservedV2Test")
-import ("entry/ets/network/examples/pages/NetworkExample")
-import ("entry/ets/pages/NativeComponentsDemo")
-import ("entry/ets/pages/NetworkComparison")
-import ("entry/ets/pages/Profile")
-import ("entry/ets/pages/Tree")
-import ("entry/ets/pages/Home")
-import ("entry/ets/pages/TabsDetail")
-import ("entry/ets/pages/TabScaffold")
-import ("entry/ets/pages/NavPathStackTest")
-
-
+/**
+ * 业务页面名称由 routerMap.json 映射到 Builder。
+ * App 内命名路由的动态导入演示见 RoutingExamples.ets。
+ * 示例写法 import('entry/ets/pages/RouterPageExample')。
+ * 目标页声明 @Entry({ routeName: 'RouterPageExample' }) 后，
+ * 使用 router.pushNamedRoute({ name: 'RouterPageExample' }) 打开。
+ * 如需演示 HotKey，也需配套声明 routeName 并使用 Router 页面栈接收参数及返回。
+ */
 export enum RouterName {
+  RoutingExamples = "RoutingExamples",
   Splash = "Splash",
   Index = "Index",
   Login = "Login",

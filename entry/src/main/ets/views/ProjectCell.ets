@@ -1,3 +1,4 @@
+import { RouterName } from '../router/RouterName'
 import { Article } from '../model/Article'
 import { WebLink } from '../entity/WebLink'
 import { navPathStack } from '../router/navPathStack'
@@ -121,7 +122,7 @@ export struct ProjectCell {
       if (this.onItemClick) {
         this.onItemClick(this.article)
       }
-      navPathStack.pushPath({ name: 'WebBrowser', param: this.article as WebLink })
+      navPathStack.pushPath({ name: RouterName.WebBrowser, param: this.article as WebLink })
     })
     .gesture(
       LongPressGesture({ repeat: false })

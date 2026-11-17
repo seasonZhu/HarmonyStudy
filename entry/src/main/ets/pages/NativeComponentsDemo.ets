@@ -12,7 +12,7 @@
 import { RouterName } from '../router/RouterName'
 import { LogUtil } from '@pura/harmony-utils'
 
-@Entry({routeName: RouterName.NativeComponentsDemo})
+
 @ComponentV2
 struct NativeComponentsDemo {
   @Local buttonResult: string = ''

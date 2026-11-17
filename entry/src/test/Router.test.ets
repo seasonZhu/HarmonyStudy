@@ -24,7 +24,7 @@ export default function RouterTest() {
       expect(Router.push).toBeDefined();
       expect(Router.replace).toBeDefined();
       expect(Router.back).toBeDefined();
-      expect(Router.clear).toBeDefined();
+      expect(Router.getParams).toBeDefined();
       expect(Router.backWithParams).toBeDefined();
     });
 
@@ -39,14 +39,15 @@ export default function RouterTest() {
         'Rank',
         'SearchResult',
         'MyCollect',
-        'Web',
-        'Hotkey',
+        'WebBrowser',
+        'HotKey',
         'TreeDetail',
         'EnvironmentSwitch',
         'Setting',
         'WebExample',
         'WebComponent',
-        'ObservedV2TestPage',
+        'ObservedV2Test',
+        'RoutingExamples',
         'NetworkExample',
         'NativeComponentsDemo',
       ];

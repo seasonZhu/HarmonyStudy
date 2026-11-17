@@ -11,7 +11,7 @@ import { ListConfig } from '../constants/StyleConstants';
 
 export let PageMyCoin = "PageMyCoin"
 
-@Entry({routeName: RouterName.MyCoin})
+
 @Component
 struct MyCoin {
   @State listDataSource: BaseListDataSource<MyCoinModel> = new BaseListDataSource<MyCoinModel>()

@@ -65,7 +65,7 @@ class JavaScriptInterface {
  * 前端页面调用应用侧函数
  * https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/web-in-page-app-function-invoking-V5
  * */
-@Entry({routeName: RouterName.WebExample})
+
 @ComponentV2
 struct WebExample {
   webviewController: webview.WebviewController = new webview.WebviewController();
