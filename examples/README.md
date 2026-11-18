@@ -92,8 +92,8 @@
 
 ## 📖 相关文档
 
-- **[uni-app 小程序端完整使用指南](../docs/UNI_APP_NATIVE_USAGE.md)** - 详细的使用教程
-- **[原生组件开发指南](../docs/NATIVE_COMPONENTS_GUIDE.md)** - 组件 API 参考
+- **[uni-app 小程序端完整使用指南](../docs/05-原生组件与混合开发/uni-app原生组件使用教程.md)** - 详细的使用教程
+- **[原生组件开发指南](../docs/05-原生组件与混合开发/原生嵌入组件开发指南.md)** - 组件 API 参考
 - **[项目 README](../README.md)** - 项目整体介绍
 
 ---

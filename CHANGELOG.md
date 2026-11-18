@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - LoadingDialogHelper 静态方法 API (show/hide/wrap)
 - 全局 UIContext 初始化支持
 - @jxt/xt_hud 依赖 (^3.4.0)
-- 完整的迁移文档 (docs/LOADING_DIALOG_MIGRATION.md)
+- 完整的迁移文档 (docs/06-迁移与问题修复/Loading弹窗迁移文档.md)
 - WebPage 收藏功能 Loading 弹窗支持
 
 ### Changed
@@ -84,6 +84,6 @@ PATCH: 向下兼容的问题修复
 
 ## 链接
 
-- [迁移文档](./docs/LOADING_DIALOG_MIGRATION.md) - LoadingDialogHelper 迁移指南
-- [API 迁移指南](./docs/API_MIGRATION_GUIDE.md) - 废弃 API 迁移方案
+- [迁移文档](./docs/06-迁移与问题修复/Loading弹窗迁移文档.md) - LoadingDialogHelper 迁移指南
+- [API 迁移指南](./docs/06-迁移与问题修复/API迁移指南.md) - 废弃 API 迁移方案
 - [README](./README.md) - 项目介绍
