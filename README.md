@@ -8,13 +8,16 @@
 
 ## 📚 文档导航
 
+> 📖 **完整目录**：全仓库 95 篇文档按主题分类汇总，见 [文档索引](./docs/文档索引.md)。
+
 | 文档 | 说明 |
 |:-----|:-----|
-| **[开发指南](./docs/DEVELOPMENT_GUIDE.md)** | 完整的开发指南，包含命名规范、HSP模块、网络请求、路由框架等 |
-| **[快速参考](./docs/QUICK_REFERENCE.md)** | 常用代码片段和速查表 |
-| **[网络请求](./docs/NETWORK_USAGE.md)** | network 模块使用指南 |
-| **[路由设计](./docs/navpathstack-design.md)** | NavPathStack 路由框架设计 |
-| **[业务模块化](./docs/business-module-architecture-design.md)** | 业务模块化架构设计方案 |
+| **[文档索引](./docs/文档索引.md)** | 全部文档的分类汇总与推荐阅读路径 |
+| **[开发指南](./docs/01-开发指南与规范/HarmonyOS开发指南.md)** | 完整的开发指南，包含命名规范、HSP模块、网络请求、路由框架等 |
+| **[快速参考](./docs/01-开发指南与规范/HarmonyOS快速参考手册.md)** | 常用代码片段和速查表 |
+| **[网络请求](./docs/03-网络模块/Network模块使用指南.md)** | network 模块使用指南 |
+| **[路由设计](./docs/04-路由框架/NavPathStack路由框架设计.md)** | NavPathStack 路由框架设计 |
+| **[业务模块化](./docs/02-架构设计/业务模块化架构设计方案.md)** | 业务模块化架构设计方案 |
 
 ---
 
@@ -283,16 +286,18 @@ ToastUtil.showToast('请稍候...', 2000)
 | **跨平台** | Vue3 + UniApp | [UniAppPlayAndroid](https://github.com/seasonZhu/UniAppPlayAndroid) |
 | **HarmonyOS** | ArkTS + MVVM | [HarmonyStudy](https://github.com/seasonZhu/HarmonyStudy) |
 
-## 📚 文档导航
+## 📖 更多文档
 
 | 文档 | 说明 |
 |:-----|:-----|
-| [快速开始指南](docs/QUICK_START.md) | 项目入门与基本配置 |
-| [网络模块使用](docs/NETWORK_USAGE.md) | 网络请求封装与拦截器 |
-| [原生组件集成](docs/NATIVE_COMPONENTS_GUIDE.md) | UniApp 调用原生组件指南 |
-| [Loading 迁移指南](docs/LOADING_DIALOG_MIGRATION.md) | LoadingDialogHelper v2.0 迁移文档 |
-| [API 迁移指南](docs/API_MIGRATION_GUIDE.md) | API 替换与迁移记录 |
-| [简单测试指南](docs/SIMPLE_TEST_GUIDE.md) | 单元测试快速入门 |
+| [文档索引](docs/文档索引.md) | 全部文档的分类汇总与推荐阅读路径 |
+| [原生组件快速入门](docs/05-原生组件与混合开发/原生组件快速入门.md) | 三步在 uni-app 中跑通 HarmonyOS 原生组件 |
+| [网络模块使用](docs/03-网络模块/Network模块使用指南.md) | 网络请求封装与拦截器 |
+| [原生组件集成](docs/05-原生组件与混合开发/原生嵌入组件开发指南.md) | UniApp 调用原生组件指南 |
+| [Loading 迁移指南](docs/06-迁移与问题修复/Loading弹窗迁移文档.md) | LoadingDialogHelper v2.0 迁移文档 |
+| [API 迁移指南](docs/06-迁移与问题修复/API迁移指南.md) | HarmonyOS Next 6 废弃 API 的迁移方案与成本分析 |
+| [API 替换记录](docs/06-迁移与问题修复/API替换记录.md) | @ohos → @kit 导入替换与编译问题解决台账 |
+| [SimpleTest 组件使用指南](docs/05-原生组件与混合开发/SimpleTest组件使用指南.md) | SimpleTest.vue 组件、传参与回调测试说明 |
 
 ## ✅ 测试
 
