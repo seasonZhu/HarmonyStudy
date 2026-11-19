@@ -158,6 +158,7 @@ export struct StatusWeight {
 
       if (this.onRetry) {
         Button($r('app.string.retry'))
+          .width("100%")
           .margin({ top: 24 })
           .onClick(() => {
             LogUtil.debug('StatusWeight: 点击重试按钮')
@@ -187,6 +188,7 @@ export struct StatusWeight {
 
       if (this.onEmptyAction) {
         Button($r('app.string.go_add'))
+          .width("100%")
           .margin({ top: 24 })
           .onClick(() => {
             LogUtil.debug('StatusWeight: 点击空状态操作按钮')
