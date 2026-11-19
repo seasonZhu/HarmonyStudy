@@ -7,7 +7,6 @@ import { InfoCell } from '../views/InfoCell';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { SearchResultViewModel } from '../viewModel/SearchResultViewModel';
-import { RouterName } from '../router/RouterName'
 import { KeywordInfo } from '../entity/KeywordInfo';
 import { LogUtil } from '@pura/harmony-utils';
 import { ListConfig, CardStyle } from '../constants/StyleConstants';

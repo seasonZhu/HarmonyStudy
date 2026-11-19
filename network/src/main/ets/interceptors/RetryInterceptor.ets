@@ -1,5 +1,4 @@
 import { AxiosRequestConfig, AxiosError } from '@ohos/axios'
-import { HttpConfig } from '../models/HttpConfig'
 import { ApiError, ApiErrorType } from '../models/ApiError'
 import { LogUtil } from '@pura/harmony-utils'
 

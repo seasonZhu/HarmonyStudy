@@ -6,7 +6,6 @@ import { photoAccessHelper } from '@kit.MediaLibraryKit';
 import axios from '@ohos/axios'
 import { AxiosResponse } from '@ohos/axios';
 import { AxiosError } from '@ohos/axios';
-import { RouterName } from '../router/RouterName'
 import { ErrorHandler } from '../utils/ErrorHandler'
 
 /*

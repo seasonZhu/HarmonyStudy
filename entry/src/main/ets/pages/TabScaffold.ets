@@ -1,4 +1,3 @@
-import { BaseListDataSource } from '../model/BaseListDataSource';
 import { ViewStatus } from '../enum/ViewStatus';
 import { TabModel } from '../model/TabModel';
 import { TabScaffoldViewModel } from '../viewModel/TabScaffoldViewModel';
@@ -7,7 +6,6 @@ import { TabsDetail } from './TabsDetail';
 import { ContentType, getTitle } from '../enum/ContentType';
 import { LogUtil } from '@pura/harmony-utils';
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
-import { RouterName } from '../router/RouterName';
 
 
 @Component

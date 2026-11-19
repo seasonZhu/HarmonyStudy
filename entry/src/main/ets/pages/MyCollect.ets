@@ -10,7 +10,6 @@ import { InfoCell } from '../views/InfoCell';
 import { CollectActionType } from '../enum/CollectActionType';
 import { LogUtil } from '@pura/harmony-utils';
 import { ListConfig, CardStyle } from '../constants/StyleConstants';
-import { RouterName } from '../router/RouterName'
 import { Skeleton, SkeletonItem } from 'utils';
 
 

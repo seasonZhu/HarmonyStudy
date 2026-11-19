@@ -6,7 +6,6 @@ import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { MyCoinViewModel } from '../viewModel/MyCoinViewModel';
 import { LogUtil } from '@pura/harmony-utils';
-import { RouterName } from '../router/RouterName'
 import { ListConfig } from '../constants/StyleConstants';
 
 export let PageMyCoin = "PageMyCoin"

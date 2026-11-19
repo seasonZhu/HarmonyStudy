@@ -7,7 +7,6 @@ import { Article } from '../model/Article'
 import { RankModel } from '../model/RankModel'
 import { ApiConstants } from '../constants/ApiConstants'
 import { LogUtil } from '@pura/harmony-utils'
-import { RouterName } from '../router/RouterName'
 
 interface TestResult {
   testName: string

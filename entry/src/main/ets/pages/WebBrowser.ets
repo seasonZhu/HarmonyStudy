@@ -1,5 +1,4 @@
 import { webview } from '@kit.ArkWeb'
-import { RouterName } from '../router/RouterName'
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 import { WebLink } from '../entity/WebLink';
 import AccountManager from '../accountManager/AccountManager';

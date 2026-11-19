@@ -1,5 +1,5 @@
-import { AxiosHeaders, InternalAxiosRequestConfig } from '@ohos/axios';
-import AccountManager from '../../AccountManager/AccountManager';
+import { InternalAxiosRequestConfig } from '@ohos/axios';
+import AccountManager from '../../accountManager/AccountManager';
 import { AxiosClientRequestInterceptor } from './AxiosClientRequestInterceptor';
 import { LogUtil } from '@pura/harmony-utils';
 

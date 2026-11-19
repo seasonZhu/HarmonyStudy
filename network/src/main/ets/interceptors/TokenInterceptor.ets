@@ -1,4 +1,4 @@
-import { AxiosRequestConfig, InternalAxiosRequestConfig } from '@ohos/axios'
+import { InternalAxiosRequestConfig } from '@ohos/axios'
 import { LogUtil } from '@pura/harmony-utils'
 
 /**

@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig, ResponseType } from '@ohos/axios'
 import { HttpConfig, RequestMethod, HttpGlobalConfig, defaultGlobalConfig, mergeConfig, HttpParams, HttpBody } from '../models/HttpConfig'
 import { ApiResponse } from '../models/ApiResponse'
-import { ApiError, ApiErrorType, convertToApiError, createNetworkError, createTimeoutError, createServerError, createAuthError, createClientError } from '../models/ApiError'
+import { ApiError } from '../models/ApiError'
 import { InterceptorManager } from './InterceptorManager'
 import { ErrorHandler } from './ErrorHandler'
 import { LoadingService } from '../services/LoadingService'

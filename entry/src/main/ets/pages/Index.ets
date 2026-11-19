@@ -7,7 +7,6 @@ import { ContentType } from '../enum/ContentType';
 import { IndexViewModel } from '../viewModel/IndexViewModel';
 import { UserInfoModel } from '../model/UserInfoModel';
 import { ToastUtil, LogUtil } from '@pura/harmony-utils'
-import { RouterName } from '../router/RouterName'
 import { navPathStack } from '../router/navPathStack';
 import AccountManager from '../accountManager/AccountManager';
 

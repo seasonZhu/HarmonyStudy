@@ -9,7 +9,7 @@ import { NetworkProvider } from '../network/examples/NetworkProvider'
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper'
 import { registerAllNativeComponents } from '../native/HarmonyNativeComponents'
 import { registerSimpleTestComponents } from '../native/SimpleNativeTest'
-import { fullScreen, SavedContext, statusBar } from 'utils';
+import { fullScreen, SavedContext } from 'utils';
 import AccountManager from '../accountManager/AccountManager';
 
 const TAG: string = '[EntryLifecycleAbility]';

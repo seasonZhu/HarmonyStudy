@@ -3,7 +3,7 @@
  * @description 提供统一的网络请求接口，支持环境切换、Token管理、重试等功能
  */
 
-import { HttpClient, getHttpClient, resetHttpClient, ApiResponse, ApiError, HttpConfig, RequestMethod } from 'network'
+import { HttpClient, getHttpClient, resetHttpClient, ApiResponse, HttpConfig } from 'network'
 import { Environment, environmentService } from 'network'
 import { LogUtil } from '@pura/harmony-utils'
 import { preferences } from '@kit.ArkData'

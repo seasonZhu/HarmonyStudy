@@ -9,7 +9,6 @@
  * @version 1.0.0
  */
 
-import { RouterName } from '../router/RouterName'
 import { LogUtil } from '@pura/harmony-utils'
 
 

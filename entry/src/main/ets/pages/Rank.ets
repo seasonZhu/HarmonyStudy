@@ -7,7 +7,6 @@ import { ViewStatus } from '../enum/ViewStatus';
 import { RankViewModel } from '../viewModel/RankViewModel';
 import { LogUtil } from '@pura/harmony-utils';
 import { ListConfig } from '../constants/StyleConstants';
-import { RouterName } from '../router/RouterName'
 
 
 @Component

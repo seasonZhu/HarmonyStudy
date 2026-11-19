@@ -6,10 +6,8 @@
 
 import { NetworkProvider } from '../NetworkProvider'
 import { Environment } from 'network'
-import { NetworkExampleViewModel, ViewState } from '../viewModel/NetworkExampleViewModel'
-import { Article, Banner, HotKey } from '../api/WanAndroidModels'
+import { NetworkExampleViewModel } from '../viewModel/NetworkExampleViewModel'
 import { promptAction } from '@kit.ArkUI'
-import { RouterName } from '../../../router/RouterName'
 
 
 @Component

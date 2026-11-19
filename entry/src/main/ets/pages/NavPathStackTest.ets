@@ -1,4 +1,3 @@
-import { RouterName } from '../router/RouterName'
 
 
 @Component

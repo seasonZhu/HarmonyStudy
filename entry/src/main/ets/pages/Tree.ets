@@ -1,6 +1,5 @@
 import { PullToRefresh, PullToRefreshConfigurator, PullToRefreshType } from '@ohos/pulltorefresh';
 import { BaseListDataSource } from '../model/BaseListDataSource';
-import { ScrollActionType } from '../enum/ScrollActionType';
 import { StatusWeight } from '../views/StatusWeight';
 import { ViewStatus } from '../enum/ViewStatus';
 import { TabModel } from '../model/TabModel';
@@ -9,7 +8,6 @@ import { TabScaffoldViewModel } from '../viewModel/TabScaffoldViewModel';
 import { ContentType } from '../enum/ContentType';
 import { LogUtil } from '@pura/harmony-utils';
 import { ListConfig } from '../constants/StyleConstants';
-import { RouterName } from '../router/RouterName';
 
 
 @Component

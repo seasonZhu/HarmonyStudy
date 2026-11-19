@@ -11,14 +11,7 @@
 import { NativeEmbedBuilderOptions, defineNativeEmbed } from '@dcloudio/uni-app-runtime';
 import { LogUtil } from '@pura/harmony-utils';
 import { ToastUtil } from '../utils/ToastUtil';
-import {
-  HarmonyNativeApi,
-  SelectImageResult,
-  LocationResult,
-  ScanCodeResult,
-  SystemInfoResult,
-  SystemInfoData
-} from './HarmonyNativeApi';
+import { HarmonyNativeApi, SystemInfoData } from './HarmonyNativeApi';
 
 // ==================== 1. 原生按钮组件 ====================
 

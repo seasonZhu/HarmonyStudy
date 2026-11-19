@@ -1,6 +1,5 @@
 import { ToastUtil } from '@pura/harmony-utils/src/main/ets/action/ToastUtil'
 import { LoginViewModel, RegisterResult } from '../viewModel/LoginViewModel'
-import { RouterName } from '../router/RouterName'
 import { UserInfoModel } from '../model/UserInfoModel';
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 import { navPathStack } from '../router/navPathStack';

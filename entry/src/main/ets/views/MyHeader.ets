@@ -1,4 +1,3 @@
-import AccountManager from '../accountManager/AccountManager';
 import { proccessUserInfo, UserInfoModel } from '../model/UserInfoModel'
 
 @Component

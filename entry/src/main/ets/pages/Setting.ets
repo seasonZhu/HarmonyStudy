@@ -1,6 +1,5 @@
-import { DialogUtil, LogUtil, ToastUtil } from '@pura/harmony-utils';
+import { DialogUtil, ToastUtil } from '@pura/harmony-utils';
 import { UserInfoModel } from '../model/UserInfoModel';
-import { RouterName } from '../router/RouterName'
 import { LoginViewModel } from '../viewModel/LoginViewModel';
 import { LoadingDialogHelper } from '../utils/LoadingDialogHelper';
 import { navPathStack } from '../router/navPathStack';

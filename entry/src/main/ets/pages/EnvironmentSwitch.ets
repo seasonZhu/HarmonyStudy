@@ -2,7 +2,6 @@ import { Environment } from '../httpRequest/Environment'
 import { environmentManager } from '../httpRequest/EnvironmentManager'
 import { common } from '@kit.AbilityKit'
 import { LogUtil } from '@pura/harmony-utils';
-import { RouterName } from '../router/RouterName'
 import { ErrorHandler } from '../utils/ErrorHandler'
 
 
